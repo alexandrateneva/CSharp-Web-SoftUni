@@ -9,6 +9,9 @@
     using SIS.HTTP.Exceptions;
     using SIS.HTTP.Common;
     using System.Linq;
+    using SIS.HTTP.Cookies.Contracts;
+    using SIS.HTTP.Cookies;
+    using SIS.HTTP.Sessions.Contracts;
 
     public class HttpRequest : IHttpRequest
     {
@@ -17,6 +20,7 @@
             this.FormData = new Dictionary<string, object>();
             this.QueryData = new Dictionary<string, object>();
             this.Headers = new HttpHeaderCollection();
+            this.Cookies = new HttpCookieCollection();
 
             this.ParseRequest(requestString);
         }
@@ -25,6 +29,8 @@
 
         public string Url { get; private set; }
 
+        public IHttpSession Session { get; set; }
+
         public Dictionary<string, object> FormData { get; }
 
         public Dictionary<string, object> QueryData { get; }
@@ -32,7 +38,8 @@
         public IHttpHeaderCollection Headers { get; }
 
         public HttpRequestMethod RequestMethod { get; private set; }
-        public string GlobalConstnts { get; private set; }
+
+        public IHttpCookieCollection Cookies { get; }
 
         private void ParseRequest(string requestString)
         {
@@ -45,8 +52,38 @@
             this.ParseRequestPath();
 
             this.ParseHeaders(splitRequestContent.Skip(1).ToArray());
+            this.ParseCookies();
+
             bool requestHasBody = splitRequestContent.Length > 1;
             this.ParseRequestParametres(splitRequestContent[splitRequestContent.Length - 1], requestHasBody);
+        }
+
+        private void ParseCookies()
+        {
+            if (!this.Headers.ContainsHeader("Cookie"))
+            {
+                return;
+            }
+
+            var cookieRow = this.Headers.GetHeader("Cookie").ToString();
+
+            var cookiesValues = cookieRow.Replace("Cookie: ", "");
+
+            var cookies = cookiesValues.Split(", ", StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (var currentCookie in cookies)
+            {
+                var cookieKeyValuePair = currentCookie.Split("=", 2);
+
+                if (cookieKeyValuePair.Length != 2)
+                {
+                    throw new BadRequestException();
+                }
+
+                var cookieName = cookieKeyValuePair[0];
+                var cookieValue = cookieKeyValuePair[1];
+                this.Cookies.Add(new HttpCookie(cookieName, cookieValue));
+            }
         }
 
         private void ParseRequestMethod(string[] requestLine)
@@ -120,7 +157,10 @@
 
         private void ParseRequestParametres(string bodyParameters, bool requestHasBody)
         {
-            this.ParseQueryParametres(this.Url);
+            if (this.Url.Contains('?'))
+            {
+                this.ParseQueryParametres(this.Url);
+            }
             if (requestHasBody)
             {
                 this.ParseFormDataParameters(bodyParameters);
