@@ -1,0 +1,13 @@
+﻿<h1 class="text-center">Delete Contest</h1>
+<hr />
+<form class="mx-auto w-50" method="post" action="/Contests/Delete">
+    <input type="hidden" class="form-control" id="id" name="id" value="@Model.Id">
+    <div class="form-group">
+        <label for="name">Contest Name</label>
+        <input type="text" class="form-control" id="name" name="name" value="@Model.Name" disabled="disabled">
+    </div>
+    <div class="button-holder mt-4 d-flex justify-content-center">
+        <button type="submit" class="btn btn-block btn-light btn-outline-danger">Delete</button>
+        <a href="javascript:window.history.back()" class="btn btn-block btn-light btn-outline-dark" style="margin-top: 0">Back</a>
+    </div>
+</form>

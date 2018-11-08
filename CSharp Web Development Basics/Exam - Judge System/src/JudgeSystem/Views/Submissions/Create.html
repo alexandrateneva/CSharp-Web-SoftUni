@@ -1,0 +1,21 @@
+﻿<h1 class="text-center">Submit Solution</h1>
+
+<form class="mx-auto w-50" method="post" action="/Submissions/Create">
+    <div class="form-group">
+        <label for="code">Code</label>
+        <textarea type="text" class="form-control" id="code" name="code"></textarea>
+    </div>
+
+    <div class="form-group dropdown">
+        <select name="contestId">
+            @for(var i = 0; i < Model.Contests.Count(); i++)
+            {
+            { var contest = Model.Contests.ToList()[i]; }
+                <option value="@contest.Id">@contest.Name</option>
+            }
+        </select>
+    </div>
+    <div class="button-holder mt-4 d-flex justify-content-center">
+        <button type="submit" class="btn btn-block btn-light btn-outline-dark">Submit</button>
+    </div>
+</form>
