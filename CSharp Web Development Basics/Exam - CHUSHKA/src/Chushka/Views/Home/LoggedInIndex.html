@@ -1,0 +1,30 @@
+﻿      <div class="container-fluid text-center">
+    <h2>Greetings, Pesho!</h2>
+    <h4>Feel free to view and order any of our products.</h4>
+</div>
+<hr class="hr-2 bg-dark"/>
+<div class="container-fluid product-holder">
+    @for(var i = 0; i < Model.Products.Count(); i++)
+    {
+    { var product = Model.Products.ToList()[i]; }
+        @if(i == 0 || i % 5 == 0)
+        {
+            <div class="row d-flex justify-content-around">
+        }
+        <a href="/products/details?id=@product.Id" class="col-md-2">
+            <div class="product p-1 chushka-bg-color rounded-top rounded-bottom">
+                <h5 class="text-center mt-3">@product.Name</h5>
+                <hr class="hr-1 bg-white"/>
+                <p class="text-white text-center">
+                    @product.ShortDescription
+                </p>
+                <hr class="hr-1 bg-white"/>
+                <h6 class="text-center text-white mb-3">$ @product.Price</h6>
+            </div>
+        </a>
+        @if((i + 1) % 5 == 0)
+        {
+            </div>
+        }
+    }
+</div>
