@@ -1,0 +1,57 @@
+﻿<div class="container-fluid text-center">
+    @if (User.Role == "Admin")
+    {
+    <h2>Hello, Adiministrator @User.Username!</h2>
+    }
+    @else
+    {
+    <h2>Hello, @User.Username!</h2>
+    }
+</div>
+<hr class="bg-panda w-50 hr-2" />
+<div class="container-fluid">
+    <div class="row justify-content-around mb-3">
+        <div class="col-md-4">
+            <h3 class="text-center mt-3"> Pending </h3>
+            <div class="card rounded-top rounded-bottom border-panda">
+                <ul class="list-group list-group-flush">
+                    @foreach(var pendingPackage in Model.PendingPackages)
+                    {
+                    <li class="list-group-item">
+                        <h5 style="display: inline-block;">@pendingPackage.Description</h5>
+                        <a href="/packages/details?id=@pendingPackage.Id" role="button" class="btn btn-dark text-white float-right">Details</a>
+                    </li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h3 class="text-center mt-3"> Shipped </h3>
+            <div class="card rounded-top rounded-bottom border-panda">
+                <ul class="list-group list-group-flush">
+                    @foreach(var shippedPackage in Model.ShippedPackages)
+                    {
+                    <li class="list-group-item">
+                        <h5 style="display: inline-block;">@shippedPackage.Description</h5>
+                        <a href="/packages/details?id=@shippedPackage.Id" role="button" class="btn btn-dark text-white float-right">Details</a>
+                    </li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h3 class="text-center mt-3"> Delivered </h3>
+            <div class="card rounded-top rounded-bottom border-panda">
+                <ul class="list-group list-group-flush">
+                    @foreach(var deliveredPackage in Model.DeliveredPackages)
+                    {
+                    <li class="list-group-item">
+                        <h5 style="display: inline-block;">@deliveredPackage.Description</h5>
+                        <a href="/packages/acquire?id=@deliveredPackage.Id" role="button" class="btn btn-dark text-white float-right">Acquire</a>
+                    </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
