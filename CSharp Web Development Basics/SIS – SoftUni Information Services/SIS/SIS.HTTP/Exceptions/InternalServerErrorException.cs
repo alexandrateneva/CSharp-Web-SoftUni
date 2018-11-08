@@ -1,17 +1,13 @@
-﻿namespace SIS.HTTP.Exceptions
-{
-    using System;
-    using System.Net;
+﻿using System;
 
+namespace SIS.HTTP.Exceptions
+{
     public class InternalServerErrorException : Exception
     {
-        private const string ErrorMessage = "The Server has encountered an error.";
+        private const string InternalServerErrorExceptionMessage = "The Server has encountered an error.";
 
-        public const HttpStatusCode StatusCode = HttpStatusCode.InternalServerError;
+        public InternalServerErrorException() : this(InternalServerErrorExceptionMessage) { }
 
-        public InternalServerErrorException()
-            :base(ErrorMessage)
-        {
-        }
+        public InternalServerErrorException(string message) : base(message) { }
     }
 }

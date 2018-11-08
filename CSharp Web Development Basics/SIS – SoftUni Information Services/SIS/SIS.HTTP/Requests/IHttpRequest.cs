@@ -1,18 +1,16 @@
-﻿namespace SIS.HTTP.Requests.Contracts
-{
-    using SIS.HTTP.Cookies.Contracts;
-    using SIS.HTTP.Enums;
-    using SIS.HTTP.Headers.Contracts;
-    using SIS.HTTP.Sessions.Contracts;
-    using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using SIS.HTTP.Cookies;
+using SIS.HTTP.Enums;
+using SIS.HTTP.Headers;
+using SIS.HTTP.Sessions;
 
+namespace SIS.HTTP.Requests
+{
     public interface IHttpRequest
     {
         string Path { get; }
 
         string Url { get; }
-
-        IHttpSession Session { get; set; }
 
         Dictionary<string, object> FormData { get; }
 
@@ -23,5 +21,7 @@
         IHttpCookieCollection Cookies { get; }
 
         HttpRequestMethod RequestMethod { get; }
+
+        IHttpSession Session { get; set; }
     }
 }

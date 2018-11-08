@@ -1,16 +1,20 @@
 ﻿namespace SIS.HTTP.Extensions
 {
-    using System;
-
     public static class StringExtensions
     {
-        public static string Capitalize(this string str)
+        public static string Capitalize(this string text)
         {
-            if (string.IsNullOrEmpty(str))
+            if (string.IsNullOrEmpty(text))
             {
-                throw new ArgumentException($"{nameof(str)} cannot be null.");
+                return text;
             }
-            return Char.ToUpper(str[0]) + str.Substring(1).ToLower();
+
+            if (text.Length == 1)
+            {
+                return text.ToUpper();
+            }
+
+            return char.ToUpper(text[0]) + text.Substring(1).ToLower();
         }
     }
 }
