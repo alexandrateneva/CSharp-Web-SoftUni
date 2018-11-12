@@ -1,0 +1,38 @@
+﻿@model FDMC.ViewModels.Home.IndexViewModel;
+
+<div class="jumbotron">
+    <h1 class="display-4">Welcome to Fluffy Duffy Munchkin Cats App!</h1>
+    <p class="lead">Below you can see our cats</p>
+</div>
+
+<h1 class="text-center">Cats</h1>
+<hr>
+@if (Model.Cats.Count > 0)
+{
+    <div class="row">
+        <div class="col-12">
+            <div class="card-deck">
+                @foreach (var cat in Model.Cats)
+                {
+                    <div class="col-md-3">
+                        <div class="card mb-5">
+                            <img class="card-img-top" src="@cat.ImageUrl" alt="Cat image">
+                            <div class="card-body">
+                                <div class="row justify-content-around">
+                                    <h5 class="card-title" style="display: inline-block;">@cat.Name</h5>
+                                    <a href="/cats/details?id=@cat.Id" class="btn btn-dark">Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="text-center">
+        <h4><em>There are no cats in the database yet.</em></h4>
+    </div>
+}
