@@ -1,0 +1,12 @@
+@inject SignInManager<ApplicationUser> SignInManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <ul class="navbar-nav left-side">
+        <li class="nav-item">
+            <form method="post" asp-controller="Account" asp-action="Logout">
+                <input class="nav-link nav-link-white active chushka-bg-color logout-button" type="submit" value="Logout" />
+            </form>
+        </li>
+    </ul>
+}

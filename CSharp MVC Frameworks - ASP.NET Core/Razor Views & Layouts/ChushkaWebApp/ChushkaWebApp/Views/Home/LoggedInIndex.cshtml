@@ -1,0 +1,37 @@
+﻿@model ChushkaWebApp.ViewModels.Home.IndexViewModel;
+
+@inject UserManager<ApplicationUser> UserManager
+
+<div class="container-fluid text-center">
+    @if (await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User), "Admin"))
+    {
+        <h2>Greetings, admin!</h2>
+        <h4>Enjoy your work today.</h4>
+    }
+    else
+    {
+        <h2>Greetings, @User.Identity.Name!</h2>
+        <h4>Feel free to view and order any of our products.</h4>
+    }
+</div>
+<hr class="hr-2 bg-dark" />
+<div class="container-fluid product-holder">
+    <div class="row d-flex justify-content-around">
+        @foreach (var product in Model.Products)
+        {
+            <div class="col-md-2 margin-card">
+                <a href="/products/details?id=@product.Id">
+                    <div class="product p-1 chushka-bg-color rounded-top rounded-bottom">
+                        <h5 class="text-center mt-3">@product.Name</h5>
+                        <hr class="hr-1 bg-white" />
+                        <p class="text-white text-center">
+                            @product.ShortDescription
+                        </p>
+                        <hr class="hr-1 bg-white" />
+                        <h6 class="text-center text-white mb-3">$ @product.Price</h6>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+</div>

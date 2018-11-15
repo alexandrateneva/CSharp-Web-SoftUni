@@ -1,0 +1,42 @@
+﻿@model ChushkaWebApp.ViewModels.Products.EditAndDeleteViewModel;
+
+<h1 class="text-center">Edit Product</h1>
+<hr class="bg-secondary half-width" />
+<form class="mx-auto half-width" method="post" action="/products/edit">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <input value="@Model.Id" type="hidden" name="Id">
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input value="@Model.Name" type="text" class="form-control" id="name" placeholder="Name..." name="name">
+    </div>
+    <div class="form-group">
+        <label for="price">Price</label>
+        <input value="@Model.Price" type="number" step="0.01" min="0" class="form-control" id="price" placeholder="Price..." name="price">
+    </div>
+    <div class="form-group">
+        <label for="description">Description</label>
+        <textarea type="text" class="form-control" id="description" placeholder="Description..." name="description">@Model.Description</textarea>
+    </div>
+    <h1 class="text-center">Product Type</h1>
+    <hr class="bg-secondary half-width"/>
+    <div class="row justify-content-around">
+        @foreach (var type in Model.Types)
+        {
+            <div class="col-md-2">
+                @if (Model.Type == type)
+                {
+                    <input type="radio" id="@type" checked="checked" name="type" value="@type"/>
+                }
+                else
+                {
+                    <input type="radio" id="@type" name="type" value="@type"/>
+                }
+                <label for="@type">@type</label>
+            </div>
+        }
+    </div>
+    <hr class="bg-secondary half-width"/>
+    <div class="button-holder d-flex justify-content-center">
+        <button type="submit" class="btn chushka-bg-color">Edit</button>
+    </div>
+</form>
