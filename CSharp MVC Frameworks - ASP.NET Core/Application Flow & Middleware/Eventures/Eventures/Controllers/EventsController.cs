@@ -20,13 +20,13 @@
             this.loggerFactory = loggerFactory;
         }
 
-        // [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return this.View();
         }
 
-        // [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [TypeFilter(typeof(LogEventCreationActionFilter))]
         public IActionResult Create(CreateEventViewModel model)
