@@ -1,0 +1,56 @@
+﻿<h1 class="text-center">Register</h1>
+<hr class="w-50 hr-blue hr-2" />
+<form class="mx-auto half-width" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="username" class="label-center">Username</label>
+                <input type="text" class="form-control" id="username" placeholder="Username..." name="username">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="email" class="label-center">Email</label>
+                <input type="email" class="form-control" id="email" placeholder="Email..." name="email">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="password" class="label-center">Password</label>
+                <input type="password" class="form-control" id="password" placeholder="Password..." name="password">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="confirmPassword" class="label-center">Confirm Password</label>
+                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password..." name="confirmPassword">
+            </div>
+        </div>
+    </div>
+    <hr class="hr-blue hr-2" />
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="firstName" class="label-center">First name</label>
+                <input type="text" class="form-control" id="firstName" placeholder="First Name..." name="firstName">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="lastName" class="label-center">Last name</label>
+                <input type="text" class="form-control" id="lastName" placeholder="Last Name..." name="lastName">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="uniqueCitizenNumber" class="label-center">UCN</label>
+        <input type="text" class="form-control" id="uniqueCitizenNumber" placeholder="Universel Citizen Number..." name="uniqueCitizenNumber">
+    </div>
+    <hr class="hr-blue hr-2" />
+    <div class="button-holder d-flex justify-content-center">
+        <button type="submit" class="btn eventures-bg-color">Register</button>
+    </div>
+</form>

@@ -1,0 +1,10 @@
+﻿@inject SignInManager<ApplicationUser> SignInManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    if (User.IsInRole("Admin"))
+    {
+        <a class="dropdown-item" href="/events/create">Create Event</a>
+    }
+}
+
