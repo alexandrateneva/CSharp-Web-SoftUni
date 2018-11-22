@@ -1,0 +1,14 @@
+﻿@inject SignInManager<ApplicationUser> SignInManager
+
+@if (!SignInManager.IsSignedIn(User))
+{
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+            <a class="nav-link nav-link-white" href="/account/register">Register</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link nav-link-white" href="/account/login">Login</a>
+        </li>
+    </ul>
+}
+

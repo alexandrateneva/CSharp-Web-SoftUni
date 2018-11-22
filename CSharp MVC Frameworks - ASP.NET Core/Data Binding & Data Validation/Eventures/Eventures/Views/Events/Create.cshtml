@@ -1,0 +1,55 @@
+﻿@model Eventures.ViewModels.Events.CreateEventViewModel;
+
+<h1 class="text-center">Create Event</h1>
+<hr class="w-50 hr-blue hr-2" />
+<form class="mx-auto half-width" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="name" class="label-center">Name</label>
+                <input type="text" class="form-control" id="name" placeholder="Name..." name="name" value="@Model.Name">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="place" class="label-center">Place</label>
+                <input type="text" class="form-control" id="place" placeholder="Place..." name="place" value="@Model.Place">
+            </div>
+        </div>
+    </div>
+    <hr class="hr-blue hr-2" />
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="start" class="label-center">Start</label>
+                <input type="datetime-local" class="form-control" id="start" name="start" value="@Model.Start">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="end" class="label-center">End</label>
+                <input type="datetime-local" class="form-control" id="end" name="end" value="@Model.End">
+            </div>
+        </div>
+    </div>
+    <hr class="hr-blue hr-2" />
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="totalTickets" class="label-center">Total Tickets</label>
+                <input type="number" min="0" step="1" class="form-control" id="totalTickets" name="totalTickets" value="@Model.TotalTickets">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="pricePerTicket" class="label-center">Price Per Ticket</label>
+                <input type="number" min="0" step="0.01" class="form-control" id="pricePerTicket" name="pricePerTicket" value="@Model.PricePerTicket">
+            </div>
+        </div>
+    </div>
+    <hr class="hr-blue hr-2" />
+    <div class="button-holder d-flex justify-content-center">
+        <button type="submit" class="btn eventures-bg-color">Create Event</button>
+    </div>
+</form>
