@@ -18,16 +18,16 @@ namespace Eventures.Services
             this.context = context;
         }
 
-        public Event CreateEvent(CreateEventViewModel model, DateTime start, DateTime end)
+        public Event CreateEvent(CreateEventViewModel model)
         {
             var @event = new Event()
             {
                 Name = model.Name,
                 Place = model.Place,
-                Start = start,
-                End = end,
-                TotalTickets = (int)model.TotalTickets,
-                PricePerTicket = (decimal)model.PricePerTicket
+                Start = (DateTime)model.Start,
+                End = (DateTime)model.End,
+                TotalTickets = model.TotalTickets,
+                PricePerTicket = model.PricePerTicket,
             };
 
             this.context.Events.Add(@event);

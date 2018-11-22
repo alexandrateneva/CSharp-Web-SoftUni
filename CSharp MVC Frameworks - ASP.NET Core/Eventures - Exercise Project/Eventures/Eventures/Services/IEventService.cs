@@ -7,7 +7,7 @@
 
     public interface IEventService
     {
-        Event CreateEvent(CreateEventViewModel model, DateTime start, DateTime end);
+        Event CreateEvent(CreateEventViewModel model);
 
         IList<BaseEventViewModel> GetAllEvents();
     }

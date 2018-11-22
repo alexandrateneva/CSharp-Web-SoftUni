@@ -209,7 +209,8 @@ namespace Eventures.Controllers
         public IActionResult Register(string returnUrl = null)
         {
             this.ViewData["ReturnUrl"] = returnUrl;
-            return this.View();
+            var model = new RegisterViewModel();
+            return this.View(model);
         }
 
         [HttpPost]
