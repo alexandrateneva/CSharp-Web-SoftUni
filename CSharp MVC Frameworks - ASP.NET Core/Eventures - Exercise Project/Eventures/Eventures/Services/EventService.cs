@@ -12,10 +12,12 @@ namespace Eventures.Services
     public class EventService : IEventService
     {
         private readonly ApplicationDbContext context;
+        private readonly IOrderService orderService;
 
-        public EventService(ApplicationDbContext context)
+        public EventService(ApplicationDbContext context, IOrderService orderService)
         {
             this.context = context;
+            this.orderService = orderService;
         }
 
         public Event CreateEvent(CreateEventViewModel model)
@@ -40,6 +42,7 @@ namespace Eventures.Services
         {
             var events = this.context.Events.Select(e => new BaseEventViewModel()
             {
+                Id = e.Id,
                 Name = e.Name,
                 Place = e.Place,
                 Start = e.Start,
@@ -47,6 +50,27 @@ namespace Eventures.Services
             }).ToList();
 
             return events;
+        }
+
+        public IList<MyEventViewModel> GetCurrentUserEvents(string userId)
+        {
+            var events = this.context.Events
+                .Select(e => new MyEventViewModel()
+                {
+                    Id = e.Id,
+                    Name = e.Name,
+                    Place = e.Place,
+                    Start = e.Start,
+                    End = e.End
+                }).ToList();
+
+            foreach (var @event in events)
+            {
+                var currentId = @event.Id;
+                @event.TicketsCount = this.orderService.GetTotalBoughtTicketsCountByEventIdFromCurrentUser(currentId, userId);
+            }
+
+            return events.FindAll(e => e.TicketsCount > 0);
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿namespace Eventures.Services
 {
-    using System;
     using System.Collections.Generic;
     using Eventures.Models;
     using Eventures.ViewModels.Events;
@@ -10,5 +9,7 @@
         Event CreateEvent(CreateEventViewModel model);
 
         IList<BaseEventViewModel> GetAllEvents();
+
+        IList<MyEventViewModel> GetCurrentUserEvents(string userId);
     }
 }

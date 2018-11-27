@@ -1,6 +1,7 @@
 ﻿namespace Eventures.Controllers
 {
     using System;
+    using System.Security.Claims;
     using Eventures.Filters;
     using Eventures.Loggers;
     using Eventures.Services;
@@ -12,11 +13,13 @@
     public class EventsController : Controller
     {
         private readonly IEventService eventService;
+        private readonly IOrderService orderService;
         private readonly ILoggerFactory loggerFactory;
 
-        public EventsController(IEventService eventService, ILoggerFactory loggerFactory)
+        public EventsController(IEventService eventService, IOrderService orderService, ILoggerFactory loggerFactory)
         {
             this.eventService = eventService;
+            this.orderService = orderService;
             this.loggerFactory = loggerFactory;
         }
 
@@ -56,6 +59,18 @@
         {
             var events = this.eventService.GetAllEvents();
             var model = new AllEventsViewModel()
+            {
+                Events = events
+            };
+            return this.View(model);
+        }
+
+        [Authorize]
+        public IActionResult My()
+        {
+            var customerId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var events = this.eventService.GetCurrentUserEvents(customerId);
+            var model = new AllMyEventsViewModel()
             {
                 Events = events
             };

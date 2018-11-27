@@ -5,6 +5,8 @@
 
     public class BaseEventViewModel
     {
+        public string Id { get; set; }
+
         public string Name { get; set; }
 
         public string Place { get; set; }

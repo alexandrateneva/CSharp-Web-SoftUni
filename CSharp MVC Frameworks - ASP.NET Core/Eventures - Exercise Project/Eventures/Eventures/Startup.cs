@@ -62,6 +62,7 @@ namespace Eventures
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddScoped<IEventService, EventService>();
+            services.AddScoped<IOrderService, OrderService>();
             
             services.AddMvc();
         }
@@ -71,8 +72,8 @@ namespace Eventures
         {
             if (env.IsDevelopment())
             {
-                app.UseExceptionHandler("/Home/Error");
-                //app.UseDeveloperExceptionPage();
+                //app.UseExceptionHandler("/Home/Error");
+                app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
                 app.UseDatabaseErrorPage();
             }

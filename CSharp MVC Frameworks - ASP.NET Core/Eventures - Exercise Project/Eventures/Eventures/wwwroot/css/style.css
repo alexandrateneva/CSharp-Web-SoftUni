@@ -101,3 +101,9 @@ form label{
 .names {
     font-weight: bold; 
 }
+
+td {
+    vertical-align: middle;
+    padding: 0;
+    margin: 0;
+}

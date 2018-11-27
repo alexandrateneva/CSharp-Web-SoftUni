@@ -7,6 +7,11 @@ namespace Eventures.Models
 {
     public class Event
     {
+        public Event()
+        {
+            this.Orders = new List<Order>();
+        }
+
         public string Id { get; set; } = Guid.NewGuid().ToString();
 
         public string Name { get; set; }
@@ -20,5 +25,7 @@ namespace Eventures.Models
         public int TotalTickets { get; set; }
 
         public decimal PricePerTicket { get; set; }
+
+        public IList<Order> Orders { get; set; }
     }
 }

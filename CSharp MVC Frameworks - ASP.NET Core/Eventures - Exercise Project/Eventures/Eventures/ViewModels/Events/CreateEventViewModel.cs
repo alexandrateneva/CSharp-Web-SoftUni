@@ -1,4 +1,4 @@
-﻿namespace Eventures.ViewModels.Events
+﻿ namespace Eventures.ViewModels.Events
 {
     using System;
     using System.ComponentModel.DataAnnotations;
