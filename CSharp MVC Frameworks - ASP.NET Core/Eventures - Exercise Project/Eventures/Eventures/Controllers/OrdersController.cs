@@ -16,6 +16,7 @@
             this.orderService = orderService;
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Create(CreateOrderViewModel model)
         {
