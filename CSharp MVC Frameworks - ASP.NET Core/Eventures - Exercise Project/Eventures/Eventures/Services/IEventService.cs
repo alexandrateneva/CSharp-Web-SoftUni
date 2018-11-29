@@ -8,8 +8,12 @@
     {
         Event CreateEvent(CreateEventViewModel model);
 
+        Event GetEventById(string id);
+
         IList<BaseEventViewModel> GetAllEvents();
 
         IList<MyEventViewModel> GetCurrentUserEvents(string userId);
+
+        Event DecreaseTicketsCount(Event @event, int boughtTicketsCount);
     }
 }

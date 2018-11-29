@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -11,14 +8,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Eventures.Data;
 using Eventures.Models;
 using Eventures.Services;
+using AutoMapper;
+using Eventures.Extensions;
+using Microsoft.Extensions.Logging;
 
 namespace Eventures
 {
-    using Eventures.Extensions;
-    using Eventures.Filters;
-    using Eventures.Loggers;
-    using Microsoft.Extensions.Logging;
-
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -46,10 +41,6 @@ namespace Eventures
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
                 options.Lockout.MaxFailedAccessAttempts = 5;
                 options.Lockout.AllowedForNewUsers = true;
-
-                // User settings.
-                options.User.AllowedUserNameCharacters =
-                    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~";
             });
 
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -59,11 +50,20 @@ namespace Eventures
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddAuthentication()
+                .AddFacebook(facebookOptions =>
+            {
+                facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+                facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+            });
+
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddScoped<IEventService, EventService>();
             services.AddScoped<IOrderService, OrderService>();
-            
+
+            services.AddAutoMapper();
+
             services.AddMvc();
         }
 
@@ -84,10 +84,10 @@ namespace Eventures
 
             app.UseStaticFiles();
 
+            app.UseAuthentication();
+
             app.UseSeedRolesAndAdminMiddleware();
 
-            app.UseAuthentication();
-            
             app.UseMvc((routes =>
             {
                 routes.MapRoute(

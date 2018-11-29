@@ -12,7 +12,7 @@
         public string EventId { get; set; }
         public Event Event { get; set; }
 
-        public DateTime OrderedOn { get; set; }
+        public DateTime OrderedOn { get; set; } = DateTime.UtcNow;
 
         public int TicketsCount { get; set; }
     }

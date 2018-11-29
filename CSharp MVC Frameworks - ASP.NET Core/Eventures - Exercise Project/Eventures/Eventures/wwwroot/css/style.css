@@ -98,12 +98,16 @@ form label{
     text-align: center;
 }
 
-.names {
-    font-weight: bold; 
+.names {font-weight: bold; 
 }
 
 td {
     vertical-align: middle;
     padding: 0;
     margin: 0;
+}
+
+.facebook-login {
+    background-color: #3b5998;
+    color: aliceblue;
 }

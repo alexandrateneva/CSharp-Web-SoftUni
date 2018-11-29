@@ -10,21 +10,37 @@
     public class OrdersController : Controller
     {
         private readonly IOrderService orderService;
+        private readonly IEventService eventService;
 
-        public OrdersController(IOrderService orderService)
+        public OrdersController(IOrderService orderService, IEventService eventService)
         {
             this.orderService = orderService;
+            this.eventService = eventService;
         }
 
         [Authorize]
         [HttpPost]
         public IActionResult Create(CreateOrderViewModel model)
         {
+            var @event = this.eventService.GetEventById(model.EventId);
+            if (@event.TotalTickets <= 0 || @event.TotalTickets < model.TicketsCount)
+            {
+                var errorModel = new MakeOrderErrorViewModel()
+                {
+                    EventName = @event.Name,
+                    TryToBuyTicketsCount = model.TicketsCount,
+                    AllAvailableTicketsCount = @event.TotalTickets
+                };
+                return this.View("MakeOrderError", errorModel);
+            }
+
             model.CustomerId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             if (this.ModelState.IsValid)
             {
+                this.eventService.DecreaseTicketsCount(@event, model.TicketsCount);
                 this.orderService.CreateOrder(model);
+
                 return this.Redirect("/events/my");
             }
 

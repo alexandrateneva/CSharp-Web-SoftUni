@@ -6,25 +6,22 @@
     using Eventures.Data;
     using Eventures.Models;
     using Eventures.ViewModels.Orders;
+    using global::AutoMapper;
 
     public class OrderService : IOrderService
     {
         private readonly ApplicationDbContext context;
+        private readonly IMapper mapper;
 
-        public OrderService(ApplicationDbContext context)
+        public OrderService(ApplicationDbContext context, IMapper mapper)
         {
             this.context = context;
+            this.mapper = mapper;
         }
 
         public Order CreateOrder(CreateOrderViewModel model)
         {
-            var order = new Order()
-            {
-                OrderedOn = DateTime.UtcNow,
-                EventId = model.EventId,
-                CustomerId = model.CustomerId,
-                TicketsCount = model.TicketsCount
-            };
+            var order = this.mapper.Map<Order>(model);
 
             this.context.Orders.Add(order);
             this.context.SaveChanges();
@@ -43,12 +40,16 @@
 
         public IList<BaseOrderViewModel> GetAllOrders()
         {
-            var orders = this.context.Orders.Select(e => new BaseOrderViewModel()
-            {
-                OrderedOn = e.OrderedOn,
-                CustomerName = e.Customer.UserName,
-                EventName = e.Event.Name
-            }).ToList();
+            var orders = this.context.Orders
+                .Select(e =>
+                // this.mapper.Map<BaseOrderViewModel>(e))
+                new BaseOrderViewModel()
+                {
+                    OrderedOn = e.OrderedOn,
+                    CustomerName = e.Customer.UserName,
+                    EventName = e.Event.Name
+                })
+                .ToList();
 
             return orders;
         }

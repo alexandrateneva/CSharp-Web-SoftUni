@@ -1,0 +1,15 @@
+﻿@model Eventures.ViewModels.Orders.MakeOrderErrorViewModel;
+
+<div class="row">
+    <div class="col-md-8">
+        <h1 class="text-center mb-4">Unfortunately, there are not enough tickets</h1>
+        <hr />
+        <h3 class="text-center">Event @Model.EventName</h3>
+        <h4 class="text-center mt-4">
+            All available tickets are <strong>@Model.AllAvailableTicketsCount</strong>, so you cannot buy @Model.TryToBuyTicketsCount.
+        </h4>
+    </div>
+    <div class="col-md-4">
+        <img height="250" src="http://www.oktoberfestottawa.com/wp-content/uploads/2015/06/Almost-Sold-Out.png" />
+    </div>
+</div>

@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using Eventures.Models;
 using Eventures.Models.AccountViewModels;
 using Eventures.Services;
+using AutoMapper;
 
 namespace Eventures.Controllers
 {
@@ -24,17 +25,20 @@ namespace Eventures.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+        private readonly IMapper _mapper;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger,
+            IMapper mapper)
         {
             this._userManager = userManager;
             this._signInManager = signInManager;
             this._emailSender = emailSender;
             this._logger = logger;
+            this._mapper = mapper;
         }
 
         [TempData]
@@ -221,14 +225,8 @@ namespace Eventures.Controllers
             this.ViewData["ReturnUrl"] = returnUrl;
             if (this.ModelState.IsValid)
             {
-                var user = new ApplicationUser
-                {
-                    UserName = model.Username,
-                    Email = model.Email,
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    UniqueCitizenNumber = model.UniqueCitizenNumber
-                };
+                var user = this._mapper.Map<ApplicationUser>(model);
+
                 var result = await this._userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)

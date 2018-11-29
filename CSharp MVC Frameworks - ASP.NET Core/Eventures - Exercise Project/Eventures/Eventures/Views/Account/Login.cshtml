@@ -1,5 +1,7 @@
-﻿<h1 class="text-center">Login</h1>
-<hr class="w-50 hr-blue hr-2"/>
+﻿@inject SignInManager<ApplicationUser> SignInManager
+
+<h1 class="text-center">Login</h1>
+<hr class="w-50 hr-blue hr-2" />
 <div class="row justify-content-center">
     <div class="col-md-4">
         <section>
@@ -13,26 +15,30 @@
                     <label for="password" class="label-center">Password</label>
                     <input type="password" class="form-control" id="password" placeholder="Password..." name="password">
                 </div>
-                <hr class="hr-blue hr-2"/>
+                <hr class="hr-blue hr-2" />
                 <div class="form-group">
                     <label class="container text-center label-not-bold">
                         <input type="checkbox">
                         <span class="checkmark">Remember me?</span>
                     </label>
                 </div>
-                <hr class="hr-blue hr-2"/>
+                <hr class="hr-blue hr-2" />
                 <div class="button-holder d-flex justify-content-center">
                     <button type="submit" class="btn eventures-bg-color">Login</button>
                 </div>
                 <div class="form-group text-center">
                     <p>
-                        <a href="#">Forgot your password?</a>
-                    </p>
-                    <p>
                         <a href="/Account/Register">Register as a new user?</a>
                     </p>
                 </div>
             </form>
+            <form asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+                <div class="row justify-content-center">
+                    <p>
+                        <button type="submit" class="btn facebook-login" name="provider" value="Facebook" title="Log in using your Facebook account"><i class="fa fa-facebook-square"></i> Login with Facebook</button>
+                    </p>
+                </div>
+            </form>
         </section>
-    </div>  
+    </div>
 </div>
