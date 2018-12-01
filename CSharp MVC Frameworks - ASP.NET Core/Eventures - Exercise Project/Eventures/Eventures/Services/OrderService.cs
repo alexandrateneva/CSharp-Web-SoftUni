@@ -6,6 +6,7 @@
     using Eventures.Data;
     using Eventures.Models;
     using Eventures.ViewModels.Orders;
+    using Microsoft.EntityFrameworkCore;
     using global::AutoMapper;
 
     public class OrderService : IOrderService
@@ -38,18 +39,19 @@
             return ticketsCount;
         }
 
-        public IList<BaseOrderViewModel> GetAllOrders()
+        public IEnumerable<Order> GetAllOrdersByUserId(string id)
+        {
+            var orders = this.context.Orders.Where(o => o.CustomerId == id);               
+
+            return orders;
+        }
+
+        public IEnumerable<BaseOrderViewModel> GetAllOrders()
         {
             var orders = this.context.Orders
-                .Select(e =>
-                // this.mapper.Map<BaseOrderViewModel>(e))
-                new BaseOrderViewModel()
-                {
-                    OrderedOn = e.OrderedOn,
-                    CustomerName = e.Customer.UserName,
-                    EventName = e.Event.Name
-                })
-                .ToList();
+                .Include(o => o.Event)
+                .Include(o => o.Customer)
+                .Select(e => this.mapper.Map<BaseOrderViewModel>(e));
 
             return orders;
         }

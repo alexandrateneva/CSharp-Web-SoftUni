@@ -9,6 +9,7 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
+    using X.PagedList;
 
     public class EventsController : Controller
     {
@@ -55,24 +56,31 @@
         }
 
         [Authorize]
-        public IActionResult All()
+        public IActionResult All(int? page)
         {
+            var pageNumber = page ?? 1;
             var events = this.eventService.GetAllEvents();
+            var onePageOfEvents = events.ToPagedList(pageNumber, 3);
+
             var model = new AllEventsViewModel()
             {
-                Events = events
+                Events = onePageOfEvents,
+                CurrentPage = pageNumber
             };
             return this.View(model);
         }
 
         [Authorize]
-        public IActionResult My()
+        public IActionResult My(int? page)
         {
+            var pageNumber = page ?? 1;
             var customerId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var events = this.eventService.GetCurrentUserEvents(customerId);
+            var onePageOfEvents = events.ToPagedList(pageNumber, 3);
             var model = new AllMyEventsViewModel()
             {
-                Events = events
+                Events = onePageOfEvents,
+                CurrentPage = pageNumber
             };
             return this.View(model);
         }

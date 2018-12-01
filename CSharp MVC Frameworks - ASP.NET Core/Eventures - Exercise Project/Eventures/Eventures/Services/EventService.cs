@@ -47,21 +47,22 @@
             return @event;
         }
 
-        public IList<BaseEventViewModel> GetAllEvents()
+        public IEnumerable<BaseEventViewModel> GetAllEvents()
         {
             var events = this.context.Events
                 .Where(x => x.TotalTickets > 0)
-                .Select(e => this.mapper.Map<BaseEventViewModel>(e))
-                .ToList();
+                .Select(e => this.mapper.Map<BaseEventViewModel>(e));
 
             return events;
         }
 
-        public IList<MyEventViewModel> GetCurrentUserEvents(string userId)
+        public IEnumerable<MyEventViewModel> GetCurrentUserEvents(string userId)
         {
+            var eventsIdsOfUserOrders = this.orderService.GetAllOrdersByUserId(userId).Select(o => o.EventId).ToList();
+
             var events = this.context.Events
-                .Select(e => this.mapper.Map<MyEventViewModel>(e))
-                .ToList();
+                .Where(x => eventsIdsOfUserOrders.Contains(x.Id))
+                .Select(e => this.mapper.Map<MyEventViewModel>(e));
 
             foreach (var @event in events)
             {
@@ -69,7 +70,7 @@
                 @event.TicketsCount = this.orderService.GetTotalBoughtTicketsCountByEventIdFromCurrentUser(currentId, userId);
             }
 
-            return events.FindAll(e => e.TicketsCount > 0);
+            return events;
         }
     }
 }

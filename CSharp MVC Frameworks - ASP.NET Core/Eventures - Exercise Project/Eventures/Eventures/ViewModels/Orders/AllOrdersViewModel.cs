@@ -1,14 +1,11 @@
 ﻿namespace Eventures.ViewModels.Orders
 {
-    using System.Collections.Generic;
+    using X.PagedList;
 
     public class AllOrdersViewModel
     {
-        public AllOrdersViewModel()
-        {
-            this.Orders = new HashSet<BaseOrderViewModel>();
-        }
+        public virtual IPagedList<BaseOrderViewModel> Orders { get; set; }
 
-        public ICollection<BaseOrderViewModel> Orders { get; set; }
+        public int CurrentPage { get; set; } 
     }
 }

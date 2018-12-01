@@ -1,0 +1,55 @@
+﻿@model Eventures.ViewModels.Admin.AllUsersViewModel;
+
+<h1 class="text-center">All Users</h1>
+
+<div class="row justify-content-around">
+    <div class="col-md-10">
+        <hr class="hr-blue hr-2" />
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col" class="names">#</th>
+                    <th scope="col" class="names">Username</th>
+                    <th scope="col" class="names">First name</th>
+                    <th scope="col" class="names">Last name</th>
+                    <th scope="col" class="names">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Users.Count(); i++)
+                {
+                    var currentUser = Model.Users.ToList()[i];
+                    <tr>
+                        <td>@(i + 1 + (Model.CurrentPage - 1) * 3) </td>
+                        <td>@currentUser.Username</td>
+                        <td>@currentUser.FirstName</td>
+                        <td>@currentUser.LastName</td>
+                        <td>
+                            @if (currentUser.Role == "Admin")
+                            {
+                                <a class="btn btn-danger" role="button" href="/admin/demote?id=@currentUser.Id">Demote</a>
+                            }
+                            else
+                            {
+                                <a class="btn eventures-bg-color" role="button" href="/admin/promote?id=@currentUser.Id">Promote</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <hr class="hr-blue hr-2" />
+
+        <div class="row justify-content-around">
+            @Html.PagedListPager(Model.Users, page => Url.Action("Users", new { page }), new PagedListRenderOptionsBase()
+       {
+           LiElementClasses = new string[] { "page-item" },
+           PageClasses = new string[] { "page-link" },
+           DisplayLinkToNextPage = PagedListDisplayMode.IfNeeded,
+           DisplayLinkToPreviousPage = PagedListDisplayMode.IfNeeded,
+           Display = PagedListDisplayMode.IfNeeded
+       })
+        </div>
+    </div>
+</div>

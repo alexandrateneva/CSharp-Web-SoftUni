@@ -61,7 +61,8 @@ namespace Eventures
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddScoped<IEventService, EventService>();
             services.AddScoped<IOrderService, OrderService>();
-
+            services.AddScoped<IAdminService, AdminService>();
+            
             services.AddAutoMapper();
 
             services.AddMvc();

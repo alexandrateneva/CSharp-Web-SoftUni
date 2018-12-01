@@ -1,14 +1,11 @@
 ﻿namespace Eventures.ViewModels.Events
 {
-    using System.Collections.Generic;
+    using X.PagedList;
 
     public class AllEventsViewModel
     {
-        public AllEventsViewModel()
-        {
-            this.Events= new HashSet<BaseEventViewModel>();
-        }
+        public virtual IPagedList<BaseEventViewModel> Events { get; set; }
 
-        public ICollection<BaseEventViewModel> Events { get; set; }
+        public int CurrentPage { get; set; } 
     }
 }

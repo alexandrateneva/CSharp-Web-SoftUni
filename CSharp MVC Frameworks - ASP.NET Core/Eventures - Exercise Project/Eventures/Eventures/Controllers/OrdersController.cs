@@ -6,6 +6,7 @@
     using Eventures.ViewModels.Orders;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using X.PagedList;
 
     public class OrdersController : Controller
     {
@@ -48,12 +49,15 @@
         }
 
         [Authorize(Roles = "Admin")]
-        public IActionResult All()
+        public IActionResult All(int? page)
         {
+            var pageNumber = page ?? 1;
             var orders = this.orderService.GetAllOrders();
+            var onePageOfOrders = orders.ToPagedList(pageNumber, 3);
             var model = new AllOrdersViewModel()
             {
-                Orders = orders
+                Orders = onePageOfOrders,
+                CurrentPage = pageNumber
             };
             return this.View(model);
         }

@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using Eventures.Models;
     using Eventures.ViewModels.Orders;
+    using System.Linq;
 
     public interface IOrderService
     {
@@ -10,6 +11,8 @@
 
         int GetTotalBoughtTicketsCountByEventIdFromCurrentUser(string eventId, string userId);
 
-        IList<BaseOrderViewModel> GetAllOrders();
+        IEnumerable<Order> GetAllOrdersByUserId(string id);
+
+        IEnumerable<BaseOrderViewModel> GetAllOrders();
     }
 }

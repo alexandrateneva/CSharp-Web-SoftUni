@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Eventures.ViewModels.Events
+﻿namespace Eventures.ViewModels.Events
 {
+    using X.PagedList;
+
     public class AllMyEventsViewModel
     {
-        public AllMyEventsViewModel()
-        {
-            this.Events = new HashSet<MyEventViewModel>();
-        }
+        public virtual IPagedList<MyEventViewModel> Events { get; set; }
 
-        public ICollection<MyEventViewModel> Events { get; set; }
+        public int CurrentPage { get; set; } 
     }
 }

@@ -111,3 +111,8 @@ td {
     background-color: #3b5998;
     color: aliceblue;
 }
+
+.pagination > li.active > a {
+    background: #AFEEEE;
+    font-weight: bold;
+}

@@ -19,7 +19,7 @@
             {
                 var currentOrder = Model.Orders.ToList()[i];
                     <tr>
-                        <td>@(i + 1)</td>
+                        <td>@(i + 1 + (Model.CurrentPage - 1) * 3)</td>
                         <td>@currentOrder.EventName</td>
                         <td>@currentOrder.CustomerName</td>
                         <td>@currentOrder.GetOrderedOnDate</td>
@@ -27,6 +27,18 @@
                 }
             </tbody>
         </table>
+
         <hr class="hr-blue hr-2" />
+
+        <div class="row justify-content-around">
+            @Html.PagedListPager(Model.Orders, page => Url.Action("All", new { page }), new PagedListRenderOptionsBase()
+       {
+           LiElementClasses = new string[] { "page-item" },
+           PageClasses = new string[] { "page-link" },
+           DisplayLinkToNextPage = PagedListDisplayMode.IfNeeded,
+           DisplayLinkToPreviousPage = PagedListDisplayMode.IfNeeded,
+           Display = PagedListDisplayMode.IfNeeded
+       })
+        </div>
     </div>
 </div>
