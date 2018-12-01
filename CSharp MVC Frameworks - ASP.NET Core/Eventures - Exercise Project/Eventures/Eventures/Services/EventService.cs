@@ -62,7 +62,8 @@
 
             var events = this.context.Events
                 .Where(x => eventsIdsOfUserOrders.Contains(x.Id))
-                .Select(e => this.mapper.Map<MyEventViewModel>(e));
+                .Select(e => this.mapper.Map<MyEventViewModel>(e))
+                .ToList();
 
             foreach (var @event in events)
             {
