@@ -6,10 +6,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using OnlineTechStore.Web.Areas.Identity.Data;
 
 namespace OnlineTechStore.Web.Areas.Identity.Pages.Account
 {
+    using OnlineTechStore.Data.Models;
+
     [AllowAnonymous]
     public class ConfirmEmailModel : PageModel
     {

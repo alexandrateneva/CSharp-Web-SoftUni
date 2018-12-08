@@ -9,10 +9,11 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using OnlineTechStore.Web.Areas.Identity.Data;
 
 namespace OnlineTechStore.Web.Areas.Identity.Pages.Account
 {
+    using OnlineTechStore.Data.Models;
+
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {

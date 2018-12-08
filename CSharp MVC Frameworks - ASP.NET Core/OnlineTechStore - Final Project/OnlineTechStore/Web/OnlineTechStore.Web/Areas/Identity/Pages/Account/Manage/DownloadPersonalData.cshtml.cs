@@ -8,10 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using OnlineTechStore.Web.Areas.Identity.Data;
 
 namespace OnlineTechStore.Web.Areas.Identity.Pages.Account.Manage
 {
+    using OnlineTechStore.Data.Models;
+
     public class DownloadPersonalDataModel : PageModel
     {
         private readonly UserManager<TechStoreUser> _userManager;

@@ -1,4 +1,8 @@
-﻿@inject SignInManager<TechStoreUser> SignInManager
+﻿@using Microsoft.AspNetCore.Identity
+@using OnlineTechStore.Data.Models
+
+@inject SignInManager<TechStoreUser> SignInManager
+
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }

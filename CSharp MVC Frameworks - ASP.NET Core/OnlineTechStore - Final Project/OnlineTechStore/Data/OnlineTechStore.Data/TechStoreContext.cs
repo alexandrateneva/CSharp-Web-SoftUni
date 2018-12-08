@@ -2,7 +2,7 @@
 {
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
-    using OnlineTechStore.Web.Areas.Identity.Data;
+    using OnlineTechStore.Data.Models;
 
     public class TechStoreContext : IdentityDbContext<TechStoreUser>
     {

@@ -6,10 +6,11 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using OnlineTechStore.Web.Areas.Identity.Data;
 
 namespace OnlineTechStore.Web.Areas.Identity.Pages.Account.Manage
 {
+    using OnlineTechStore.Data.Models;
+
     public class ExternalLoginsModel : PageModel
     {
         private readonly UserManager<TechStoreUser> _userManager;
