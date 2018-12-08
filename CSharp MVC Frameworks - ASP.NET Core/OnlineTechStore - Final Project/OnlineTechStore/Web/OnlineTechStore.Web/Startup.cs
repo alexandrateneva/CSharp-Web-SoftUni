@@ -7,8 +7,9 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using OnlineTechStore.Web.Areas.Identity.Data;
     using OnlineTechStore.Data;
+    using OnlineTechStore.Data.Contracts;
+    using OnlineTechStore.Data.Models;
 
     public class Startup
     {
@@ -45,6 +46,9 @@
                 .AddEntityFrameworkStores<TechStoreContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            // Application services
+            services.AddScoped(typeof(IDbRepository<>), typeof(DbRepository<>));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
