@@ -1,6 +1,8 @@
+@using GrabNReadApp.Data.Models
 @using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+
+@inject SignInManager<GrabNReadAppUser> SignInManager
+@inject UserManager<GrabNReadAppUser> UserManager
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
