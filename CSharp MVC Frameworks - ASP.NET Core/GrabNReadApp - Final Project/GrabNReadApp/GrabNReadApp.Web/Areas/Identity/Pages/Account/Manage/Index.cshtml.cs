@@ -44,9 +44,15 @@ namespace GrabNReadApp.Web.Areas.Identity.Pages.Account.Manage
             [EmailAddress]
             public string Email { get; set; }
 
-            [Phone]
-            [Display(Name = "Phone number")]
-            public string PhoneNumber { get; set; }
+            [Required]
+            [Display(Name = "First Name")]
+            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
+            public string FirstName { get; set; }
+
+            [Required]
+            [Display(Name = "Last Name")]
+            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
+            public string LastName { get; set; }
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -59,14 +65,14 @@ namespace GrabNReadApp.Web.Areas.Identity.Pages.Account.Manage
 
             var userName = await _userManager.GetUserNameAsync(user);
             var email = await _userManager.GetEmailAsync(user);
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
             Username = userName;
 
             Input = new InputModel
             {
                 Email = email,
-                PhoneNumber = phoneNumber
+                FirstName = user.FirstName,
+                LastName = user.LastName
             };
 
             IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
@@ -81,33 +87,47 @@ namespace GrabNReadApp.Web.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
+            // Get the existing student from the db
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            var email = await _userManager.GetEmailAsync(user);
-            if (Input.Email != email)
+            // Update it with the values from the view model
+            user.Email = Input.Email;
+            user.FirstName = Input.FirstName;
+            user.LastName = Input.LastName;
+
+            // Apply the changes if any to the db
+            var updateResult = await _userManager.UpdateAsync(user);
+            if (!updateResult.Succeeded)
             {
-                var setEmailResult = await _userManager.SetEmailAsync(user, Input.Email);
-                if (!setEmailResult.Succeeded)
-                {
-                    var userId = await _userManager.GetUserIdAsync(user);
-                    throw new InvalidOperationException($"Unexpected error occurred setting email for user with ID '{userId}'.");
-                }
+                var userId = await _userManager.GetUserIdAsync(user);
+                throw new InvalidOperationException($"Unexpected error occurred setting email for user with ID '{userId}'.");
             }
 
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            if (Input.PhoneNumber != phoneNumber)
-            {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-                if (!setPhoneResult.Succeeded)
-                {
-                    var userId = await _userManager.GetUserIdAsync(user);
-                    throw new InvalidOperationException($"Unexpected error occurred setting phone number for user with ID '{userId}'.");
-                }
-            }
+            //var email = await _userManager.GetEmailAsync(user);
+            //if (Input.Email != email)
+            //{
+            //    var setEmailResult = await _userManager.SetEmailAsync(user, Input.Email);
+            //    if (!setEmailResult.Succeeded)
+            //    {
+            //        var userId = await _userManager.GetUserIdAsync(user);
+            //        throw new InvalidOperationException($"Unexpected error occurred setting email for user with ID '{userId}'.");
+            //    }
+            //}
+
+            //var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            //if (Input.PhoneNumber != phoneNumber)
+            //{
+            //    var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
+            //    if (!setPhoneResult.Succeeded)
+            //    {
+            //        var userId = await _userManager.GetUserIdAsync(user);
+            //        throw new InvalidOperationException($"Unexpected error occurred setting phone number for user with ID '{userId}'.");
+            //    }
+            //}
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
