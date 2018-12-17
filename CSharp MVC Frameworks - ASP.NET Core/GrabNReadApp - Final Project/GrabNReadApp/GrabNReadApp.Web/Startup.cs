@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using GrabNReadApp.Data;
 using GrabNReadApp.Data.Contracts;
 using GrabNReadApp.Data.Models;
+using GrabNReadApp.Web.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -42,17 +43,18 @@ namespace GrabNReadApp.Web
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDefaultIdentity<GrabNReadAppUser>(
-                    options =>
-                    {
-                        options.Password.RequiredLength = 6;
-                        options.Password.RequireLowercase = false;
-                        options.Password.RequireNonAlphanumeric = false;
-                        options.Password.RequireUppercase = false;
-                        options.Password.RequireDigit = false;
-                    })
+            services.AddIdentity<GrabNReadAppUser, IdentityRole>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<GrabNReadAppContext>();
+
+            services.Configure<IdentityOptions>(options =>
+                {
+                    options.Password.RequiredLength = 6;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequireDigit = false;
+                });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
@@ -80,6 +82,8 @@ namespace GrabNReadApp.Web
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+
+            app.UseSeedRolesAndAdminMiddleware();
 
             app.UseMvc(routes =>
             {
