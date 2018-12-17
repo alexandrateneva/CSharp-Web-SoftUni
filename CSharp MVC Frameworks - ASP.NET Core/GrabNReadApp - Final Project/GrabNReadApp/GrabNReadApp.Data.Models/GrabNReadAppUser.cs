@@ -18,11 +18,13 @@ namespace GrabNReadApp.Data.Models
             this.Articles = new HashSet<Article>();
         }
 
+        [PersonalData]
         public string FirstName { get; set; }
 
+        [PersonalData]
         public string LastName { get; set; }
 
-        public int OrderId { get; set; }
+        public int? OrderId { get; set; }
         public Order Order { get; set; }
 
         public ICollection<Purchase> Purchases { get; set; }
