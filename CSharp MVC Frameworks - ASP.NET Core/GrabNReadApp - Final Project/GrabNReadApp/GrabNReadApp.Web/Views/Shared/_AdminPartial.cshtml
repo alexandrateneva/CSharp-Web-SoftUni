@@ -2,9 +2,23 @@
 {
 
     <li class="nav-item">
-        <a class="nav-link" asp-area="Products" asp-controller="Genres" asp-action="Create">Create Genre</a>
+        <div class="dropdown">
+            <button class="btn dropdown-toggle navitem-btn-dropdown-menu" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Genre
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" asp-area="Products" asp-controller="Genres" asp-action="Create">Create Genre</a>
+            </div>
+        </div>
     </li>
     <li class="nav-item">
-        <a class="nav-link" asp-area="Products" asp-controller="Books" asp-action="Create">Create Book</a>
+        <div class="dropdown">
+            <button class="btn dropdown-toggle navitem-btn-dropdown-menu" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Product
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" asp-area="Products" asp-controller="Books" asp-action="Create">Create Book</a>
+            </div>
+        </div>
     </li>
 }
