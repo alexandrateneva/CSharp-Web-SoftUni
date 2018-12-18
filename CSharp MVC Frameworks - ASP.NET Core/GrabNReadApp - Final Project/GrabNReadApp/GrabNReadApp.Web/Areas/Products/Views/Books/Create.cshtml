@@ -1,0 +1,97 @@
+﻿@using GrabNReadApp.Data.Models.Enums
+@model GrabNReadApp.Web.Areas.Products.Models.Books.BookViewModel
+
+@{
+    ViewData["Title"] = "View";
+}
+
+<h1 class="text-center">Create Book</h1>
+<hr />
+<div class="mx-auto w-50 text-center">
+    <form asp-action="Create" method="Post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label asp-for="Title"></label>
+                <input type="text" asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="Author"></label>
+                <input type="text" asp-for="Author" class="form-control" />
+                <span asp-validation-for="Author" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label asp-for="GenreId"></label>
+                <select asp-for="GenreId"
+                        asp-items="@(new SelectList(ViewBag.Genres,"Id","Name"))"
+                        class="form-control">
+                    <option selected disabled="disabled">Please choose one</option>
+                </select>
+                <span asp-validation-for="GenreId" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="ReleaseDate"></label>
+                <input type="date" value="2018-01-01" asp-for="ReleaseDate" class="form-control" />
+                <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label asp-for="Price"></label>
+                <input value="" type="number" min="0" step="0.01" asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="PricePerDay"></label>
+                <input value="" type="number" min="0" step="0.01" asp-for="PricePerDay" class="form-control" />
+                <span asp-validation-for="PricePerDay" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label asp-for="Pages"></label>
+                <input value="" type="number" asp-for="Pages" class="form-control" />
+                <span asp-validation-for="Pages" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="CoverType"></label>
+                <select asp-for="CoverType"
+                        asp-items="Html.GetEnumSelectList<CoverType>()"
+                        class="form-control">
+                    <option selected disabled="disabled">Please choose one</option>
+                </select>
+                <span asp-validation-for="CoverType" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label asp-for="Description"></label>
+                <textarea type="text" asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label asp-for="CoverImageFile"></label>
+                <input type="file" asp-for="CoverImageFile" class="form-control" />
+                <span asp-validation-for="CoverImageFile" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group text-center">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
