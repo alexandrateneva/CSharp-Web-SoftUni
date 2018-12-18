@@ -8,6 +8,12 @@ namespace GrabNReadApp.Data.Services.Products.Contracts
     {
         Task<Genre> Create(Genre genre);
 
+        Task<Genre> Edit(Genre genre);
+
+        Task<bool> Delete(int id);
+
         IEnumerable<Genre> GetAllGenres();
+
+        Task<Genre> GetGenreById(int id);
     }
 }

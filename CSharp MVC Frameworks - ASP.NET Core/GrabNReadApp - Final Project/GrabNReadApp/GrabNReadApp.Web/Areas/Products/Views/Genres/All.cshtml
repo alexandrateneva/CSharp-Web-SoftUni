@@ -1,0 +1,28 @@
+﻿@model IEnumerable<GrabNReadApp.Web.Areas.Products.Models.Genres.GenreBaseViewModel>
+@{
+    ViewData["Title"] = "All";
+}
+
+<h1 class="text-center">Genres</h1>
+<hr />
+<div class="row">
+    <div class="card-deck justify-content-center">
+        @foreach (var item in Model)
+        {
+            <div class="col-sm-3">
+                <div class="card mb-5">
+                    <img class="card-img-top" height="160px;" src="@item.Image" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">@item.Name</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row justify-content-around">
+                            <a class="btn btn-sm btn-outline-warning" asp-area="Products" asp-controller="Genres" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                            <a class="btn btn-sm btn-outline-danger" id="btnDelete" role="button" asp-area="Products" asp-controller="Genres" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

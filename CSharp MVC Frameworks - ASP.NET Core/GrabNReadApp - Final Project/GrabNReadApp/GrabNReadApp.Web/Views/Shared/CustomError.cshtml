@@ -1,0 +1,22 @@
+﻿@model GrabNReadApp.Data.Models.Error;
+
+@{
+    ViewData["Title"] = "Error";
+}
+
+<h1 class="text-center">Error</h1>
+<hr class="w-50" />
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <h4>We apologize for the inconvenience!</h4>
+        <br/>
+        <h3>@Model.Message</h3>
+        <br/>
+        <p>You can go back to the homepage and continue...</p>
+        <a class="btn btn-info" asp-area="" asp-controller="Home" asp-action="Index">Go to Home Page</a>
+    </div>
+    <div class="col-md-3">
+        <img src="/img/error.png" alt="Broken Robot" />
+    </div>
+</div>
+

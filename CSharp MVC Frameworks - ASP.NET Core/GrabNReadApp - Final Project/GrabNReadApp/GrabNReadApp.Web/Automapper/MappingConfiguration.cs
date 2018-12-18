@@ -9,7 +9,14 @@ namespace GrabNReadApp.Web.Automapper
     {
         public MappingConfiguration()
         {
+            //Genre
             this.CreateMap<GenreViewModel, Genre>();
+            this.CreateMap<Genre, GenreBaseViewModel>();
+            this.CreateMap<Genre, GenreEditViewModel>();
+            this.CreateMap<GenreEditViewModel, Genre>();
+            this.CreateMap<Genre, GenreDeleteViewModel>();
+
+            //Book
             this.CreateMap<BookViewModel, Book>();
         }
     }

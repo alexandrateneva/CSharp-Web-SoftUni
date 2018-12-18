@@ -1,15 +1,16 @@
-﻿@model GrabNReadApp.Web.Areas.Products.Models.Genres.GenreViewModel
-
+﻿@model GrabNReadApp.Web.Areas.Products.Models.Genres.GenreEditViewModel
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
 }
 
-<h1 class="text-center">Create Genre</h1>
-<hr />
-<div class="row d-flex justify-content-center text-center">
-    <div class="col-md-4">
-        <form asp-action="Create" method="Post" enctype="multipart/form-data">
+<h4 class="text-center">Edit Genre</h4>
+<hr class="w-50" />
+<div class="row justify-content-center">
+    <div class="col-md-4 text-center">
+        <form asp-action="Edit" method="Post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="Id" class="form-control" hidden />
+            <input asp-for="Image" class="form-control" hidden />
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
@@ -17,16 +18,13 @@
             </div>
             <div class="form-group">
                 <label asp-for="ImageFile" class="control-label"></label>
-                <input asp-for="ImageFile" class="form-control" type="file"/>
+                <input asp-for="ImageFile" class="form-control" type="file" />
                 <span asp-validation-for="ImageFile" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

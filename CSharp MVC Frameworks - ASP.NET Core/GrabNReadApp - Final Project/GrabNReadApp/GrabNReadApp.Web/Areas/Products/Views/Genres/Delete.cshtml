@@ -1,0 +1,20 @@
+﻿@model GrabNReadApp.Web.Areas.Products.Models.Genres.GenreDeleteViewModel
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h4 class="text-center">Delete Genre</h4>
+<hr class="w-50" />
+<div class="row justify-content-center">
+    <h4>Are you sure you want to delete genre @Model.Name?</h4>
+    <p>Deleting this data will permanently remove genre @Model.Name, and this cannot be recovered.</p>
+</div>
+
+<div class="row justify-content-around">
+    <form asp-action="Delete" method="Post">
+        <input asp-for="Id" class="form-control" hidden />
+        <input asp-for="Name" class="form-control" hidden />
+        <input type="submit" value="Delete" class="btn btn-danger"/>
+    </form>
+    <a class="btn btn-success" asp-area="Products" asp-controller="Genres" asp-action="All">Go back</a>
+</div>
