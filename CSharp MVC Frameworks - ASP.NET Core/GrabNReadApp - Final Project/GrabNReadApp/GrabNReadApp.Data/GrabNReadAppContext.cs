@@ -1,7 +1,7 @@
 ﻿using GrabNReadApp.Data.Models;
 using GrabNReadApp.Data.Models.Blog;
-using GrabNReadApp.Data.Models.Books;
 using GrabNReadApp.Data.Models.Evaluation;
+using GrabNReadApp.Data.Models.Products;
 using GrabNReadApp.Data.Models.Store;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

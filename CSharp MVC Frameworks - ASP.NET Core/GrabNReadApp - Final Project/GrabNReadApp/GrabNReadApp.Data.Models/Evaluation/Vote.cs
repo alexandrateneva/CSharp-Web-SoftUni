@@ -1,4 +1,4 @@
-﻿using GrabNReadApp.Data.Models.Books;
+﻿using GrabNReadApp.Data.Models.Products;
 
 namespace GrabNReadApp.Data.Models.Evaluation
 {

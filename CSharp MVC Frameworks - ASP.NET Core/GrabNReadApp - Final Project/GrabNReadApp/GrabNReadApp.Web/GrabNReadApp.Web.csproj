@@ -8,6 +8,8 @@
 
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Cloudinary.Core" Version="1.31.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.0" />
@@ -16,7 +18,15 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GrabNReadApp.Data.Models\GrabNReadApp.Data.Models.csproj" />
+    <ProjectReference Include="..\GrabNReadApp.Data.Services\GrabNReadApp.Data.Services.csproj" />
     <ProjectReference Include="..\GrabNReadApp.Data\GrabNReadApp.Data.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Content Update="Areas\Products\Views\Books\Create.cshtml">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
