@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>	
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GrabNReadApp.Data.Models\GrabNReadApp.Data.Models.csproj" />
+    <ProjectReference Include="..\GrabNReadApp.Data\GrabNReadApp.Data.csproj" />
+  </ItemGroup>
+
+</Project>
