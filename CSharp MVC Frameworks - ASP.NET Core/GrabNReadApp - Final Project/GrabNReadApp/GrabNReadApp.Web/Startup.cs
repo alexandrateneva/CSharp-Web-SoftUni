@@ -8,6 +8,8 @@ using GrabNReadApp.Data.Contracts;
 using GrabNReadApp.Data.Models;
 using GrabNReadApp.Data.Services.Products;
 using GrabNReadApp.Data.Services.Products.Contracts;
+using GrabNReadApp.Data.Services.Store;
+using GrabNReadApp.Data.Services.Store.Contracts;
 using GrabNReadApp.Web.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -69,6 +71,7 @@ namespace GrabNReadApp.Web
             services.AddScoped(typeof(IRepository<>), typeof(DbRepository<>));
             services.AddScoped<IGenreService, GenresService>();
             services.AddScoped<IBookService, BooksService>();
+            services.AddScoped<IPurchasesService, PurchasesService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
