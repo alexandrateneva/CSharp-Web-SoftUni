@@ -49,6 +49,7 @@
     </header>
     <div class="container">
         <partial name="_CookieConsentPartial" />
+        <partial name="_StatusMessages" />
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -83,3 +84,4 @@
     @RenderSection("Scripts", required: false)
 </body>
 </html>
+
