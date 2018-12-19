@@ -54,6 +54,11 @@ namespace GrabNReadApp.Data
             return this.context.SaveChangesAsync();
         }
 
+        public int SaveChanges()
+        {
+            return this.context.SaveChanges();
+        }
+
         public void Dispose()
         {
             this.context.Dispose();

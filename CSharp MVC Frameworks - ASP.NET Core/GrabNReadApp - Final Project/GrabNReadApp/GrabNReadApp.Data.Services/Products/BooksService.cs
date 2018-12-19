@@ -30,5 +30,33 @@ namespace GrabNReadApp.Data.Services.Products
 
             return books;
         }
+
+        public async Task<Book> Edit(Book book)
+        {
+            this.bookRepository.Update(book);
+            await this.bookRepository.SaveChangesAsync();
+
+            return book;
+        }
+
+        public bool Delete(int id)
+        {
+            var book = this.bookRepository.All().FirstOrDefault(g => g.Id == id);
+            if (book != null)
+            {
+                this.bookRepository.Delete(book);
+                this.bookRepository.SaveChanges();
+
+                return true;
+            }
+            return false;
+        }
+        
+        public async Task<Book> GetBookById(int id)
+        {
+            var book = await this.bookRepository.GetByIdAsync(id);
+
+            return book;
+        }
     }
 }

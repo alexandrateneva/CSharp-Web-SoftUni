@@ -1,6 +1,5 @@
 ﻿@if (User.IsInRole("Admin"))
 {
-
     <li class="nav-item">
         <div class="dropdown">
             <button class="btn dropdown-toggle navitem-btn-dropdown-menu" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -15,10 +14,11 @@
     <li class="nav-item">
         <div class="dropdown">
             <button class="btn dropdown-toggle navitem-btn-dropdown-menu" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Product
+                Book
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" asp-area="Products" asp-controller="Books" asp-action="Create">Create</a>
+                <a class="dropdown-item" asp-area="Products" asp-controller="Books" asp-action="All">All</a>
             </div>
         </div>
     </li>

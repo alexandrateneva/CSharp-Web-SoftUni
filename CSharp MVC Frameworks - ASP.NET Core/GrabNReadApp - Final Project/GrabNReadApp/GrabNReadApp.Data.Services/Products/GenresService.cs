@@ -32,14 +32,14 @@ namespace GrabNReadApp.Data.Services.Products
             return genre;
         }
 
-        public async Task<bool> Delete(int id)
+        public bool Delete(int id)
         {
-            var genre = GetAllGenres().FirstOrDefault(g => g.Id == id);
+            var genre = this.genreRepository.All().FirstOrDefault(g => g.Id == id);
             if (genre != null)
             {
                 this.genreRepository.Delete(genre);
-                await this.genreRepository.SaveChangesAsync();
-
+                this.genreRepository.SaveChanges();
+                
                 return true;
             }
             return false;

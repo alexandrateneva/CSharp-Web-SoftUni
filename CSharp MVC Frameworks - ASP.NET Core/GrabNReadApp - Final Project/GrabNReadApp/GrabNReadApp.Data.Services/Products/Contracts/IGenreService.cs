@@ -10,7 +10,7 @@ namespace GrabNReadApp.Data.Services.Products.Contracts
 
         Task<Genre> Edit(Genre genre);
 
-        Task<bool> Delete(int id);
+        bool Delete(int id);
 
         IEnumerable<Genre> GetAllGenres();
 

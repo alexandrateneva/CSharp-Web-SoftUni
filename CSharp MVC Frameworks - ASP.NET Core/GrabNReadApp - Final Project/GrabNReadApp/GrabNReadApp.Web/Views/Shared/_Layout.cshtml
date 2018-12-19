@@ -32,6 +32,15 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
+                        @if (!User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="Products" asp-controller="Genres" asp-action="All">Genres</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="Products" asp-controller="Books" asp-action="All">Books</a>
+                            </li>
+                        }
                         <partial name="_AdminPartial" />
                     </ul>
                 </div>

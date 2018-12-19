@@ -15,6 +15,8 @@ namespace GrabNReadApp.Data.Contracts
 
         void Delete(TEntity entity);
 
+        int SaveChanges();
+
         Task<int> SaveChangesAsync();
     }
 }

@@ -18,6 +18,11 @@ namespace GrabNReadApp.Web.Automapper
 
             //Book
             this.CreateMap<BookViewModel, Book>();
+            this.CreateMap<Book, BookBaseViewModel>();
+            this.CreateMap<Book, BookEditViewModel>();
+            this.CreateMap<BookEditViewModel, Book>();
+            this.CreateMap<Book, BookDetailsViewModel>();
+
         }
     }
 }

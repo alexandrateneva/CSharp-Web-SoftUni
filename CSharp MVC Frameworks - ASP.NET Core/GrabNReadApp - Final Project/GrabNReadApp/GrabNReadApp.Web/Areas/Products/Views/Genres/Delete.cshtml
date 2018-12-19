@@ -1,6 +1,6 @@
 ﻿@model GrabNReadApp.Web.Areas.Products.Models.Genres.GenreDeleteViewModel
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Delete";
 }
 
 <h4 class="text-center">Delete Genre</h4>
@@ -11,9 +11,8 @@
 </div>
 
 <div class="row justify-content-around">
-    <form asp-action="Delete" method="Post">
+    <form asp-action="DeletePost" method="Post">
         <input asp-for="Id" class="form-control" hidden />
-        <input asp-for="Name" class="form-control" hidden />
         <input type="submit" value="Delete" class="btn btn-danger"/>
     </form>
     <a class="btn btn-success" asp-area="Products" asp-controller="Genres" asp-action="All">Go back</a>

@@ -9,6 +9,7 @@ using GrabNReadApp.Data.Models.Products;
 using GrabNReadApp.Data.Services.Products.Contracts;
 using GrabNReadApp.Web.Areas.Products.Models.Genres;
 using GrabNReadApp.Web.Helper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -30,6 +31,7 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
         }
 
         // GET: Products/Genres/Create
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             return View();
@@ -37,6 +39,7 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
 
         // POST: Products/Genres/Create
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(GenreViewModel model)
         {
@@ -67,6 +70,7 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
         }
 
         // GET: Products/Genres/Edit/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int id)
         {
             var genre = this.genreService.GetAllGenres().FirstOrDefault(g => g.Id == id);
@@ -81,6 +85,7 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
 
         // POST: Products/Genres/Edit/5
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(GenreEditViewModel model)
         {
@@ -104,6 +109,7 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
         }
 
         // GET: Products/Genres/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int id)
         {
             var genre = this.genreService.GetAllGenres().FirstOrDefault(g => g.Id == id);
@@ -118,11 +124,12 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
 
         // POST: Products/Genres/Delete/5
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(GenreDeleteViewModel model)
+        public ActionResult DeletePost(int id)
         {
-            var isDeleted = this.genreService.Delete(model.Id);
-            if (isDeleted.Status == TaskStatus.Faulted)
+            var isDeleted = this.genreService.Delete(id);
+            if (!isDeleted)
             {
                 var error = new Error() { Message = "Delete failed." };
                 return this.View("CustomError", error);
