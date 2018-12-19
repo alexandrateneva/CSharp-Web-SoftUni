@@ -22,7 +22,7 @@
                             @if (User.IsInRole("Admin"))
                             {
                                 <a class="btn btn-sm btn-outline-warning" asp-area="Products" asp-controller="Books" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                                <a class="btn btn-sm btn-outline-danger"  asp-area="Products" asp-controller="Books" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                <a class="btn btn-sm btn-outline-danger" asp-area="Products" asp-controller="Books" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                             }
                             <a class="btn btn-sm btn-outline-primary" asp-area="Products" asp-controller="Books" asp-action="Details" asp-route-id="@item.Id">Details</a>
                         </div>
@@ -32,3 +32,9 @@
         }
     </div>
 </div>
+@if (!Model.Any() || Model == null)
+{
+    <div class="text-center">
+        <p><em>There are no books of this genre.</em></p>
+    </div>
+}

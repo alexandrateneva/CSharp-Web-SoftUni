@@ -54,7 +54,7 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
                 var apiSecret = configuration["Cloudinary:ApiSecret"];
 
                 model.CoverImage = await CloudinaryFileUploader.UploadFile(model.CoverImageFile, "products", apiKey, apiSecret);
-                
+
                 var book = mapper.Map<Book>(model);
                 var result = await this.bookService.Create(book);
 
@@ -65,13 +65,22 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
         }
 
         // GET: Products/Books/All
-        public ActionResult All()
+        public ActionResult All(int? id)
         {
             var books = this.bookService.GetAllBooks()
                 .Select(b => mapper.Map<BookBaseViewModel>(b))
                 .ToList();
-
             return View(books);
+        }
+
+        [Route("Products/Books/Genre/{id:int}")]
+        public ActionResult AllByGenre(int id)
+        {
+            var books = this.bookService.GetAllBooks()
+                .Where(b => b.GenreId == id)
+                .Select(b => mapper.Map<BookBaseViewModel>(b))
+                .ToList();
+            return View("All", books);
         }
 
         // GET: Products/Books/Edit/5
@@ -87,7 +96,7 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
                 var error = new Error() { Message = $"There is no book with id - {id}." };
                 return this.View("CustomError", error);
             }
-           var model = mapper.Map<BookEditViewModel>(book);
+            var model = mapper.Map<BookEditViewModel>(book);
             return View(model);
         }
 
