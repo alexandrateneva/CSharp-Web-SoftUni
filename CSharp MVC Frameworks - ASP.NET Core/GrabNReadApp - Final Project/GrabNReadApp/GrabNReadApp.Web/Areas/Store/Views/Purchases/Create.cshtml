@@ -9,7 +9,7 @@
         <img src="@Model.Book.CoverImage" style="width: 17rem;" />
     </div>
     <div class="col-md-4 text-center">
-        <h1>Order</h1>
+        <h1>Buy</h1>
         <hr />
         <h1>@Model.Book.Title</h1>
         <h3>by  @Model.Book.Author</h3>
@@ -18,7 +18,7 @@
             <input asp-for="BookId" class="form-control" hidden="" />
             <div class="form-group">
                 <label asp-for="BookCount" class="control-label"></label>
-                <input type="number" id="bookCount" max="20" asp-for="BookCount" class="form-control" onkeydown="return false" />
+                <input type="number" id="bookCount" min="1" max="20" asp-for="BookCount" class="form-control" />
                 <span asp-validation-for="BookCount" class="text-danger"></span>
             </div>
             <div class="mt-4">
@@ -35,13 +35,8 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-    <script>
-        $(document).ready(function () {
-            $("#bookCount").change(function () {
-                var bookCount = $("#bookCount").val();
-                var totalSum = @Model.Book.Price * bookCount;
-                $("#totalSum").text(totalSum.toFixed(2) + ' BGN');
-            });
-        });
+    <script src="~/Scripts/Store/CreatePurchase.js"></script>
+    <script type="text/javascript">
+        countValidation(@Model.Book.Price);
     </script>
 }

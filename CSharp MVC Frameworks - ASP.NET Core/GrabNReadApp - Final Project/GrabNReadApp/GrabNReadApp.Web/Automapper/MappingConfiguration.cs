@@ -4,6 +4,7 @@ using GrabNReadApp.Data.Models.Store;
 using GrabNReadApp.Web.Areas.Products.Models.Books;
 using GrabNReadApp.Web.Areas.Products.Models.Genres;
 using GrabNReadApp.Web.Areas.Store.Models.Purchases;
+using GrabNReadApp.Web.Areas.Store.Models.Rentals;
 
 namespace GrabNReadApp.Web.Automapper
 {
@@ -27,6 +28,9 @@ namespace GrabNReadApp.Web.Automapper
 
             //Purchase
             this.CreateMap<PurchaseViewModel, Purchase>();
+
+            //Rental
+            this.CreateMap<RentalViewModel, Rental>();
         }
     }
 }
