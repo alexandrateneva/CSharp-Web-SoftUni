@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -20,8 +21,10 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GrabNReadApp.Web.Models;
+using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 
 namespace GrabNReadApp.Web
 {
@@ -72,6 +75,7 @@ namespace GrabNReadApp.Web
             services.AddScoped<IGenreService, GenresService>();
             services.AddScoped<IBookService, BooksService>();
             services.AddScoped<IPurchasesService, PurchasesService>();
+            services.AddScoped<IRentalsServices, RentalsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -98,7 +102,15 @@ namespace GrabNReadApp.Web
             }
 
             app.UseHttpsRedirection();
+
             app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(env.ContentRootPath, "Scripts")),
+                RequestPath = "/Scripts"
+            });
+
             app.UseCookiePolicy();
 
             app.UseAuthentication();
