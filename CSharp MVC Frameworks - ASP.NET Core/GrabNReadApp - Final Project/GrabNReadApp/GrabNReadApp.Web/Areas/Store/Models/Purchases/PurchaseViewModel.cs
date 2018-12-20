@@ -13,6 +13,8 @@ namespace GrabNReadApp.Web.Areas.Store.Models.Purchases
         
         public string CustomerId { get; set; }
 
+        public int OrderId { get; set; }
+
         [Required]
         [Display(Name = "Book Count")]
         [Range(1, 20, ErrorMessage = "Уou can buy from 1 to 20 pieces of this book.")]

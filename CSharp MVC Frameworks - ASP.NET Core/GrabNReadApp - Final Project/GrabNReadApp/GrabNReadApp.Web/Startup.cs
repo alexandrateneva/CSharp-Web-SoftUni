@@ -76,6 +76,7 @@ namespace GrabNReadApp.Web
             services.AddScoped<IBookService, BooksService>();
             services.AddScoped<IPurchasesService, PurchasesService>();
             services.AddScoped<IRentalsServices, RentalsService>();
+            services.AddScoped<IOrdersService, OrdersService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

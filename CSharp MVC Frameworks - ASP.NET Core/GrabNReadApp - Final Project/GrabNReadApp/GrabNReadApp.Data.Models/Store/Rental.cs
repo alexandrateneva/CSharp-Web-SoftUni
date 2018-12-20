@@ -17,7 +17,9 @@ namespace GrabNReadApp.Data.Models.Store
 
         public DateTime EndDate { get; set; }
 
-        public decimal TotalSum => this.Book.PricePerDay * (this.StartDate - this.EndDate).Days;
+        public int OrderId { get; set; }
+
+        public decimal TotalSum => this.Book.PricePerDay * (this.EndDate - this.StartDate).Days;
 
         public bool IsOrdered { get; set; }
     }

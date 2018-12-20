@@ -3,6 +3,7 @@ using GrabNReadApp.Data.Models.Products;
 using GrabNReadApp.Data.Models.Store;
 using GrabNReadApp.Web.Areas.Products.Models.Books;
 using GrabNReadApp.Web.Areas.Products.Models.Genres;
+using GrabNReadApp.Web.Areas.Store.Models.Orders;
 using GrabNReadApp.Web.Areas.Store.Models.Purchases;
 using GrabNReadApp.Web.Areas.Store.Models.Rentals;
 
@@ -31,6 +32,11 @@ namespace GrabNReadApp.Web.Automapper
 
             //Rental
             this.CreateMap<RentalViewModel, Rental>();
+
+            //Order
+            this.CreateMap<Order, OrderBaseViewModel>();
+            this.CreateMap<Order, OrderDetailsViewModel>();
+            this.CreateMap<OrderDetailsViewModel, Order>();
         }
     }
 }

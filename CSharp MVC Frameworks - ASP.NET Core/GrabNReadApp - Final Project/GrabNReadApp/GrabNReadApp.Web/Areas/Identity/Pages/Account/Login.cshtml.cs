@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using GrabNReadApp.Data.Models;
+using GrabNReadApp.Data.Models.Store;
+using GrabNReadApp.Data.Services.Store.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
@@ -17,12 +20,20 @@ namespace GrabNReadApp.Web.Areas.Identity.Pages.Account
     public class LoginModel : PageModel
     {
         private readonly SignInManager<GrabNReadAppUser> _signInManager;
+        private readonly UserManager<GrabNReadAppUser> _userManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly IOrdersService _ordersService;
 
-        public LoginModel(SignInManager<GrabNReadAppUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(
+            SignInManager<GrabNReadAppUser> signInManager,
+            UserManager<GrabNReadAppUser> userManager,
+            ILogger<LoginModel> logger,
+            IOrdersService ordersService)
         {
             _signInManager = signInManager;
+            _userManager = userManager;
             _logger = logger;
+            _ordersService = ordersService;
         }
 
         [BindProperty]
@@ -76,6 +87,15 @@ namespace GrabNReadApp.Web.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Username, Input.Password, Input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
+                    var user = await _userManager.FindByNameAsync(Input.Username);
+                    if (_ordersService.GetCurrentOrderByUserIdWithPurchasesAndRentals(user.Id) == null)
+                    {
+                        var order = new Order()
+                        {
+                            CustomerId = user.Id
+                        };
+                        await _ordersService.Create(order);
+                    }
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }

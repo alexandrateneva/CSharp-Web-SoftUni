@@ -19,16 +19,19 @@ namespace GrabNReadApp.Web.Areas.Store.Controllers
         private readonly IMapper mapper;
         private readonly IBookService bookService;
         private readonly IPurchasesService purchasesService;
+        private readonly IOrdersService ordersService;
         private readonly SignInManager<GrabNReadAppUser> signInManager;
 
 
         public PurchasesController(IMapper mapper,
             IBookService bookService,
             IPurchasesService purchasesService,
+            IOrdersService ordersService,
             SignInManager<GrabNReadAppUser> signInManager)
         {
             this.mapper = mapper;
             this.bookService = bookService;
+            this.ordersService = ordersService;
             this.purchasesService = purchasesService;
             this.signInManager = signInManager;
         }
@@ -62,6 +65,8 @@ namespace GrabNReadApp.Web.Areas.Store.Controllers
             model.Book = book;
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             model.CustomerId = userId;
+            var order = this.ordersService.GetCurrentOrderByUserIdWithPurchasesAndRentals(userId);
+            model.OrderId = order.Id;
 
             if (this.ModelState.IsValid)
             {

@@ -75,3 +75,11 @@ body {
 .carousel {
     background: #1a1a1a;
 }
+
+#cart-icon {
+    font-size: 1.5em;
+}
+
+.radio-btn {
+    display: inline-block;
+}

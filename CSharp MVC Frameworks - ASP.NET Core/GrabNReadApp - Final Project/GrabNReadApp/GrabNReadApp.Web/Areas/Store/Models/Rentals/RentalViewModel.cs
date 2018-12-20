@@ -13,6 +13,8 @@ namespace GrabNReadApp.Web.Areas.Store.Models.Rentals
 
         public string CustomerId { get; set; }
 
+        public int OrderId { get; set; }
+
         [Required]
         [DataType(DataType.Date)]
         [Display(Name = "Start Date")]

@@ -1,0 +1,91 @@
+﻿@model GrabNReadApp.Web.Areas.Store.Models.Orders.OrderBaseViewModel
+
+@{
+    ViewData["Title"] = "Cart";
+}
+
+<h1>Your Cart</h1>
+
+<div class="row justify-content-around">
+    <hr />
+    <div class="col-md-4">
+        <img src="/img/cart-with-books.jpg" style="width: 14rem;" />
+    </div>
+    <div class="col-md-8">
+        <h3>Purchases</h3>
+        @if (Model.Purchases.Count == 0)
+        {
+            <p><em>You don't have any purchases.</em></p>
+        }
+        else
+        {
+            <table class="table table-hover table-sm table-responsive">
+                <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Count</th>
+                    <th scope="col">Total Count</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model.Purchases)
+                {
+                    <tr>
+                        <td>@item.Book.Title</td>
+                        <td>@item.Book.Author</td>
+                        <td>@item.Book.Price BGN</td>
+                        <td>@item.BookCount</td>
+                        <td>@item.TotalSum BGN</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+    </div>
+    <div class="col-md-11">
+        <h3 class="mt-5">Rentals</h3>
+        @if (Model.Rentals.Count == 0)
+        {
+            <p><em>You don't have any rentals.</em></p>
+        }
+        else
+        {
+            <table class="table table-hover table-sm table-responsive">
+                <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Price Per Day</th>
+                    <th scope="col">Start Date</th>
+                    <th scope="col">End Date</th>
+                    <th scope="col">Days</th>
+                    <th scope="col">Total Count</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model.Rentals)
+                {
+                    <tr>
+                        <td>@item.Book.Title</td>
+                        <td>@item.Book.Author</td>
+                        <td>@item.Book.PricePerDay BGN</td>
+                        <td>@item.StartDate.ToString("dd/MM/yyyy")</td>
+                        <td>@item.EndDate.ToString("dd/MM/yyyy")</td>
+                        <td>@((item.EndDate - item.StartDate).Days)</td>
+                        <td>@item.TotalSum BGN</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+<hr />
+<div class="row justify-content-center mt-3">
+    <h2>Total Sum @Model.TotalSum BGN</h2>
+</div>
+<div class="row justify-content-center mt-3">
+    <a class="btn btn-primary" asp-area="Store" asp-controller="Orders" asp-action="Order">Order</a>
+</div>

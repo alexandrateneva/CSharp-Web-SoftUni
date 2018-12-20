@@ -22,17 +22,20 @@ namespace GrabNReadApp.Web.Areas.Store.Controllers
         private readonly IMapper mapper;
         private readonly IBookService bookService;
         private readonly IRentalsServices rentalsService;
+        private readonly IOrdersService ordersService;
         private readonly SignInManager<GrabNReadAppUser> signInManager;
 
 
         public RentalsController(IMapper mapper,
             IBookService bookService,
             IRentalsServices rentalsService,
+            IOrdersService ordersService,
             SignInManager<GrabNReadAppUser> signInManager)
         {
             this.mapper = mapper;
             this.bookService = bookService;
             this.rentalsService = rentalsService;
+            this.ordersService = ordersService;
             this.signInManager = signInManager;
         }
 
@@ -65,7 +68,7 @@ namespace GrabNReadApp.Web.Areas.Store.Controllers
             var book = await this.bookService.GetBookById(model.BookId);
             model.Book = book;
 
-            if (DateTime.Now > model.StartDate)
+            if (DateTime.Today > model.StartDate)
             {
                 return this.View(model).WithDanger("Error!", "You can not rent a book for a past times.");
             }
@@ -80,6 +83,8 @@ namespace GrabNReadApp.Web.Areas.Store.Controllers
 
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             model.CustomerId = userId;
+            var order = this.ordersService.GetCurrentOrderByUserIdWithPurchasesAndRentals(userId);
+            model.OrderId = order.Id;
 
             if (this.ModelState.IsValid)
             {

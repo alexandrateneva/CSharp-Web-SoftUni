@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using GrabNReadApp.Data.Models;
+using GrabNReadApp.Data.Models.Store;
+using GrabNReadApp.Data.Services.Store.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -18,17 +20,20 @@ namespace GrabNReadApp.Web.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<GrabNReadAppUser> _signInManager;
         private readonly UserManager<GrabNReadAppUser> _userManager;
+        private readonly IOrdersService _ordersService;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
             UserManager<GrabNReadAppUser> userManager,
             SignInManager<GrabNReadAppUser> signInManager,
+            IOrdersService ordersService,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _ordersService = ordersService;
             _logger = logger;
             _emailSender = emailSender;
         }
@@ -94,9 +99,19 @@ namespace GrabNReadApp.Web.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     await this._userManager.AddToRoleAsync(user, "User");
+
+                    var newUser = await _userManager.FindByNameAsync(Input.Username);
+                    if (_ordersService.GetCurrentOrderByUserIdWithPurchasesAndRentals(newUser.Id) == null)
+                    {
+                        var order = new Order()
+                        {
+                            CustomerId = newUser.Id
+                        };
+                        await _ordersService.Create(order);
+                    }
                     _logger.LogInformation("User created a new account with password.");
 
-                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    await _signInManager.SignInAsync(newUser, isPersistent: false);
                     return LocalRedirect(returnUrl);
                 }
                 foreach (var error in result.Errors)

@@ -1,0 +1,60 @@
+﻿@model GrabNReadApp.Web.Areas.Store.Models.Orders.OrderDetailsViewModel
+
+@{
+    ViewData["Title"] = "Order";
+}
+
+<h1 class="text-center">Order Details</h1>
+<div class="row justify-content-center text-center">
+    <div class="col-md-6">
+        <hr />
+        <form asp-action="Order" method="Post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="Id" value="@Model.Id" hidden />
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RecipientName" class="control-label"></label>
+                <input asp-for="RecipientName" class="form-control" />
+                <span asp-validation-for="RecipientName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="col-md-12">
+                    <label asp-for="Delivery" class="control-label"></label>
+                </div>
+                <input asp-for="Delivery" type="radio" value="4.00" name="delivery" /> to a courier office (4.00 BGN)
+                <input asp-for="Delivery" type="radio" value="5.00" name="delivery" class="ml-5" /> to the address (5.00 BGN)
+                <span asp-validation-for="Delivery" class="text-danger"></span>
+            </div>
+            <hr />
+            <div class="mt-4">
+                <h5>Sum Without Delivery: </h5>
+                <p class="text-danger">@Model.TotalSum BGN</p>
+            </div>
+            <div class="mt-4">
+                <h5>Final Sum With Delivery: </h5>
+                <p class="text-danger" id="totalSum">@Model.TotalSum BGN</p>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Finish Order" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="~/Scripts/Store/CreateOrder.js"></script>
+    <script type="text/javascript">
+        showFinalSumWithDelivery(@Model.TotalSum);
+    </script>
+}
