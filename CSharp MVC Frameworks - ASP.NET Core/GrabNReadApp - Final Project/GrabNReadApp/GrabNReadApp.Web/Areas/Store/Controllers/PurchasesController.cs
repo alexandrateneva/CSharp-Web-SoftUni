@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using GrabNReadApp.Data.Models;
@@ -77,6 +78,20 @@ namespace GrabNReadApp.Web.Areas.Store.Controllers
             }
 
             return this.View(model);
+        }
+
+        // GET: Store/Purchases/Delete/5
+        [Authorize]
+        public IActionResult Delete(int id)
+        {
+            var purchaseDelete = this.purchasesService.Delete(id);
+            if (!purchaseDelete)
+            {
+                var error = new Error() { Message = $"There is no purchase with id - {id}." };
+                return this.View("CustomError", error);
+            }
+
+            return RedirectToAction("Cart", "Orders").WithSuccess("Success!", "Тhe purchase has been successfully removed from your cart.");
         }
     }
 }

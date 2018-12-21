@@ -11,5 +11,7 @@ namespace GrabNReadApp.Data.Services.Store.Contracts
         IEnumerable<Purchase> GetAllNotOrderedPurchasesByOrderId(int orderId);
 
         Task<Purchase> MakePurchaseOrdered(Purchase purchase);
+
+        bool Delete(int id);
     }
 }

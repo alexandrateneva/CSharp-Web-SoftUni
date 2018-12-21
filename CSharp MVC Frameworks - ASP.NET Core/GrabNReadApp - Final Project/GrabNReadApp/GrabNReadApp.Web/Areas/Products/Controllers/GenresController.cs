@@ -32,7 +32,7 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
 
         // GET: Products/Genres/Create
         [Authorize(Roles = "Admin")]
-        public ActionResult Create()
+        public IActionResult Create()
         {
             return View();
         }
@@ -60,7 +60,7 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
         }
 
         // GET: Products/Genres/All
-        public ActionResult All()
+        public IActionResult All()
         {
             var genres = this.genreService.GetAllGenres()
                 .Select(g => mapper.Map<GenreBaseViewModel>(g))
@@ -71,7 +71,7 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
 
         // GET: Products/Genres/Edit/5
         [Authorize(Roles = "Admin")]
-        public ActionResult Edit(int id)
+        public IActionResult Edit(int id)
         {
             var genre = this.genreService.GetAllGenres().FirstOrDefault(g => g.Id == id);
             if (genre == null)
@@ -110,7 +110,7 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
 
         // GET: Products/Genres/Delete/5
         [Authorize(Roles = "Admin")]
-        public ActionResult Delete(int id)
+        public IActionResult Delete(int id)
         {
             var genre = this.genreService.GetAllGenres().FirstOrDefault(g => g.Id == id);
             if (genre == null)
@@ -126,7 +126,7 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeletePost(int id)
+        public IActionResult DeletePost(int id)
         {
             var isDeleted = this.genreService.Delete(id);
             if (!isDeleted)

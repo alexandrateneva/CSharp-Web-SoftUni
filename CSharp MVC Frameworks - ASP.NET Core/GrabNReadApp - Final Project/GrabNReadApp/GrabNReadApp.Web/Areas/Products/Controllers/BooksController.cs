@@ -35,7 +35,7 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
 
         // GET: Products/Books/Create
         [Authorize(Roles = "Admin")]
-        public ActionResult Create()
+        public IActionResult Create()
         {
             var genres = this.genreService.GetAllGenres();
             ViewBag.Genres = genres;
@@ -65,7 +65,7 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
         }
 
         // GET: Products/Books/All
-        public ActionResult All(int? id)
+        public IActionResult All(int? id)
         {
             var books = this.bookService.GetAllBooks()
                 .Select(b => mapper.Map<BookBaseViewModel>(b))
@@ -74,7 +74,7 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
         }
 
         [Route("Products/Books/Genre/{id:int}")]
-        public ActionResult AllByGenre(int id)
+        public IActionResult AllByGenre(int id)
         {
             var books = this.bookService.GetAllBooks()
                 .Where(b => b.GenreId == id)
@@ -85,7 +85,7 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
 
         // GET: Products/Books/Edit/5
         [Authorize(Roles = "Admin")]
-        public ActionResult Edit(int id)
+        public IActionResult Edit(int id)
         {
             var genres = this.genreService.GetAllGenres();
             ViewBag.Genres = genres;
@@ -127,7 +127,7 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
 
         // GET: Products/Genres/Delete/5
         [Authorize(Roles = "Admin")]
-        public ActionResult Delete(int id)
+        public IActionResult Delete(int id)
         {
             var book = this.bookService.GetAllBooks().FirstOrDefault(g => g.Id == id);
             if (book == null)
@@ -143,7 +143,7 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeletePost(int id)
+        public IActionResult DeletePost(int id)
         {
             var isDeleted = this.bookService.Delete(id);
             if (!isDeleted)
@@ -155,7 +155,7 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
         }
 
         // GET: Products/Genres/Details/5
-        public ActionResult Details(int id)
+        public IActionResult Details(int id)
         {
             var book = this.bookService.GetAllBooks().FirstOrDefault(g => g.Id == id);
             if (book == null)

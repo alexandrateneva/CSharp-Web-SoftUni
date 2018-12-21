@@ -21,25 +21,31 @@
         {
             <table class="table table-hover table-sm table-responsive">
                 <thead>
-                <tr>
-                    <th scope="col">Title</th>
-                    <th scope="col">Author</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Count</th>
-                    <th scope="col">Total Count</th>
-                </tr>
+                    <tr>
+                        <th scope="col">Title</th>
+                        <th scope="col">Author</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Count</th>
+                        <th scope="col">Sum</th>
+                        <th scope="col">Delete</th>
+                    </tr>
                 </thead>
                 <tbody>
-                @foreach (var item in Model.Purchases)
-                {
-                    <tr>
-                        <td>@item.Book.Title</td>
-                        <td>@item.Book.Author</td>
-                        <td>@item.Book.Price BGN</td>
-                        <td>@item.BookCount</td>
-                        <td>@item.TotalSum BGN</td>
-                    </tr>
-                }
+                    @foreach (var item in Model.Purchases)
+                    {
+                        <tr>
+                            <td>@item.Book.Title</td>
+                            <td>@item.Book.Author</td>
+                            <td>@item.Book.Price BGN</td>
+                            <td>@item.BookCount</td>
+                            <td>@item.TotalSum BGN</td>
+                            <td>
+                                <a asp-area="Store" asp-controller="Purchases" asp-action="Delete" asp-route-id="@item.Id">
+                                    <i id="remove-icon" class="fa fa-remove ml-4"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         }
@@ -54,29 +60,35 @@
         {
             <table class="table table-hover table-sm table-responsive">
                 <thead>
-                <tr>
-                    <th scope="col">Title</th>
-                    <th scope="col">Author</th>
-                    <th scope="col">Price Per Day</th>
-                    <th scope="col">Start Date</th>
-                    <th scope="col">End Date</th>
-                    <th scope="col">Days</th>
-                    <th scope="col">Total Count</th>
-                </tr>
+                    <tr>
+                        <th scope="col">Title</th>
+                        <th scope="col">Author</th>
+                        <th scope="col">Price Per Day</th>
+                        <th scope="col">Start Date</th>
+                        <th scope="col">End Date</th>
+                        <th scope="col">Days</th>
+                        <th scope="col">Sum</th>
+                        <th scope="col">Delete</th>
+                    </tr>
                 </thead>
                 <tbody>
-                @foreach (var item in Model.Rentals)
-                {
-                    <tr>
-                        <td>@item.Book.Title</td>
-                        <td>@item.Book.Author</td>
-                        <td>@item.Book.PricePerDay BGN</td>
-                        <td>@item.StartDate.ToString("dd/MM/yyyy")</td>
-                        <td>@item.EndDate.ToString("dd/MM/yyyy")</td>
-                        <td>@((item.EndDate - item.StartDate).Days)</td>
-                        <td>@item.TotalSum BGN</td>
-                    </tr>
-                }
+                    @foreach (var item in Model.Rentals)
+                    {
+                        <tr>
+                            <td>@item.Book.Title</td>
+                            <td>@item.Book.Author</td>
+                            <td>@item.Book.PricePerDay BGN</td>
+                            <td>@item.StartDate.ToString("dd/MM/yyyy")</td>
+                            <td>@item.EndDate.ToString("dd/MM/yyyy")</td>
+                            <td>@((item.EndDate - item.StartDate).Days)</td>
+                            <td>@item.TotalSum BGN</td>
+                            <td>
+                                <a asp-area="Store" asp-controller="Rentals" asp-action="Delete" asp-route-id="@item.Id">
+                                    <i id="remove-icon" class="fa fa-remove ml-4"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         }

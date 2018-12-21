@@ -44,5 +44,18 @@ namespace GrabNReadApp.Data.Services.Store
 
             return purchase;
         }
+
+        public bool Delete(int id)
+        {
+            var purchase = this.purchaseRepository.All().FirstOrDefault(g => g.Id == id);
+            if (purchase != null)
+            {
+                this.purchaseRepository.Delete(purchase);
+                this.purchaseRepository.SaveChanges();
+
+                return true;
+            }
+            return false;
+        }
     }
 }

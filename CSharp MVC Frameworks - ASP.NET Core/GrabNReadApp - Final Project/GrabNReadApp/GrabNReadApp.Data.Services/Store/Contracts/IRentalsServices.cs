@@ -11,5 +11,7 @@ namespace GrabNReadApp.Data.Services.Store.Contracts
         IEnumerable<Rental> GetAllNotOrderedRentalsByOrderId(int orderId);
 
         Task<Rental> MakeRentalOrdered(Rental rental);
+
+        bool Delete(int id);
     }
 }

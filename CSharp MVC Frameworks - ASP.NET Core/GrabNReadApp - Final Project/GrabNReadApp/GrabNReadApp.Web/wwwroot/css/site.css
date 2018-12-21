@@ -83,3 +83,8 @@ body {
 .radio-btn {
     display: inline-block;
 }
+
+#remove-icon {
+    font-size: 20px;
+    color: red
+}

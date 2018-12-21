@@ -96,5 +96,19 @@ namespace GrabNReadApp.Web.Areas.Store.Controllers
 
             return this.View(model);
         }
+
+        // GET: Store/Rentals/Delete/5
+        [Authorize]
+        public IActionResult Delete(int id)
+        {
+            var rentalDelete = this.rentalsService.Delete(id);
+            if (!rentalDelete)
+            {
+                var error = new Error() { Message = $"There is no rental with id - {id}." };
+                return this.View("CustomError", error);
+            }
+
+            return RedirectToAction("Cart", "Orders").WithSuccess("Success!", "Тhe rental has been successfully removed from your cart.");
+        }
     }
 }
