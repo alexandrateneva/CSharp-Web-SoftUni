@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using CloudinaryDotNet;
 using GrabNReadApp.Data.Models;
 using GrabNReadApp.Data.Models.Products;
+using GrabNReadApp.Data.Services.Evaluation.Contracts;
 using GrabNReadApp.Data.Services.Products.Contracts;
+using GrabNReadApp.Web.Areas.Evaluation.Models.Comments;
 using GrabNReadApp.Web.Areas.Products.Models.Books;
 using GrabNReadApp.Web.Helper;
 using Microsoft.AspNetCore.Authorization;
@@ -24,13 +27,19 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
         private readonly IGenreService genreService;
         private readonly IBookService bookService;
         private readonly IConfiguration configuration;
+        private readonly ICommentsService commentsService;
 
-        public BooksController(IMapper mapper, IGenreService genreService, IBookService bookService, IConfiguration configuration)
+        public BooksController(IMapper mapper,
+            IGenreService genreService,
+            IBookService bookService,
+            IConfiguration configuration,
+            ICommentsService commentsService)
         {
             this.mapper = mapper;
             this.genreService = genreService;
             this.bookService = bookService;
             this.configuration = configuration;
+            this.commentsService = commentsService;
         }
 
         // GET: Products/Books/Create
@@ -163,7 +172,18 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
                 var error = new Error() { Message = $"There is no book with id - {id}." };
                 return this.View("CustomError", error);
             }
+
             var model = mapper.Map<BookDetailsViewModel>(book);
+
+            var commentViewModel = new CommentViewModel()
+            {
+                BookId = book.Id
+            };
+            model.CommentViewModel = commentViewModel;
+
+            var comments = this.commentsService.GetAllCommentsByBookId(id);
+            model.Comments = comments;
+
             return this.View(model);
         }
     }

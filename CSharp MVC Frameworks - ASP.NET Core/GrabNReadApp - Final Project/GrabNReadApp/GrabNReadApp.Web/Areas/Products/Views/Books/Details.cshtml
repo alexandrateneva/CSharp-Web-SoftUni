@@ -39,7 +39,7 @@
                 </tr>
                 <tr>
                     <td>Description</td>
-                    <td>@Model.Description</td>
+                    <td class="break-text">@Model.Description</td>
                 </tr>
             </tbody>
         </table>
@@ -50,3 +50,15 @@
     </div>
 </div>
 
+<hr />
+<partial name="~/Areas/Evaluation/Views/Comments/_CreatePartial.cshtml" model="@Model.CommentViewModel" />
+<hr />
+<section id="comments">
+    @foreach (var comment in Model.Comments)
+    {
+        <blockquote class="blockquote">
+            <p class="break-text mb-0">@comment.Content</p>
+            <footer class="blockquote-footer">by <cite title="Comment Author">@comment.Creator.UserName</cite></footer>
+        </blockquote>
+    }
+</section>

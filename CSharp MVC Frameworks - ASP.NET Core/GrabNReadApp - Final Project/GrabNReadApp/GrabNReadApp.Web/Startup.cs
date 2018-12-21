@@ -7,6 +7,8 @@ using AutoMapper;
 using GrabNReadApp.Data;
 using GrabNReadApp.Data.Contracts;
 using GrabNReadApp.Data.Models;
+using GrabNReadApp.Data.Services.Evaluation;
+using GrabNReadApp.Data.Services.Evaluation.Contracts;
 using GrabNReadApp.Data.Services.Products;
 using GrabNReadApp.Data.Services.Products.Contracts;
 using GrabNReadApp.Data.Services.Store;
@@ -77,6 +79,7 @@ namespace GrabNReadApp.Web
             services.AddScoped<IPurchasesService, PurchasesService>();
             services.AddScoped<IRentalsServices, RentalsService>();
             services.AddScoped<IOrdersService, OrdersService>();
+            services.AddScoped<ICommentsService, CommentsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

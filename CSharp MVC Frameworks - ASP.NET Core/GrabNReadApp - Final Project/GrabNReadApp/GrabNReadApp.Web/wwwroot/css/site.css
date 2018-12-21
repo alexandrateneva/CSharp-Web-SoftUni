@@ -88,3 +88,20 @@ body {
     font-size: 20px;
     color: red
 }
+
+#comment-btn {
+    display: inline;
+}
+
+.input-group > .form-control {
+    width: 100%;
+}
+
+.blockquote {
+    padding: .5rem 1rem;
+    border-left: .25rem solid #eceeef;
+}
+
+.break-text {
+    word-wrap: break-word;
+}

@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using GrabNReadApp.Data.Models.Enums;
+using GrabNReadApp.Data.Models.Evaluation;
+using GrabNReadApp.Web.Areas.Evaluation.Models.Comments;
 
 namespace GrabNReadApp.Web.Areas.Products.Models.Books
 {
@@ -27,9 +30,13 @@ namespace GrabNReadApp.Web.Areas.Products.Models.Books
         public CoverType CoverType { get; set; }
 
         public string Description { get; set; }
-        
+
         public string CoverImage { get; set; }
-        
+
         public int GenreId { get; set; }
+
+        public CommentViewModel CommentViewModel { get; set; }
+
+        public IEnumerable<Comment> Comments { get; set; }
     }
 }
