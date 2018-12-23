@@ -9,5 +9,9 @@ namespace GrabNReadApp.Data.Services.Evaluation.Contracts
         Task<Comment> Create(Comment comment);
 
         IEnumerable<Comment> GetAllCommentsByBookId(int id);
+
+        Comment GetCommentById(int id);
+
+        bool Delete(int id);
     }
 }

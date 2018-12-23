@@ -48,12 +48,13 @@ namespace GrabNReadApp.Web.Areas.Evaluation.Controllers
                 return Json(new { bookValidation = "Failed" });
             }
 
-            if (string.IsNullOrEmpty(content))
+            if (string.IsNullOrEmpty(content) || content.Length < 5 || content.Length > 200)
             {
                 return Json(new { contentValidation = "Failed" });
             }
 
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
             var comment = new Comment()
             {
                 Content = content,
@@ -61,6 +62,32 @@ namespace GrabNReadApp.Web.Areas.Evaluation.Controllers
                 CreatorId = userId
             };
             var result = await this.commentsService.Create(comment);
+
+            return Json(new { commentId = result.Id });
+        }
+
+        // POST: Evaluation/Comments/Delete
+        [HttpPost]
+        public IActionResult Delete(int commentId)
+        {
+            if (!signInManager.IsSignedIn(User))
+            {
+                return Json(new { authorize = "Failed" });
+            }
+
+            var comment = commentsService.GetCommentById(commentId);
+
+            if (comment == null)
+            {
+                return Json(new { commentValidation = "Failed" });
+            }
+
+            if (comment.Creator.UserName != User.Identity.Name && User.IsInRole("Admin"))
+            {
+                return Json(new { authorize = "Failed" });
+            }
+
+            this.commentsService.Delete(commentId);
 
             return Json(true);
         }

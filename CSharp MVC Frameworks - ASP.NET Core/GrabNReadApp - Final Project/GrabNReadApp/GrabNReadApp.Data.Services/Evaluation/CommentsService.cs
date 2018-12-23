@@ -35,5 +35,25 @@ namespace GrabNReadApp.Data.Services.Evaluation
 
             return comments;
         }
+
+        public Comment GetCommentById(int id)
+        {
+            var comment = this.commentRepository.All().Include(c => c.Creator).FirstOrDefault(c => c.Id == id);
+
+            return comment;
+        }
+
+        public bool Delete(int id)
+        {
+            var comment = this.commentRepository.All().FirstOrDefault(c => c.Id == id);
+            if (comment != null)
+            {
+                this.commentRepository.Delete(comment);
+                this.commentRepository.SaveChanges();
+
+                return true;
+            }
+            return false;
+        }
     }
 }

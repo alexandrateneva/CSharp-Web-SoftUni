@@ -50,9 +50,11 @@
                 }
                 else {
                     var comment = '<blockquote class="blockquote">' +
-                        `<p class="break-text mb-0">${content}</p>` +
-                        '<footer class="blockquote-footer">by ' +
-                        `<cite title="Comment Author">${author}</cite></footer></blockquote >`;
+                        `<p class="break-text mb-0">${content}` +
+                        `<button id="${response.commentId}" onclick="deleteComment(event)" class="btn btn-sm btn-danger float-right">Delete</button>` +
+                        '</p><footer class="blockquote-footer">by ' +
+                        `<cite title="Comment Author">${author}</cite>` +
+                        '</footer></blockquote>';
 
                     var d = document.createElement('div');
                     d.innerHTML = comment;
