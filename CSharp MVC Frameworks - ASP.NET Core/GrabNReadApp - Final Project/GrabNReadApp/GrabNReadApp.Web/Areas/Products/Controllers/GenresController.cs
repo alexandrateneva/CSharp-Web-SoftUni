@@ -8,6 +8,7 @@ using GrabNReadApp.Data.Models;
 using GrabNReadApp.Data.Models.Products;
 using GrabNReadApp.Data.Services.Products.Contracts;
 using GrabNReadApp.Web.Areas.Products.Models.Genres;
+using GrabNReadApp.Web.Extensions.Alerts;
 using GrabNReadApp.Web.Helper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -53,7 +54,7 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
                 var genre = mapper.Map<Genre>(model);
                 var result = await this.genreService.Create(genre);
 
-                return RedirectToAction("All", "Genres");
+                return RedirectToAction("All", "Genres").WithSuccess("Success!", "The genre was successfully created.");
             }
 
             return this.View(model);
@@ -102,7 +103,7 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
                 var genre = mapper.Map<Genre>(model);
                 var result = await this.genreService.Edit(genre);
 
-                return RedirectToAction("All", "Genres");
+                return RedirectToAction("All", "Genres").WithSuccess("Success!", "The book was successfully edited.");
             }
 
             return this.View(model);
@@ -134,7 +135,7 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
                 var error = new Error() { Message = "Delete failed." };
                 return this.View("CustomError", error);
             }
-            return RedirectToAction("All", "Genres");
+            return RedirectToAction("All", "Genres").WithSuccess("Success!", "The book was successfully deleted.");
         }
     }
 }

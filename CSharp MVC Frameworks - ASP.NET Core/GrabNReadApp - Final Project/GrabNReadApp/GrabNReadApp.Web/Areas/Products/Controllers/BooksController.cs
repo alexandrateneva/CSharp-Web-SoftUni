@@ -12,6 +12,7 @@ using GrabNReadApp.Data.Services.Evaluation.Contracts;
 using GrabNReadApp.Data.Services.Products.Contracts;
 using GrabNReadApp.Web.Areas.Evaluation.Models.Comments;
 using GrabNReadApp.Web.Areas.Products.Models.Books;
+using GrabNReadApp.Web.Extensions.Alerts;
 using GrabNReadApp.Web.Helper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -67,7 +68,7 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
                 var book = mapper.Map<Book>(model);
                 var result = await this.bookService.Create(book);
 
-                return RedirectToAction("All", "Books");
+                return RedirectToAction("All", "Books").WithSuccess("Success!", "The book was successfully created.");
             }
 
             return this.View(model);
@@ -128,13 +129,13 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
                 var book = mapper.Map<Book>(model);
                 var result = await this.bookService.Edit(book);
 
-                return RedirectToAction("All", "Books");
+                return RedirectToAction("All", "Books").WithSuccess("Success!", "The book was successfully edited."); 
             }
 
             return this.View(model);
         }
 
-        // GET: Products/Genres/Delete/5
+        // GET: Products/Books/Delete/5
         [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
@@ -148,7 +149,7 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
             return this.View(model);
         }
 
-        // POST: Products/Genres/Delete/5
+        // POST: Products/Books/Delete/5
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
@@ -160,10 +161,10 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
                 var error = new Error() { Message = "Delete failed." };
                 return this.View("CustomError", error);
             }
-            return RedirectToAction("All", "Books");
+            return RedirectToAction("All", "Books").WithSuccess("Success!", "The book was successfully deleted."); 
         }
 
-        // GET: Products/Genres/Details/5
+        // GET: Products/Books/Details/5
         public IActionResult Details(int id)
         {
             var book = this.bookService.GetAllBooks().FirstOrDefault(g => g.Id == id);

@@ -72,7 +72,7 @@ namespace GrabNReadApp.Web.Areas.Store.Controllers
         }
 
         // GET: Store/Orders/All
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public IActionResult All()
         {
             var orders = this.ordersService.GetAllFinishedOrders().ToList();
@@ -92,7 +92,7 @@ namespace GrabNReadApp.Web.Areas.Store.Controllers
             return View(model);
         }
 
-        // GET: Store/Orders/Details/5
+        // GET: Store/Orders/Delete/5
         [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {

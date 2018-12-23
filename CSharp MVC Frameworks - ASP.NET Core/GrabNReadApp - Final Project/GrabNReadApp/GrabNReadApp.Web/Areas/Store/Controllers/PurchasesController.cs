@@ -82,8 +82,17 @@ namespace GrabNReadApp.Web.Areas.Store.Controllers
 
         // GET: Store/Purchases/Delete/5
         [Authorize]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var purchase = await this.purchasesService.GetPurchaseById(id);
+
+            if (purchase.CustomerId != userId && !User.IsInRole("Admin"))
+            {
+                return Redirect("/Identity/Account/Login").WithDanger("You were redirected.",
+                    "Insufficient access rights to perform the operation.");
+            }
+
             var purchaseDelete = this.purchasesService.Delete(id);
             if (!purchaseDelete)
             {

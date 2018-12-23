@@ -25,6 +25,11 @@ namespace GrabNReadApp.Data.Services.Store
             return rental;
         }
 
+        public async Task<Rental> GetRentalById(int id)
+        {
+            return await this.rentalRepository.GetByIdAsync(id);
+        }
+
         public IEnumerable<Rental> GetAllOrderedRentalsByOrderId(int orderId)
         {
             var rentals = this.rentalRepository

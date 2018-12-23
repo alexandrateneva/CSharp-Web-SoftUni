@@ -99,8 +99,17 @@ namespace GrabNReadApp.Web.Areas.Store.Controllers
 
         // GET: Store/Rentals/Delete/5
         [Authorize]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var rental = await this.rentalsService.GetRentalById(id);
+
+            if (rental.CustomerId != userId && !User.IsInRole("Admin"))
+            {
+                return Redirect("/Identity/Account/Login").WithDanger("You were redirected.",
+                    "Insufficient access rights to perform the operation.");
+            }
+
             var rentalDelete = this.rentalsService.Delete(id);
             if (!rentalDelete)
             {

@@ -25,6 +25,11 @@ namespace GrabNReadApp.Data.Services.Store
             return purchase;
         }
 
+        public async Task<Purchase> GetPurchaseById(int id)
+        {
+            return await this.purchaseRepository.GetByIdAsync(id);
+        }
+
         public IEnumerable<Purchase> GetAllOrderedPurchasesByOrderId(int orderId)
         {
             var purchases = this.purchaseRepository
