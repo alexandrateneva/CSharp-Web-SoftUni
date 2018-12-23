@@ -8,10 +8,8 @@ namespace GrabNReadApp.Data.Services.Store.Contracts
     {
         Task<Purchase> Create(Purchase purchase);
 
-        IEnumerable<Purchase> GetAllNotOrderedPurchasesByOrderId(int orderId);
-
-        Task<Purchase> MakePurchaseOrdered(Purchase purchase);
-
+        IEnumerable<Purchase> GetAllOrderedPurchasesByOrderId(int orderId);
+        
         bool Delete(int id);
     }
 }

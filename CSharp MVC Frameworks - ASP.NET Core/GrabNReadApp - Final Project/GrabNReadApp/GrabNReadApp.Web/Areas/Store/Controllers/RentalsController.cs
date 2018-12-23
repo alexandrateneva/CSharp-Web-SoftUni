@@ -108,7 +108,8 @@ namespace GrabNReadApp.Web.Areas.Store.Controllers
                 return this.View("CustomError", error);
             }
 
-            return RedirectToAction("Cart", "Orders").WithSuccess("Success!", "Тhe rental has been successfully removed from your cart.");
+            var referer = Request.Headers["Referer"].ToString();
+            return Redirect(referer).WithSuccess("Success!", "Тhe rental has been successfully removed.");
         }
     }
 }

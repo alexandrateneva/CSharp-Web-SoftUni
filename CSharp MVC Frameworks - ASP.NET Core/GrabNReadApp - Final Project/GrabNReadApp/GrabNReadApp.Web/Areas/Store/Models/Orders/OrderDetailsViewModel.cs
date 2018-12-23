@@ -8,13 +8,20 @@ namespace GrabNReadApp.Web.Areas.Store.Models.Orders
 {
     public class OrderDetailsViewModel
     {
-        [Required]
-        public int Id { get; set; }
+        public OrderDetailsViewModel()
+        {
+            this.Purchases = new HashSet<Purchase>();
+            this.Rentals = new HashSet<Rental>();
+        }
 
         [Required]
+        public int Id { get; set; }
+        
         public string CustomerId { get; set; }
 
         public GrabNReadAppUser Customer { get; set; }
+
+        public DateTime OrderedOn { get; set; }
 
         [Required]
         [StringLength(200, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 10)]

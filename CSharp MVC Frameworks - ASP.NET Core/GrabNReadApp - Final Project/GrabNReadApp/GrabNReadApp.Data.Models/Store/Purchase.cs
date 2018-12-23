@@ -18,7 +18,5 @@ namespace GrabNReadApp.Data.Models.Store
         public int OrderId { get; set; }
 
         public decimal TotalSum => this.Book.Price * this.BookCount;
-
-        public bool IsOrdered { get; set; }
     }
 }

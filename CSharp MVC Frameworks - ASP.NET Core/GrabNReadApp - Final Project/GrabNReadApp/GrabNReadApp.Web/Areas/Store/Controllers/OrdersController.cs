@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using GrabNReadApp.Data.Models;
@@ -60,21 +61,48 @@ namespace GrabNReadApp.Web.Areas.Store.Controllers
             model.CustomerId = user.Id;
             if (ModelState.IsValid)
             {
-                var order = this.ordersService.GetOrderById(model.Id);
+                var order = mapper.Map<Order>(model);
 
-                if (model.Address != order.Address || model.Phone != order.Phone ||
-                    model.RecipientName != order.RecipientName)
-                {
-                    var updatedOrder = mapper.Map<Order>(model);
-                    await this.ordersService.Update(updatedOrder);
-                }
-
-                await this.ordersService.EmptyCurrentOrder(order.Id);
+                await this.ordersService.EmptyCurrentUserOrder(model.Id, order);
 
                 return RedirectToAction("All", "Books", new { area = "Products" }).WithSuccess("Thank you!", "Your order was successful.");
             }
 
             return this.View(model);
+        }
+
+        // GET: Store/Orders/All
+        [Authorize]
+        public IActionResult All()
+        {
+            var orders = this.ordersService.GetAllFinishedOrders().ToList();
+            var model = new AllOrdersViewModel()
+            {
+                Orders = orders
+            };
+            return View(model);
+        }
+
+        // GET: Store/Orders/Details/5
+        [Authorize(Roles = "Admin")]
+        public IActionResult Details(int id)
+        {
+            var order = this.ordersService.GetOrderByIdWithPurchasesAndRentals(id);
+            var model = mapper.Map<OrderDetailsViewModel>(order);
+            return View(model);
+        }
+
+        // GET: Store/Orders/Details/5
+        [Authorize(Roles = "Admin")]
+        public IActionResult Delete(int id)
+        {
+            var isDeleted = this.ordersService.Delete(id);
+            if (!isDeleted)
+            {
+                var error = new Error() { Message = "Delete failed." };
+                return this.View("CustomError", error);
+            }
+            return RedirectToAction("All", "Orders").WithSuccess("Success!", "The order was successfully deleted.");
         }
     }
 }

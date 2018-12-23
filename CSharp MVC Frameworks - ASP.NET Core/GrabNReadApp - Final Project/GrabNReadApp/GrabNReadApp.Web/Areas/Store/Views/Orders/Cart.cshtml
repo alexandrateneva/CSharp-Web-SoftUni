@@ -8,90 +8,14 @@
 
 <div class="row justify-content-around">
     <hr />
-    <div class="col-md-4">
+    <div class="col-md-3">
         <img src="/img/cart-with-books.jpg" style="width: 14rem;" />
     </div>
-    <div class="col-md-8">
-        <h3>Purchases</h3>
-        @if (Model.Purchases.Count == 0)
-        {
-            <p><em>You don't have any purchases.</em></p>
-        }
-        else
-        {
-            <table class="table table-hover table-sm table-responsive">
-                <thead>
-                    <tr>
-                        <th scope="col">Title</th>
-                        <th scope="col">Author</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Count</th>
-                        <th scope="col">Sum</th>
-                        <th scope="col">Delete</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.Purchases)
-                    {
-                        <tr>
-                            <td>@item.Book.Title</td>
-                            <td>@item.Book.Author</td>
-                            <td>@item.Book.Price BGN</td>
-                            <td>@item.BookCount</td>
-                            <td>@item.TotalSum BGN</td>
-                            <td>
-                                <a asp-area="Store" asp-controller="Purchases" asp-action="Delete" asp-route-id="@item.Id">
-                                    <i id="remove-icon" class="fa fa-remove ml-4"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        }
+    <div class="col-md-9 text-center">
+        <partial name="~/Areas/Store/Views/Purchases/_AllPurchasesPartial.cshtml" model="@Model.Purchases" />
     </div>
-    <div class="col-md-11">
-        <h3 class="mt-5">Rentals</h3>
-        @if (Model.Rentals.Count == 0)
-        {
-            <p><em>You don't have any rentals.</em></p>
-        }
-        else
-        {
-            <table class="table table-hover table-sm table-responsive">
-                <thead>
-                    <tr>
-                        <th scope="col">Title</th>
-                        <th scope="col">Author</th>
-                        <th scope="col">Price Per Day</th>
-                        <th scope="col">Start Date</th>
-                        <th scope="col">End Date</th>
-                        <th scope="col">Days</th>
-                        <th scope="col">Sum</th>
-                        <th scope="col">Delete</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.Rentals)
-                    {
-                        <tr>
-                            <td>@item.Book.Title</td>
-                            <td>@item.Book.Author</td>
-                            <td>@item.Book.PricePerDay BGN</td>
-                            <td>@item.StartDate.ToString("dd/MM/yyyy")</td>
-                            <td>@item.EndDate.ToString("dd/MM/yyyy")</td>
-                            <td>@((item.EndDate - item.StartDate).Days)</td>
-                            <td>@item.TotalSum BGN</td>
-                            <td>
-                                <a asp-area="Store" asp-controller="Rentals" asp-action="Delete" asp-route-id="@item.Id">
-                                    <i id="remove-icon" class="fa fa-remove ml-4"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        }
+    <div class="col-md-11 mt-5">
+        <partial name="~/Areas/Store/Views/Rentals/_AllRentalsPartial.cshtml" model="@Model.Rentals" />
     </div>
 </div>
 <hr />

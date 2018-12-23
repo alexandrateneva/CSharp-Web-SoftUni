@@ -1,0 +1,44 @@
+﻿@model IEnumerable<GrabNReadApp.Data.Models.Store.Purchase>
+
+@{
+    ViewData["Title"] = "Purchases";
+}
+
+<h1 class="text-center">Purchases</h1>
+
+@if (!Model.Any())
+{
+    <p class="text-center"><em>There are no purchases.</em></p>
+}
+else
+{
+    <table class="table table-hover table-sm table-responsive">
+        <thead>
+            <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Author</th>
+                <th scope="col">Price</th>
+                <th scope="col">Count</th>
+                <th scope="col">Sum</th>
+                <th scope="col">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Book.Title</td>
+                    <td>@item.Book.Author</td>
+                    <td>@item.Book.Price BGN</td>
+                    <td>@item.BookCount</td>
+                    <td>@item.TotalSum BGN</td>
+                    <td>
+                        <a asp-area="Store" asp-controller="Purchases" asp-action="Delete" asp-route-id="@item.Id">
+                            <i id="remove-icon" class="fa fa-remove ml-4"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

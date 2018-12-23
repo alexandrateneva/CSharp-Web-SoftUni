@@ -16,6 +16,7 @@ namespace GrabNReadApp.Data.Models
             this.Comments = new HashSet<Comment>();
             this.Votes = new HashSet<Vote>();
             this.Articles = new HashSet<Article>();
+            this.Orders = new HashSet<Order>();
         }
 
         [PersonalData]
@@ -24,8 +25,7 @@ namespace GrabNReadApp.Data.Models
         [PersonalData]
         public string LastName { get; set; }
 
-        public int? OrderId { get; set; }
-        public Order Order { get; set; }
+        public ICollection<Order> Orders { get; set; }
 
         public ICollection<Purchase> Purchases { get; set; }
 

@@ -1,9 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using GrabNReadApp.Data.Contracts;
+using GrabNReadApp.Data.Models;
 using GrabNReadApp.Data.Models.Store;
 using GrabNReadApp.Data.Services.Store.Contracts;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace GrabNReadApp.Data.Services.Store
@@ -14,7 +18,9 @@ namespace GrabNReadApp.Data.Services.Store
         private readonly IPurchasesService purchasesService;
         private readonly IRentalsServices rentalsServices;
 
-        public OrdersService(IRepository<Order> orderRepository, IPurchasesService purchasesService, IRentalsServices rentalsServices)
+        public OrdersService(IRepository<Order> orderRepository,
+             IPurchasesService purchasesService,
+             IRentalsServices rentalsServices)
         {
             this.orderRepository = orderRepository;
             this.purchasesService = purchasesService;
@@ -23,19 +29,24 @@ namespace GrabNReadApp.Data.Services.Store
 
         public Order GetCurrentOrderByUserIdWithPurchasesAndRentals(string id)
         {
-            var currentOrder = this.orderRepository.All().FirstOrDefault(o => o.CustomerId == id);
+            var currentOrder = this.orderRepository.All().FirstOrDefault(o => o.CustomerId == id && o.IsFinished == false);
             if (currentOrder != null)
             {
-                currentOrder.Purchases = purchasesService.GetAllNotOrderedPurchasesByOrderId(currentOrder.Id).ToList();
-                currentOrder.Rentals = rentalsServices.GetAllNotOrderedRentalsByOrderId(currentOrder.Id).ToList();
+                currentOrder.Purchases = purchasesService.GetAllOrderedPurchasesByOrderId(currentOrder.Id).ToList();
+                currentOrder.Rentals = rentalsServices.GetAllOrderedRentalsByOrderId(currentOrder.Id).ToList();
             }
 
             return currentOrder;
         }
 
-        public Order GetOrderById(int id)
+        public Order GetOrderByIdWithPurchasesAndRentals(int id)
         {
             var order = this.orderRepository.All().AsNoTracking().FirstOrDefault(o => o.Id == id);
+            if (order != null)
+            {
+                order.Purchases = this.purchasesService.GetAllOrderedPurchasesByOrderId(id).ToList();
+                order.Rentals = this.rentalsServices.GetAllOrderedRentalsByOrderId(id).ToList();
+            }
 
             return order;
         }
@@ -48,20 +59,20 @@ namespace GrabNReadApp.Data.Services.Store
             return order;
         }
 
-        public async Task EmptyCurrentOrder(int orderId)
+        public async Task EmptyCurrentUserOrder(int orderId, Order order)
         {
-            var purchases = purchasesService.GetAllNotOrderedPurchasesByOrderId(orderId).ToList();
-            var rentals = rentalsServices.GetAllNotOrderedRentalsByOrderId(orderId).ToList();
+            order.OrderedOn = DateTime.UtcNow;
+            order.IsFinished = true;
+            await this.Update(order);
 
-            foreach (var purchase in purchases)
+            var newOrder = new Order()
             {
-                await this.purchasesService.MakePurchaseOrdered(purchase);
-            }
-
-            foreach (var rental in rentals)
-            {
-                await this.rentalsServices.MakeRentalOrdered(rental);
-            }
+                CustomerId = order.CustomerId,
+                Address = order.Address,
+                Phone = order.Phone,
+                RecipientName = order.RecipientName
+            };
+            await this.Create(newOrder);
         }
 
         public async Task<Order> Update(Order order)
@@ -70,6 +81,29 @@ namespace GrabNReadApp.Data.Services.Store
             await this.orderRepository.SaveChangesAsync();
 
             return order;
+        }
+
+        public IEnumerable<Order> GetAllFinishedOrders()
+        {
+            var orders = this.orderRepository
+                .All()
+                .Where(p => p.IsFinished == true)
+                .ToList();
+
+            return orders;
+        }
+
+        public bool Delete(int id)
+        {
+            var order = this.orderRepository.All().FirstOrDefault(g => g.Id == id);
+            if (order != null)
+            {
+                this.orderRepository.Delete(order);
+                this.orderRepository.SaveChanges();
+
+                return true;
+            }
+            return false;
         }
     }
 }

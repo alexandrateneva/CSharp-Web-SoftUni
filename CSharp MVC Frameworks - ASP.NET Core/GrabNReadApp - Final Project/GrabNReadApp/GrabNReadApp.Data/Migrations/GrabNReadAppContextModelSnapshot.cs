@@ -111,8 +111,6 @@ namespace GrabNReadApp.Data.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256);
 
-                    b.Property<int?>("OrderId");
-
                     b.Property<string>("PasswordHash");
 
                     b.Property<string>("PhoneNumber");
@@ -135,10 +133,6 @@ namespace GrabNReadApp.Data.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.HasIndex("OrderId")
-                        .IsUnique()
-                        .HasFilter("[OrderId] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -203,11 +197,17 @@ namespace GrabNReadApp.Data.Migrations
 
                     b.Property<decimal>("Delivery");
 
+                    b.Property<bool>("IsFinished");
+
+                    b.Property<DateTime>("OrderedOn");
+
                     b.Property<string>("Phone");
 
                     b.Property<string>("RecipientName");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
 
                     b.ToTable("Orders");
                 });
@@ -224,9 +224,7 @@ namespace GrabNReadApp.Data.Migrations
 
                     b.Property<string>("CustomerId");
 
-                    b.Property<bool>("IsOrdered");
-
-                    b.Property<int?>("OrderId");
+                    b.Property<int>("OrderId");
 
                     b.HasKey("Id");
 
@@ -251,9 +249,7 @@ namespace GrabNReadApp.Data.Migrations
 
                     b.Property<DateTime>("EndDate");
 
-                    b.Property<bool>("IsOrdered");
-
-                    b.Property<int?>("OrderId");
+                    b.Property<int>("OrderId");
 
                     b.Property<DateTime>("StartDate");
 
@@ -409,19 +405,19 @@ namespace GrabNReadApp.Data.Migrations
                         .HasForeignKey("CreatorId");
                 });
 
-            modelBuilder.Entity("GrabNReadApp.Data.Models.GrabNReadAppUser", b =>
-                {
-                    b.HasOne("GrabNReadApp.Data.Models.Store.Order", "Order")
-                        .WithOne("Customer")
-                        .HasForeignKey("GrabNReadApp.Data.Models.GrabNReadAppUser", "OrderId");
-                });
-
             modelBuilder.Entity("GrabNReadApp.Data.Models.Products.Book", b =>
                 {
                     b.HasOne("GrabNReadApp.Data.Models.Products.Genre", "Genre")
                         .WithMany("Books")
                         .HasForeignKey("GenreId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("GrabNReadApp.Data.Models.Store.Order", b =>
+                {
+                    b.HasOne("GrabNReadApp.Data.Models.GrabNReadAppUser", "Customer")
+                        .WithMany("Orders")
+                        .HasForeignKey("CustomerId");
                 });
 
             modelBuilder.Entity("GrabNReadApp.Data.Models.Store.Purchase", b =>
@@ -437,7 +433,8 @@ namespace GrabNReadApp.Data.Migrations
 
                     b.HasOne("GrabNReadApp.Data.Models.Store.Order")
                         .WithMany("Purchases")
-                        .HasForeignKey("OrderId");
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("GrabNReadApp.Data.Models.Store.Rental", b =>
@@ -453,7 +450,8 @@ namespace GrabNReadApp.Data.Migrations
 
                     b.HasOne("GrabNReadApp.Data.Models.Store.Order")
                         .WithMany("Rentals")
-                        .HasForeignKey("OrderId");
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

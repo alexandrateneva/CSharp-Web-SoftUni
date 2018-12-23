@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using GrabNReadApp.Data.Models.Store;
 
 namespace GrabNReadApp.Data.Services.Store.Contracts
@@ -7,12 +8,14 @@ namespace GrabNReadApp.Data.Services.Store.Contracts
     {
         Order GetCurrentOrderByUserIdWithPurchasesAndRentals(string id);
 
-        Order GetOrderById(int id);
-
         Task<Order> Create(Order order);
 
-        Task EmptyCurrentOrder(int orderId);
+        Task EmptyCurrentUserOrder(int orderId, Order order);
 
-        Task<Order> Update(Order order);
+        IEnumerable<Order> GetAllFinishedOrders();
+
+        Order GetOrderByIdWithPurchasesAndRentals(int id);
+
+        bool Delete(int id);
     }
 }

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GrabNReadApp.Data.Migrations
 {
     [DbContext(typeof(GrabNReadAppContext))]
-    [Migration("20181217101611_MakeNullableOrderIdInUserModel")]
-    partial class MakeNullableOrderIdInUserModel
+    [Migration("20181223182955_UpdateOrderModel")]
+    partial class UpdateOrderModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -40,54 +40,6 @@ namespace GrabNReadApp.Data.Migrations
                     b.HasIndex("AuthorId");
 
                     b.ToTable("Articles");
-                });
-
-            modelBuilder.Entity("GrabNReadApp.Data.Models.Books.Book", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Author");
-
-                    b.Property<string>("CoverImage");
-
-                    b.Property<int>("CoverType");
-
-                    b.Property<string>("Description");
-
-                    b.Property<int>("GenreId");
-
-                    b.Property<int>("Pages");
-
-                    b.Property<decimal>("Price");
-
-                    b.Property<decimal>("PricePerDay");
-
-                    b.Property<DateTime>("ReleaseDate");
-
-                    b.Property<string>("Title");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GenreId");
-
-                    b.ToTable("Books");
-                });
-
-            modelBuilder.Entity("GrabNReadApp.Data.Models.Books.Genre", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Image");
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Genre");
                 });
 
             modelBuilder.Entity("GrabNReadApp.Data.Models.Evaluation.Comment", b =>
@@ -161,8 +113,6 @@ namespace GrabNReadApp.Data.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256);
 
-                    b.Property<int?>("OrderId");
-
                     b.Property<string>("PasswordHash");
 
                     b.Property<string>("PhoneNumber");
@@ -186,11 +136,55 @@ namespace GrabNReadApp.Data.Migrations
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("OrderId")
-                        .IsUnique()
-                        .HasFilter("[OrderId] IS NOT NULL");
-
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("GrabNReadApp.Data.Models.Products.Book", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Author");
+
+                    b.Property<string>("CoverImage");
+
+                    b.Property<int>("CoverType");
+
+                    b.Property<string>("Description");
+
+                    b.Property<int>("GenreId");
+
+                    b.Property<int>("Pages");
+
+                    b.Property<decimal>("Price");
+
+                    b.Property<decimal>("PricePerDay");
+
+                    b.Property<DateTime>("ReleaseDate");
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GenreId");
+
+                    b.ToTable("Books");
+                });
+
+            modelBuilder.Entity("GrabNReadApp.Data.Models.Products.Genre", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Image");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Genre");
                 });
 
             modelBuilder.Entity("GrabNReadApp.Data.Models.Store.Order", b =>
@@ -205,11 +199,17 @@ namespace GrabNReadApp.Data.Migrations
 
                     b.Property<decimal>("Delivery");
 
+                    b.Property<bool>("IsFinished");
+
+                    b.Property<DateTime>("OrderedOn");
+
                     b.Property<string>("Phone");
 
                     b.Property<string>("RecipientName");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
 
                     b.ToTable("Orders");
                 });
@@ -226,7 +226,7 @@ namespace GrabNReadApp.Data.Migrations
 
                     b.Property<string>("CustomerId");
 
-                    b.Property<int?>("OrderId");
+                    b.Property<int>("OrderId");
 
                     b.HasKey("Id");
 
@@ -251,7 +251,7 @@ namespace GrabNReadApp.Data.Migrations
 
                     b.Property<DateTime>("EndDate");
 
-                    b.Property<int?>("OrderId");
+                    b.Property<int>("OrderId");
 
                     b.Property<DateTime>("StartDate");
 
@@ -383,17 +383,9 @@ namespace GrabNReadApp.Data.Migrations
                         .HasForeignKey("AuthorId");
                 });
 
-            modelBuilder.Entity("GrabNReadApp.Data.Models.Books.Book", b =>
-                {
-                    b.HasOne("GrabNReadApp.Data.Models.Books.Genre", "Genre")
-                        .WithMany("Books")
-                        .HasForeignKey("GenreId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("GrabNReadApp.Data.Models.Evaluation.Comment", b =>
                 {
-                    b.HasOne("GrabNReadApp.Data.Models.Books.Book", "Book")
+                    b.HasOne("GrabNReadApp.Data.Models.Products.Book", "Book")
                         .WithMany("Comments")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -405,7 +397,7 @@ namespace GrabNReadApp.Data.Migrations
 
             modelBuilder.Entity("GrabNReadApp.Data.Models.Evaluation.Vote", b =>
                 {
-                    b.HasOne("GrabNReadApp.Data.Models.Books.Book", "Book")
+                    b.HasOne("GrabNReadApp.Data.Models.Products.Book", "Book")
                         .WithMany("Votes")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -415,16 +407,24 @@ namespace GrabNReadApp.Data.Migrations
                         .HasForeignKey("CreatorId");
                 });
 
-            modelBuilder.Entity("GrabNReadApp.Data.Models.GrabNReadAppUser", b =>
+            modelBuilder.Entity("GrabNReadApp.Data.Models.Products.Book", b =>
                 {
-                    b.HasOne("GrabNReadApp.Data.Models.Store.Order", "Order")
-                        .WithOne("Customer")
-                        .HasForeignKey("GrabNReadApp.Data.Models.GrabNReadAppUser", "OrderId");
+                    b.HasOne("GrabNReadApp.Data.Models.Products.Genre", "Genre")
+                        .WithMany("Books")
+                        .HasForeignKey("GenreId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("GrabNReadApp.Data.Models.Store.Order", b =>
+                {
+                    b.HasOne("GrabNReadApp.Data.Models.GrabNReadAppUser", "Customer")
+                        .WithMany("Orders")
+                        .HasForeignKey("CustomerId");
                 });
 
             modelBuilder.Entity("GrabNReadApp.Data.Models.Store.Purchase", b =>
                 {
-                    b.HasOne("GrabNReadApp.Data.Models.Books.Book", "Book")
+                    b.HasOne("GrabNReadApp.Data.Models.Products.Book", "Book")
                         .WithMany()
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -435,12 +435,13 @@ namespace GrabNReadApp.Data.Migrations
 
                     b.HasOne("GrabNReadApp.Data.Models.Store.Order")
                         .WithMany("Purchases")
-                        .HasForeignKey("OrderId");
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("GrabNReadApp.Data.Models.Store.Rental", b =>
                 {
-                    b.HasOne("GrabNReadApp.Data.Models.Books.Book", "Book")
+                    b.HasOne("GrabNReadApp.Data.Models.Products.Book", "Book")
                         .WithMany()
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -451,7 +452,8 @@ namespace GrabNReadApp.Data.Migrations
 
                     b.HasOne("GrabNReadApp.Data.Models.Store.Order")
                         .WithMany("Rentals")
-                        .HasForeignKey("OrderId");
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

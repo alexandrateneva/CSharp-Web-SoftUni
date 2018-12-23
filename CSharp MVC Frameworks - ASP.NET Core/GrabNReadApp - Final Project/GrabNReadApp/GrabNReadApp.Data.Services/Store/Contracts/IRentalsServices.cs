@@ -8,9 +8,7 @@ namespace GrabNReadApp.Data.Services.Store.Contracts
     {
         Task<Rental> Create(Rental rental);
 
-        IEnumerable<Rental> GetAllNotOrderedRentalsByOrderId(int orderId);
-
-        Task<Rental> MakeRentalOrdered(Rental rental);
+        IEnumerable<Rental> GetAllOrderedRentalsByOrderId(int orderId);
 
         bool Delete(int id);
     }

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GrabNReadApp.Data.Services.Store
 {
-   public class RentalsService : IRentalsServices
+    public class RentalsService : IRentalsServices
     {
         private readonly IRepository<Rental> rentalRepository;
 
@@ -25,24 +25,15 @@ namespace GrabNReadApp.Data.Services.Store
             return rental;
         }
 
-        public IEnumerable<Rental> GetAllNotOrderedRentalsByOrderId(int orderId)
+        public IEnumerable<Rental> GetAllOrderedRentalsByOrderId(int orderId)
         {
             var rentals = this.rentalRepository
                 .All()
-                .Where(r => r.IsOrdered == false && r.OrderId == orderId)
+                .Where(r => r.OrderId == orderId)
                 .Include(r => r.Book)
                 .ToList();
 
             return rentals;
-        }
-
-        public async Task<Rental> MakeRentalOrdered(Rental rental)
-        {
-            rental.IsOrdered = true;
-            this.rentalRepository.Update(rental);
-            await this.rentalRepository.SaveChangesAsync();
-
-            return rental;
         }
 
         public bool Delete(int id)

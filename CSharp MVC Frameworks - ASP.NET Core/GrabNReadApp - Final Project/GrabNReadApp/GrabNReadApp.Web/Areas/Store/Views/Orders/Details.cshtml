@@ -1,0 +1,61 @@
+﻿@model GrabNReadApp.Web.Areas.Store.Models.Orders.OrderDetailsViewModel
+
+@{
+    ViewData["Title"] = "Order";
+}
+
+<h1 class="text-center">Order Info</h1>
+<hr />
+
+<div class="row justify-content-around">
+    <div class="col-md-5 text-center">
+        <img src="/img/order.jpg" style="width: 22rem;" />
+    </div>
+    <div class="col-md-6 offset-1">
+        <table class="table table-hover table-sm table-responsive">
+            <tbody>
+                <tr>
+                    <td>Id</td>
+                    <td class="text-center">@Model.Id</td>
+                </tr>
+                <tr>
+                    <td>Date</td>
+                    <td class="text-center">@Model.OrderedOn.ToString("hh:mm dd/MM/yyyy")</td>
+                </tr>
+                <tr>
+                    <td>Address</td>
+                    <td class="text-center">@Model.Address</td>
+                </tr>
+                <tr>
+                    <td>Recipient</td>
+                    <td class="text-center">@Model.RecipientName</td>
+                </tr>
+                <tr>
+                    <td>Phone</td>
+                    <td class="text-center">@Model.Phone</td>
+                </tr>
+                <tr>
+                    <td>Amount of Delivery</td>
+                    <td class="text-center">@Model.Delivery BGN</td>
+                </tr>
+                <tr>
+                    <td>Total sum</td>
+                    <td class="text-center">@Model.TotalSum BGN</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<hr />
+
+<div class="row mt-4 justify-content-center">
+    <div>
+        <partial name="~/Areas/Store/Views/Purchases/_AllPurchasesPartial.cshtml" model="@Model.Purchases" />
+    </div>
+</div>
+
+<div class="row mt-5 text-center justify-content-center">
+    <div>
+        <partial name="~/Areas/Store/Views/Rentals/_AllRentalsPartial.cshtml" model="@Model.Rentals" />
+    </div>
+</div>

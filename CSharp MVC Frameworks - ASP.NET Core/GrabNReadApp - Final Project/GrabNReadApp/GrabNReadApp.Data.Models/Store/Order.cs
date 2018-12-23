@@ -17,7 +17,7 @@ namespace GrabNReadApp.Data.Models.Store
         public string CustomerId { get; set; }
         public GrabNReadAppUser Customer { get; set; }
 
-        public DateTime OrderedOn => DateTime.UtcNow;
+        public DateTime OrderedOn { get; set; }
 
         public string Address { get; set; }
 
@@ -30,6 +30,8 @@ namespace GrabNReadApp.Data.Models.Store
         public ICollection<Purchase> Purchases { get; set; }
 
         public ICollection<Rental> Rentals { get; set; }
+
+        public bool IsFinished { get; set; }
 
         public decimal TotalSum
         {

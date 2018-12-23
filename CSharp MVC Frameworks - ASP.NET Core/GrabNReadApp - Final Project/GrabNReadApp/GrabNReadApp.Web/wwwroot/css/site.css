@@ -106,3 +106,7 @@ body {
 .break-text {
     word-wrap: break-word;
 }
+
+table{
+    margin: 0 auto
+}

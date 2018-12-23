@@ -25,24 +25,15 @@ namespace GrabNReadApp.Data.Services.Store
             return purchase;
         }
 
-        public IEnumerable<Purchase> GetAllNotOrderedPurchasesByOrderId(int orderId)
+        public IEnumerable<Purchase> GetAllOrderedPurchasesByOrderId(int orderId)
         {
             var purchases = this.purchaseRepository
                 .All()
-                .Where(p => p.IsOrdered == false && p.OrderId == orderId)
+                .Where(p => p.OrderId == orderId)
                 .Include(p => p.Book)
                 .ToList();
 
             return purchases;
-        }
-
-        public async Task<Purchase> MakePurchaseOrdered(Purchase purchase)
-        {
-            purchase.IsOrdered = true;
-            this.purchaseRepository.Update(purchase);
-            await this.purchaseRepository.SaveChangesAsync();
-
-            return purchase;
         }
 
         public bool Delete(int id)
