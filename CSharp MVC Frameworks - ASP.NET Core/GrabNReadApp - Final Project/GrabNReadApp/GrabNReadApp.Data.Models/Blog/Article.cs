@@ -14,7 +14,7 @@ namespace GrabNReadApp.Data.Models.Blog
         public string AuthorId { get; set; }
         public GrabNReadAppUser Author { get; set; }
 
-        public DateTime PublishedOn => DateTime.UtcNow;
+        public DateTime PublishedOn { get; set; }
 
         public bool IsApprovedByAdmin { get; set; }
     }

@@ -1,0 +1,33 @@
+﻿@model GrabNReadApp.Web.Areas.Blog.Models.Articles.ArticleViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1 class="text-center">Create Article</h1>
+<div class="row justify-content-center text-center">
+    <div class="col-md-8">
+        <hr />
+        <form asp-action="Create" asp-controller="Articles" asp-area="Blog" method="Post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label text-dark"></label>
+                <div>
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <input asp-for="Title" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Content" class="control-label text-dark"></label>
+                <div>
+                    <span asp-validation-for="Content" class="text-danger"></span>
+                </div>
+                <textarea asp-for="Content" class="form-control" rows="20"></textarea>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+

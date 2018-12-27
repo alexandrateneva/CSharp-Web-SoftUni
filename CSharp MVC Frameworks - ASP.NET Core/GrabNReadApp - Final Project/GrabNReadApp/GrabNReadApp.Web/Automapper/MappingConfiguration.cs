@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using GrabNReadApp.Data.Models.Blog;
 using GrabNReadApp.Data.Models.Evaluation;
 using GrabNReadApp.Data.Models.Products;
 using GrabNReadApp.Data.Models.Store;
+using GrabNReadApp.Web.Areas.Blog.Models.Articles;
 using GrabNReadApp.Web.Areas.Evaluation.Models.Comments;
 using GrabNReadApp.Web.Areas.Products.Models.Books;
 using GrabNReadApp.Web.Areas.Products.Models.Genres;
@@ -42,6 +44,9 @@ namespace GrabNReadApp.Web.Automapper
 
             //Comment
             this.CreateMap<CommentViewModel, Comment>();
+
+            //Article
+            this.CreateMap<ArticleViewModel, Article>();
         }
     }
 }
