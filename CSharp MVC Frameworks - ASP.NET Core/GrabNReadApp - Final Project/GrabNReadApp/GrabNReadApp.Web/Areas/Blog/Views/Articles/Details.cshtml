@@ -1,0 +1,41 @@
+﻿@model GrabNReadApp.Web.Areas.Blog.Models.Articles.ArticleDetailsViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1 class="text-center">@Model.Title</h1>
+<div class="row justify-content-center">
+    <div class="col-8">
+        <p class="font-weight-bold text-dark">Published on @Model.PublishedOn.ToString("dd/MM/yyyy")</p>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col-8">
+        <p class="text-center article-content">@Model.Content</p>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col-8">
+        <p class="font-weight-bold text-dark"> By <em>@Model.Author</em></p>
+    </div>
+</div>
+<div class="row justify-content-center">
+    @if (User.IsInRole("Admin") || User.Identity.Name == Model.Author.UserName)
+    {
+        <a class="btn btn-outline-warning" asp-area="Blog" asp-controller="Articles" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+        <a class="btn btn-outline-danger ml-5" asp-area="Blog" asp-controller="Articles" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+    }
+
+    @if (User.IsInRole("Admin"))
+    {
+        if (Model.IsApprovedByAdmin)
+        {
+            <a class="btn btn-outline-danger ml-5" asp-area="Blog" asp-controller="Articles" asp-action="ChangeStatus" asp-route-id="@Model.Id">Reject</a>
+        }
+        else
+        {
+            <a class="btn btn-outline-success ml-5" asp-area="Blog" asp-controller="Articles" asp-action="ChangeStatus" asp-route-id="@Model.Id">Approve</a>
+        }
+    }
+</div>

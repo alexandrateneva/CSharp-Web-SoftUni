@@ -1,0 +1,20 @@
+﻿@model GrabNReadApp.Web.Areas.Blog.Models.Articles.ArticleDeleteViewModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h4 class="text-center">Delete Article</h4>
+<hr class="w-50" />
+<div class="row justify-content-center">
+    <h4>Are you sure you want to delete article @Model.Title by @Model.Author?</h4>
+    <p>Deleting this data will permanently remove article @Model.Title, and this cannot be recovered.</p>
+</div>
+
+<div class="row justify-content-around">
+    <form asp-action="DeletePost" method="Post">
+        <input asp-for="Id" class="form-control" hidden />
+        <input type="submit" value="Delete" class="btn btn-danger" />
+    </form>
+    <a class="btn btn-success" asp-area="Blog" asp-controller="Articles" asp-action="Details" asp-route-id="@Model.Id">Go back</a>
+</div>

@@ -49,6 +49,7 @@ namespace GrabNReadApp.Web.Automapper
             this.CreateMap<ArticleViewModel, Article>();
             this.CreateMap<Article, ArticleBaseViewModel>();
             this.CreateMap<Article, ArticleDetailsViewModel>();
+            this.CreateMap<Article, ArticleEditViewModel>();
         }
     }
 }

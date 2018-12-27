@@ -27,7 +27,7 @@ namespace GrabNReadApp.Data.Services.Blog
 
         public IEnumerable<Article> GetAllArticles()
         {
-            var books = this.articleRepository.All();
+            var books = this.articleRepository.All().Include(a => a.Author);
 
             return books;
         }
@@ -37,6 +37,27 @@ namespace GrabNReadApp.Data.Services.Blog
             var article = this.articleRepository.All().Include(a => a.Author).FirstOrDefault(a => a.Id == id);
 
             return article;
+        }
+
+        public async Task<Article> Edit(Article article)
+        {
+            this.articleRepository.Update(article);
+            await this.articleRepository.SaveChangesAsync();
+
+            return article;
+        }
+
+        public bool Delete(int id)
+        {
+            var article = this.articleRepository.All().FirstOrDefault(a => a.Id == id);
+            if (article != null)
+            {
+                this.articleRepository.Delete(article);
+                this.articleRepository.SaveChanges();
+
+                return true;
+            }
+            return false;
         }
     }
 }

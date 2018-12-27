@@ -1,0 +1,33 @@
+﻿@model GrabNReadApp.Web.Areas.Blog.Models.Articles.ArticleEditViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1 class="text-center">Edit Article</h1>
+<div class="row justify-content-center text-center">
+    <div class="col-md-8">
+        <hr />
+        <form asp-action="Edit" method="Post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="Id" hidden/>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <div>
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <input asp-for="Title" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label asp-for="Content" class="control-label"></label>
+                <div>
+                    <span asp-validation-for="Content" class="text-danger"></span>
+                </div>
+                <textarea asp-for="Content" class="form-control" rows="15"></textarea>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary"/>
+            </div>
+        </form>
+    </div>
+</div>

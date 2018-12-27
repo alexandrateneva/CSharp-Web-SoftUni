@@ -11,5 +11,9 @@ namespace GrabNReadApp.Data.Services.Blog.Contracts
         IEnumerable<Article> GetAllArticles();
 
         Article GetArticleById(int id);
+
+        Task<Article> Edit(Article article);
+
+        bool Delete(int id);
     }
 }

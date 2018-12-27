@@ -1,0 +1,28 @@
+﻿@model IEnumerable<GrabNReadApp.Web.Areas.Blog.Models.Articles.ArticleBaseViewModel>
+
+    @{
+        ViewData["Title"] = "All";
+    }
+
+    <h1 class="text-center">Articles</h1>
+    <hr />
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-sm-4 mb-5">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Title</h5>
+                        <p class="card-text">@item.ShortContent</p>
+                        <a asp-area="Blog" asp-controller="Articles" asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Read all</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    @if (!Model.Any() || Model == null)
+    {
+        <div class="text-center">
+            <p><em>There are no articles.</em></p>
+        </div>
+    }
