@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
+using GrabNReadApp.Data.Models;
 using GrabNReadApp.Data.Models.Blog;
 using GrabNReadApp.Data.Services.Blog.Contracts;
 using GrabNReadApp.Web.Areas.Blog.Models.Articles;
@@ -51,6 +52,31 @@ namespace GrabNReadApp.Web.Areas.Blog.Controllers
             }
 
             return this.View(model);
+        }
+
+        // GET: Blog/Articles/All
+        public IActionResult All()
+        {
+            var model = this.articleService
+                .GetAllArticles()
+                .Select(a => mapper.Map<ArticleBaseViewModel>(a))
+                .ToList();
+
+            return View(model);
+        }
+
+        // GET: Blog/Articles/Details/5
+        public ActionResult Details(int id)
+        {
+            var article = this.articleService.GetArticleById(id);
+            if (article == null)
+            {
+                var error = new Error() { Message = $"There is no article with id - {id}." };
+                return this.View("CustomError", error);
+            }
+
+            var model = mapper.Map<ArticleDetailsViewModel>(article);
+            return View(model);
         }
     }
 }

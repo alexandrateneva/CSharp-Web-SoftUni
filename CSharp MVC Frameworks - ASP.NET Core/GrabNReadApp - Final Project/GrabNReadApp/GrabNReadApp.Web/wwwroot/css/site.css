@@ -110,3 +110,7 @@ body {
 table{
     margin: 0 auto
 }
+
+.article-content {
+    white-space: pre-wrap;
+}
