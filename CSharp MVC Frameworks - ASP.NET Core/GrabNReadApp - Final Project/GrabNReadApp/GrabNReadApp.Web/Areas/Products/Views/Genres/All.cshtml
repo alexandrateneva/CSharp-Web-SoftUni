@@ -10,26 +10,28 @@
         @foreach (var item in Model)
         {
             <div class="col-auto mb-3" style="width: 18rem;">
-                <div class="card mb-5">
-                    <img class="card-img-top" height="160px;" src="@item.Image" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title text-center">@item.Name</h5>
-                    </div>
-                    @if (User.IsInRole("Admin"))
-                    {
+                <a class="fill-div" asp-area="Products" asp-controller="Books" asp-action="AllByGenre" asp-route-id="@item.Id">
+                    <div class="card mb-5">
+                        <img class="card-img-top" height="160px;" src="@item.Image" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">@item.Name</h5>
+                        </div>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <div class="card-body">
+                                <div class="row justify-content-around">
+                                    <a class="btn btn-sm btn-outline-warning" asp-area="Products" asp-controller="Genres" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                    <a class="btn btn-sm btn-outline-danger" asp-area="Products" asp-controller="Genres" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                </div>
+                            </div>
+                        }
                         <div class="card-body">
                             <div class="row justify-content-around">
-                                <a class="btn btn-sm btn-outline-warning" asp-area="Products" asp-controller="Genres" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                                <a class="btn btn-sm btn-outline-danger" asp-area="Products" asp-controller="Genres" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                <a class="btn btn-sm btn-outline-info" asp-area="Products" asp-controller="Books" asp-action="AllByGenre" asp-route-id="@item.Id">Books</a>
                             </div>
                         </div>
-                    }
-                    <div class="card-body">
-                        <div class="row justify-content-around">
-                            <a class="btn btn-sm btn-outline-info" asp-area="Products" asp-controller="Books" asp-action="AllByGenre" asp-route-id="@item.Id">Books</a>
-                        </div>
                     </div>
-                </div>
+                </a>
             </div>
         }
     </div>

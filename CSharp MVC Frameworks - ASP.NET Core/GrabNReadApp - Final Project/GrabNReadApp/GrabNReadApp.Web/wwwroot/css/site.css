@@ -143,3 +143,9 @@ table {
 .selected {
     text-shadow: 3px 3px 8px goldenrod;
 }
+
+a.fill-div {
+    height: 100%;
+    width: 100%;
+    text-decoration: none;
+}
