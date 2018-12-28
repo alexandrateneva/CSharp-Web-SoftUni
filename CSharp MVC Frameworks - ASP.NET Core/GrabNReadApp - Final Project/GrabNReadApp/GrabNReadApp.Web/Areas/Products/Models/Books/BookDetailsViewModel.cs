@@ -35,6 +35,10 @@ namespace GrabNReadApp.Web.Areas.Products.Models.Books
 
         public int GenreId { get; set; }
 
+        public int UserVote { get; set; }
+
+        public decimal AverageRating { get; set; }
+
         public CommentViewModel CommentViewModel { get; set; }
 
         public IEnumerable<Comment> Comments { get; set; }

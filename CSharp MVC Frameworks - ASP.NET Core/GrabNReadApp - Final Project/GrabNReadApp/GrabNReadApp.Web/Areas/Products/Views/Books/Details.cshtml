@@ -1,14 +1,16 @@
-﻿@model GrabNReadApp.Web.Areas.Products.Models.Books.BookDetailsViewModel
+﻿@using GrabNReadApp.Web.Areas.Evaluation.Models.Ratings
+
+@model GrabNReadApp.Web.Areas.Products.Models.Books.BookDetailsViewModel
 
 @{
     ViewData["Title"] = "Details";
 }
 
 <div class="row justify-content-around">
-    <div class="col-md-5">
+    <div class="col-md-4">
         <img src="@Model.CoverImage" style="width: 17rem;" />
     </div>
-    <div class="col-md-5">
+    <div class="col-md-5 justify-content-center">
         <h2 class="text-center">
             @Model.Title
         </h2>
@@ -48,29 +50,16 @@
             <a class="btn btn-primary" asp-area="Store" asp-controller="Rentals" asp-action="Create" asp-route-id="@Model.Id">Rent</a>
         </div>
     </div>
+    <partial name="~/Areas/Evaluation/Views/Ratings/_VoteAndShowRatingPartial.cshtml"
+             model="new UserVoteViewModel() { BookId = Model.Id,
+                                              VoteValue = Model.UserVote,
+                                              AverageRating = Model.AverageRating }" />
 </div>
-
 <hr />
-<partial name="~/Areas/Evaluation/Views/Comments/_CreatePartial.cshtml" model="@Model.CommentViewModel" />
 
-<div id="newComment"></div>
-<section id="comments">
-    @foreach (var comment in Model.Comments)
-    {
-        <blockquote class="blockquote">
-            <p class="break-text mb-0">
-                @comment.Content
-                @if (User.IsInRole("Admin") || User.Identity.Name == @comment.Creator.UserName)
-                {
-                    <button id=" @comment.Id" onclick="deleteComment(event)" class="btn btn-sm btn-danger float-right">Delete</button>
-                }
-            </p>
-            <footer class="blockquote-footer">
-                by <cite title="Comment Author">@comment.Creator.UserName</cite>
-            </footer>
-        </blockquote>
-    }
-</section>
+<partial name="~/Areas/Evaluation/Views/Comments/_CreateCommentPartial.cshtml" model="@Model.CommentViewModel" />
+
+<partial name="~/Areas/Evaluation/Views/Comments/_AllCommentsPartial.cshtml" model="@Model.Comments" />
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

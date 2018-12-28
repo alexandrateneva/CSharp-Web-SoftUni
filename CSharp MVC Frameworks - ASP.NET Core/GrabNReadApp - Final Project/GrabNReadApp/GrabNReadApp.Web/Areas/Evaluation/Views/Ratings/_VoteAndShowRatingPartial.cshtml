@@ -1,0 +1,90 @@
+﻿@model GrabNReadApp.Web.Areas.Evaluation.Models.Ratings.UserVoteViewModel
+
+<div class="col-3 rating-div text-center" onmouseout="unmarkStar(this)">
+    <span class="text-danger" id="validation"></span>
+    <h4>Star Rating</h4>
+    <span class="fa fa-star rating-star" id="1" onmouseover="markStar(this)" onclick="vote(this)"></span>
+    <span class="fa fa-star rating-star" id="2" onmouseover="markStar(this)" onclick="vote(this)"></span>
+    <span class="fa fa-star rating-star" id="3" onmouseover="markStar(this)" onclick="vote(this)"></span>
+    <span class="fa fa-star rating-star" id="4" onmouseover="markStar(this)" onclick="vote(this)"></span>
+    <span class="fa fa-star rating-star" id="5" onmouseover="markStar(this)" onclick="vote(this)"></span>
+    <span class="fa fa-star average mt-2">- average rating</span>
+    <span class="fa fa-star selected ml-3"></span> - your rating
+</div>
+
+<script type="text/javascript">
+    var bookId = @Model.BookId;
+    var userVote = @Model.VoteValue;
+    var averageRating = @Model.AverageRating;
+
+    (function(){
+        Array.from(document.getElementsByClassName("rating-star")).forEach(
+            function (element, index, array) {
+                if (element.id <= averageRating) {
+                    element.classList.add("average");
+                }
+                if (element.id <= userVote) {
+                    element.classList.add("selected");
+                }
+            }
+        );
+    })();
+
+    function markStar(event) {
+        var lastIndex = event.id;
+        Array.from(document.getElementsByClassName("rating-star")).forEach(
+            function (element, index, array) {
+                if (element.id <= lastIndex) {
+                    element.classList.add("marked");
+                }
+            }
+        );
+    }
+
+    function unmarkStar(event) {
+        Array.from(document.getElementsByClassName("rating-star")).forEach(
+            function (element, index, array) {
+                element.classList.remove("marked");
+            }
+        );
+    }
+
+    function vote(event) {
+        var voteValue = event.id;
+        $.ajax({
+            type: 'POST',
+            url: '/Evaluation/Ratings/Vote',
+            data: { bookId, voteValue },
+            success: function (response) {
+                if (response.authorize === "Failed") {
+                    location.href = "/Identity/Account/Login";
+                }
+                else if (response.voteValidation === "Failed") {
+                    document.getElementById("validation").textContent = "Your vote must have value from 1 to 5.";
+                }
+                else {
+                    var lastIndex = event.id;
+                    var averageRating = response.averageRating;
+                    Array.from(document.getElementsByClassName("rating-star")).forEach(
+                        function (element, index, array) {
+                            if (element.id <= lastIndex) {
+                                element.classList.add("selected");
+                            } else {
+                                element.classList.remove("selected");
+                            }
+
+                            if (element.id <= averageRating) {
+                                element.classList.add("average");
+                            } else {
+                                element.classList.remove("average");
+                            }
+                        }
+                    );
+                }
+            },
+            error: function (response) {
+                alert("Аn error occurred while rating a book.");
+            }
+        });
+    }
+</script>

@@ -1,0 +1,20 @@
+﻿@model IEnumerable<GrabNReadApp.Data.Models.Evaluation.Comment>
+
+    <div id="newComment"></div>
+    <section id="comments">
+        @foreach (var comment in Model)
+    {
+        <blockquote class="blockquote">
+            <p class="break-text mb-0">
+                @comment.Content
+                @if (User.IsInRole("Admin") || User.Identity.Name == comment.Creator.UserName)
+                {
+                <button id=" @comment.Id" onclick="deleteComment(event)" class="btn btn-sm btn-danger float-right">Delete</button>
+                }
+            </p>
+            <footer class="blockquote-footer">
+                by <cite title="Comment Author">@comment.Creator.UserName</cite>
+            </footer>
+        </blockquote>
+    }
+    </section>

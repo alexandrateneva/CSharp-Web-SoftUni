@@ -19,28 +19,28 @@
         <table class="table table-sm table-responsive">
             <thead>
                 <tr class="d-flex">
-                    <th class="col-2">Id</th>
-                    <th class="col-4">Date</th>
-                    <th class="col-7">Address</th>
-                    <th class="col-5">Recipient Name</th>
-                    <th class="col-2">Details</th>
-                    <th class="col-2">Delete</th>
+                    <th class="col-1">Id</th>
+                    <th class="col-2">Date</th>
+                    <th class="col-4">Address</th>
+                    <th class="col-3">Recipient Name</th>
+                    <th class="col-1">Details</th>
+                    <th class="col-1">Delete</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model.Orders)
                 {
                     <tr class="d-flex">
-                        <td class="col-2">@item.Id</td>
-                        <td class="col-4">@item.OrderedOn.ToString("hh:mm dd/MM/yyyy")</td>
-                        <td class="col-7">@item.Address</td>
-                        <td class="col-5">@item.RecipientName</td>
-                        <td class="col-2">
+                        <td class="col-1">@item.Id</td>
+                        <td class="col-2">@item.OrderedOn.ToString("hh:mm dd/MM/yyyy")</td>
+                        <td class="col-4">@item.Address</td>
+                        <td class="col-3">@item.RecipientName</td>
+                        <td class="col-1">
                             <a asp-area="Store" asp-controller="Orders" asp-action="Details" asp-route-id="@item.Id">
                                 <i class="fa fa-info ml-4"></i>
                             </a>
                         </td>
-                        <td class="col-2">
+                        <td class="col-1">
                             <a asp-area="Store" asp-controller="Orders" asp-action="Delete" asp-route-id="@item.Id">
                                 <i id="remove-icon" class="fa fa-remove ml-4"></i>
                             </a>

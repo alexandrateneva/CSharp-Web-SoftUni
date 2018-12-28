@@ -29,18 +29,21 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
         private readonly IBookService bookService;
         private readonly IConfiguration configuration;
         private readonly ICommentsService commentsService;
+        private readonly IRatingService ratingService;
 
         public BooksController(IMapper mapper,
             IGenreService genreService,
             IBookService bookService,
             IConfiguration configuration,
-            ICommentsService commentsService)
+            ICommentsService commentsService,
+            IRatingService ratingService)
         {
             this.mapper = mapper;
             this.genreService = genreService;
             this.bookService = bookService;
             this.configuration = configuration;
             this.commentsService = commentsService;
+            this.ratingService = ratingService;
         }
 
         // GET: Products/Books/Create
@@ -175,6 +178,16 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
             }
 
             var model = mapper.Map<BookDetailsViewModel>(book);
+
+            model.UserVote = 0;
+            if (User.Identity.IsAuthenticated)
+            {
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var userVote = this.ratingService.GetVoteValueByUserIdAndBookId(userId, id);
+                model.UserVote = userVote;
+            }
+
+            model.AverageRating = this.ratingService.GetAverageBookRatingByBookId(id);
 
             var commentViewModel = new CommentViewModel()
             {

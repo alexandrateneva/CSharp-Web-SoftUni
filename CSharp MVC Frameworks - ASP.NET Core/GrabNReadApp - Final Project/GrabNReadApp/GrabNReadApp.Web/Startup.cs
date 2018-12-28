@@ -83,6 +83,7 @@ namespace GrabNReadApp.Web
             services.AddScoped<IOrdersService, OrdersService>();
             services.AddScoped<ICommentsService, CommentsService>();
             services.AddScoped<IArticleService, ArticleService>();
+            services.AddScoped<IRatingService, RatingsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
