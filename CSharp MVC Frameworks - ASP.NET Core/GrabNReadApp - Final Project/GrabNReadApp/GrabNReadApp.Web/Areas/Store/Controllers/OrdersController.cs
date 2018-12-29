@@ -10,6 +10,7 @@ using GrabNReadApp.Web.Extensions.Alerts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using X.PagedList;
 
 namespace GrabNReadApp.Web.Areas.Store.Controllers
 {
@@ -73,13 +74,19 @@ namespace GrabNReadApp.Web.Areas.Store.Controllers
 
         // GET: Store/Orders/All
         [Authorize(Roles = "Admin")]
-        public IActionResult All()
+        public IActionResult All(int? pageNumber)
         {
-            var orders = this.ordersService.GetAllFinishedOrders().ToList();
+            var currentPage = pageNumber ?? 1;
+            var orders = this.ordersService.GetAllFinishedOrders().OrderByDescending(o => o.OrderedOn);
+
+            var onePageOfEvents = orders.ToPagedList(currentPage, 5);
+
             var model = new AllOrdersViewModel()
             {
-                Orders = orders
+                Orders = onePageOfEvents,
+                CurrentPage = currentPage
             };
+
             return View(model);
         }
 

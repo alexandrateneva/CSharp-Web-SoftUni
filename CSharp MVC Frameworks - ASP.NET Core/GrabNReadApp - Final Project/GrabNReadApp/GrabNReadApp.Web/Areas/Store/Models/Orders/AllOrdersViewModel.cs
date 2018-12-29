@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using GrabNReadApp.Data.Models.Store;
+﻿using GrabNReadApp.Data.Models.Store;
+using X.PagedList;
 
 namespace GrabNReadApp.Web.Areas.Store.Models.Orders
 {
     public class AllOrdersViewModel
     {
-        public AllOrdersViewModel()
-        {
-            this.Orders = new HashSet<Order>();
-        }
+        public IPagedList<Order> Orders { get; set; }
 
-        public ICollection<Order> Orders { get; set; }
+        public int CurrentPage { get; set; }
     }
 }

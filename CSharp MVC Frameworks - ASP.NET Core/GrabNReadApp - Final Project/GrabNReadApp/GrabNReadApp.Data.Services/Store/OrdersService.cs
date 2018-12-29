@@ -87,8 +87,7 @@ namespace GrabNReadApp.Data.Services.Store
         {
             var orders = this.orderRepository
                 .All()
-                .Where(p => p.IsFinished == true)
-                .ToList();
+                .Where(p => p.IsFinished == true);
 
             return orders;
         }
