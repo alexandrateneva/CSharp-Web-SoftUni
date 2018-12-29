@@ -30,8 +30,7 @@ namespace GrabNReadApp.Data.Services.Evaluation
             var comments = this.commentRepository.All()
                 .Where(c => c.BookId == id)
                 .OrderByDescending(z => z.Id)
-                .Include(x => x.Creator)
-                .ToList();
+                .Include(x => x.Creator);
 
             return comments;
         }

@@ -35,8 +35,7 @@ namespace GrabNReadApp.Data.Services.Store
             var rentals = this.rentalRepository
                 .All()
                 .Where(r => r.OrderId == orderId)
-                .Include(r => r.Book)
-                .ToList();
+                .Include(r => r.Book);
 
             return rentals;
         }

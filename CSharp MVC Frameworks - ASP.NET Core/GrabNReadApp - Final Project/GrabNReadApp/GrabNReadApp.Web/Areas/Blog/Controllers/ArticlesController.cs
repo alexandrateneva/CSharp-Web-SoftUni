@@ -98,7 +98,7 @@ namespace GrabNReadApp.Web.Areas.Blog.Controllers
 
             if (User.Identity.Name != article.Author.UserName)
             {
-                return this.RedirectToPage("Login")
+                return this.RedirectToPage("/Account/Login", new { area = "Identity" })
                     .WithDanger("You were redirected!", "Please login, you don't have access rights.");
             }
 
@@ -121,8 +121,8 @@ namespace GrabNReadApp.Web.Areas.Blog.Controllers
 
             if (User.Identity.Name != article.Author.UserName)
             {
-                return this.RedirectToPage("Login")
-                    .WithDanger("You were redirected!", "Please login, you don't have access rights.");
+                return this.RedirectToPage("/Account/Login", new { area = "Identity" })
+                   .WithDanger("You were redirected!", "Please login, you don't have access rights.");
             }
 
             if (ModelState.IsValid)
@@ -150,8 +150,8 @@ namespace GrabNReadApp.Web.Areas.Blog.Controllers
 
             if (User.Identity.Name != article.Author.UserName && !User.IsInRole("Admin"))
             {
-                return this.RedirectToPage("Login")
-                    .WithDanger("You were redirected!", "Please login, you don't have access rights.");
+                return this.RedirectToPage("/Account/Login", new { area = "Identity" })
+                     .WithDanger("You were redirected!", "Please login, you don't have access rights.");
             }
 
             var model = mapper.Map<ArticleDeleteViewModel>(article);
@@ -167,8 +167,8 @@ namespace GrabNReadApp.Web.Areas.Blog.Controllers
             var article = this.articleService.GetAllArticles().FirstOrDefault(g => g.Id == id);
             if (User.Identity.Name != article.Author.UserName && !User.IsInRole("Admin"))
             {
-                return this.RedirectToPage("Login")
-                    .WithDanger("You were redirected!", "Please login, you don't have access rights.");
+                return this.RedirectToPage("/Account/Login", new { area = "Identity" })
+                     .WithDanger("You were redirected!", "Please login, you don't have access rights.");
             }
 
             var isDeleted = this.articleService.Delete(id);

@@ -35,8 +35,7 @@ namespace GrabNReadApp.Data.Services.Store
             var purchases = this.purchaseRepository
                 .All()
                 .Where(p => p.OrderId == orderId)
-                .Include(p => p.Book)
-                .ToList();
+                .Include(p => p.Book);
 
             return purchases;
         }

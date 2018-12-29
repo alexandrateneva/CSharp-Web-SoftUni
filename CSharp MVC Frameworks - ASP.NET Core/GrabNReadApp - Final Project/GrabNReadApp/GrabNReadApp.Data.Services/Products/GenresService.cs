@@ -47,7 +47,7 @@ namespace GrabNReadApp.Data.Services.Products
 
         public IEnumerable<Genre> GetAllGenres()
         {
-            var genres = this.genreRepository.All().ToList();
+            var genres = this.genreRepository.All();
 
             return genres;
         }

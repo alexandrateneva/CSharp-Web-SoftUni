@@ -21,10 +21,17 @@
     </div>
 </div>
 <div class="row justify-content-center">
-    @if (User.IsInRole("Admin") || User.Identity.Name == Model.Author.UserName)
+    @if (User.Identity.Name == Model.Author.UserName)
     {
         <a class="btn btn-outline-warning" asp-area="Blog" asp-controller="Articles" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
         <a class="btn btn-outline-danger ml-5" asp-area="Blog" asp-controller="Articles" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+    }
+    else
+    {
+        if (User.IsInRole("Admin"))
+        {
+            <a class="btn btn-outline-danger ml-5" asp-area="Blog" asp-controller="Articles" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+        }
     }
 
     @if (User.IsInRole("Admin"))
