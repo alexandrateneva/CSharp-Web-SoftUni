@@ -149,3 +149,13 @@ a.fill-div {
     width: 100%;
     text-decoration: none;
 }
+
+.search-input {
+    border-top-left-radius: 22px;
+    border-bottom-left-radius: 22px;
+}
+
+.search-btn {
+    border-top-right-radius: 22px;
+    border-bottom-right-radius: 22px;
+}

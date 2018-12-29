@@ -1,9 +1,16 @@
-﻿@model IEnumerable<GrabNReadApp.Web.Areas.Products.Models.Books.BookBaseViewModel>
+﻿@using GrabNReadApp.Web.Areas.Products.Models.Books
+
+@model IEnumerable<GrabNReadApp.Web.Areas.Products.Models.Books.BookBaseViewModel>
 
 @{
     ViewData["Title"] = "All";
 }
-<h1 class="text-center">Books</h1>
+<div class="row">
+    <div class="col-4 offset-4">
+        <h1>Books</h1>
+    </div>
+    <partial name="~/Areas/Products/Views/Books/_SearchBoxPartial.cshtml" model="new BookSearchViewModel()" />
+</div>
 <hr />
 <div class="row">
     <div class="card-deck justify-content-center">
@@ -37,6 +44,6 @@
 @if (!Model.Any() || Model == null)
 {
     <div class="text-center">
-        <p><em>There are no books of this genre.</em></p>
+        <p><em>There are no books meeting this criteria.</em></p>
     </div>
 }

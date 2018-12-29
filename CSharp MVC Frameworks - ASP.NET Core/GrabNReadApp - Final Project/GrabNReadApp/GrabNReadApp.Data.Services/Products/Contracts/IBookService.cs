@@ -15,5 +15,7 @@ namespace GrabNReadApp.Data.Services.Products.Contracts
         IEnumerable<Book> GetAllBooks();
 
         Task<Book> GetBookById(int id);
+
+        IEnumerable<Book> GetBooksByTitle(string title);
     }
 }

@@ -96,6 +96,23 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
             return View("All", books);
         }
 
+        // GET: Products/Books/Search
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Search(BookSearchViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var books = this.bookService.GetBooksByTitle(model.BookTitle)
+                    .Select(b => mapper.Map<BookBaseViewModel>(b))
+                    .ToList();
+
+                return View("All", books);
+            }
+
+            return this.RedirectToAction("All", "Books").WithDanger("Book title is required!", "To search, please enter a book title.");
+        }
+
         // GET: Products/Books/Edit/5
         [Authorize(Roles = "Admin")]
         public IActionResult Edit(int id)

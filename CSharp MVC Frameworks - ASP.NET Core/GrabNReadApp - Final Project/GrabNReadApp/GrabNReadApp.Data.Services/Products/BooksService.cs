@@ -58,5 +58,14 @@ namespace GrabNReadApp.Data.Services.Products
 
             return book;
         }
+
+        public IEnumerable<Book> GetBooksByTitle(string title)
+        {
+            var books = this.bookRepository
+                .All().
+                Where(b => b.Title.Trim().ToLower().Contains(title.Trim().ToLower()));
+
+            return books;
+        }
     }
 }
