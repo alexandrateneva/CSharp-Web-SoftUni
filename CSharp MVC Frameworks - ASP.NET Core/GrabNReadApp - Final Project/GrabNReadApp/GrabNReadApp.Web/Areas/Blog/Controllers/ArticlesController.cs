@@ -8,9 +8,11 @@ using GrabNReadApp.Data.Models;
 using GrabNReadApp.Data.Models.Blog;
 using GrabNReadApp.Data.Services.Blog.Contracts;
 using GrabNReadApp.Web.Areas.Blog.Models.Articles;
+using GrabNReadApp.Web.Areas.Store.Models.Orders;
 using GrabNReadApp.Web.Extensions.Alerts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using X.PagedList;
 
 namespace GrabNReadApp.Web.Areas.Blog.Controllers
 {
@@ -55,20 +57,29 @@ namespace GrabNReadApp.Web.Areas.Blog.Controllers
         }
 
         // GET: Blog/Articles/All
-        public IActionResult All()
+        public IActionResult All(int? pageNumber)
         {
-            var model = this.articleService
+            var currentPage = pageNumber ?? 1;
+
+            var articles = this.articleService
                 .GetAllArticles()
-                .Select(a => mapper.Map<ArticleBaseViewModel>(a))
-                .ToList();
+                .Select(a => mapper.Map<ArticleBaseViewModel>(a));
+
+            var filteredArticles = articles.Where(a => a.IsApprovedByAdmin == true);
+            
+            var model = new AllArticlesViewModel()
+            {
+                CurrentPage = currentPage
+            };
 
             if (User.IsInRole("Admin"))
             {
+                model.Articles = articles.ToPagedList(currentPage, 6);
                 return this.View(model);
             }
 
-            var filteredModel = model.Where(a => a.IsApprovedByAdmin == true);
-            return this.View(filteredModel);
+            model.Articles = filteredArticles.ToPagedList(currentPage, 6);
+            return this.View(model);
         }
 
         // GET: Blog/Articles/Details/5
@@ -127,6 +138,7 @@ namespace GrabNReadApp.Web.Areas.Blog.Controllers
 
             if (ModelState.IsValid)
             {
+                article.IsApprovedByAdmin = false;
                 article.Title = model.Title;
                 article.Content = model.Content;
 

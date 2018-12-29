@@ -1,28 +1,51 @@
-﻿@model IEnumerable<GrabNReadApp.Web.Areas.Blog.Models.Articles.ArticleBaseViewModel>
+﻿@using X.PagedList.Mvc.Common
+@using X.PagedList.Mvc.Core
+@model GrabNReadApp.Web.Areas.Blog.Models.Articles.AllArticlesViewModel
 
-    @{
-        ViewData["Title"] = "All";
-    }
+@{
+    ViewData["Title"] = "All";
+}
 
-    <h1 class="text-center">Articles</h1>
+<h1 class="text-center">Articles</h1>
+<hr />
+@if (!User.IsInRole("Admin"))
+{
+    <div class="row justify-content-center">
+        <a asp-area="Blog" asp-controller="Articles" asp-action="Create" class="btn btn-outline-primary">Create New Article</a>
+    </div>
     <hr />
-    <div class="row">
-        @foreach (var item in Model)
-        {
-            <div class="col-sm-4 mb-5">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">@item.Title</h5>
-                        <p class="card-text">@item.ShortContent</p>
-                        <a asp-area="Blog" asp-controller="Articles" asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Read all</a>
-                    </div>
+}
+
+<div class="row">
+    @foreach (var item in Model.Articles)
+    {
+        <div class="col-sm-4 mb-5">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">@item.Title</h5>
+                    <p class="card-text">@item.ShortContent</p>
+                    <a asp-area="Blog" asp-controller="Articles" asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Read all</a>
                 </div>
             </div>
-        }
-    </div>
-    @if (!Model.Any() || Model == null)
-    {
-        <div class="text-center">
-            <p><em>There are no articles.</em></p>
         </div>
     }
+</div>
+
+<div class="row justify-content-around">
+    @Html.PagedListPager(Model.Articles, pageNumber => Url.Action("All", "Articles", new { pageNumber }), new PagedListRenderOptionsBase()
+    {
+        LiElementClasses = new string[] { "page-item" },
+        PageClasses = new string[] { "page-link" },
+        DisplayLinkToNextPage = PagedListDisplayMode.IfNeeded,
+        DisplayLinkToPreviousPage = PagedListDisplayMode.IfNeeded,
+        Display = PagedListDisplayMode.IfNeeded
+    })
+</div>
+
+@if (!Model.Articles.Any())
+{
+    <div class="text-center">
+        <p><em>Sorry, there are no articles.</em></p>
+    </div>
+}
+

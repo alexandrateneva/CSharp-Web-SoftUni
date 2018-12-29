@@ -36,3 +36,10 @@
         }
     </div>
 </div>
+
+@if (!Model.Any())
+{
+    <div class="text-center">
+        <p><em>Sorry, there are no genres.</em></p>
+    </div>
+}
