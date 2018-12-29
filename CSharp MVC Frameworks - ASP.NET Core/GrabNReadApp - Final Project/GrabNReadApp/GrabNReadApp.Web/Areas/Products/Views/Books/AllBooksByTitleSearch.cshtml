@@ -1,0 +1,40 @@
+﻿@using GrabNReadApp.Web.Areas.Products.Models.Books
+
+@model AllBooksViewModel
+
+@{
+    ViewData["Title"] = "AllBooksByTitleSearch";
+}
+
+<div class="row">
+    <div class="col-4 offset-4">
+        <h1>Books</h1>
+    </div>
+    <partial name="~/Areas/Products/Views/Books/_SearchBoxPartial.cshtml" />
+</div>
+
+<hr />
+<partial name="~/Areas/Products/Views/Books/_AllBooksPartial.cshtml" model="Model.Books" />
+
+<div class="row justify-content-around">
+    @Html.PagedListPager(Model.Books, pageNumber => Url.Action("Search", "Books", new
+{
+    pageNumber,
+    bookTitle = Model.BookTitle
+}),
+    new PagedListRenderOptionsBase()
+{
+    LiElementClasses = new string[] { "page-item" },
+    PageClasses = new string[] { "page-link" },
+    DisplayLinkToNextPage = PagedListDisplayMode.IfNeeded,
+    DisplayLinkToPreviousPage = PagedListDisplayMode.IfNeeded,
+    Display = PagedListDisplayMode.IfNeeded
+})
+</div>
+
+@if (!Model.Books.Any())
+{
+    <div class="text-center">
+        <p><em>There are no books with this title.</em></p>
+    </div>
+}

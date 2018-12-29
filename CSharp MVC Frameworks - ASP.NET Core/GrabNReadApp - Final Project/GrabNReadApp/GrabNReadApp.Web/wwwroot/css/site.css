@@ -159,3 +159,7 @@ a.fill-div {
     border-top-right-radius: 22px;
     border-bottom-right-radius: 22px;
 }
+
+.table-td-desc {
+    word-break: break-all;
+}

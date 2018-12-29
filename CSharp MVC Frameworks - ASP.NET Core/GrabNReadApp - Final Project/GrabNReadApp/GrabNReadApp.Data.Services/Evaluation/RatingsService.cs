@@ -56,9 +56,14 @@ namespace GrabNReadApp.Data.Services.Evaluation
 
         public int GetAverageBookRatingByBookId(int bookId)
         {
-            var vote = this.ratingsRepository.All()
-                .Where(r => r.BookId == bookId)
-                .Average(x => x.VoteValue);
+            var votes = this.ratingsRepository.All()
+                .Where(r => r.BookId == bookId);
+
+            var vote = 0.0;
+            if (votes.Any())
+            {
+                vote = votes.Average(x => x.VoteValue);
+            }
             var result = Math.Round(vote);
 
             return (int)result;

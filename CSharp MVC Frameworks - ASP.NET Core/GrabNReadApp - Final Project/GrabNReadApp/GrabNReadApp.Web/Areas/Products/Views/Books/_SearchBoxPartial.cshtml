@@ -1,13 +1,9 @@
-﻿@model GrabNReadApp.Web.Areas.Products.Models.Books.BookSearchViewModel
-
-<div class="col-md-4">
+﻿<div class="col-md-4">
     <form asp-action="Search" class="form-inline">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
-            <input asp-for="BookTitle" class="form-control search-input" placeholder="Search book by title..." />
+            <input name="bookTitle" class="form-control search-input" placeholder="Search book by title..." />
         </div>
         <div class="form-group">
-            @*<input type="submit" value="Create" class="btn btn-primary" />*@
             <button class="btn btn-primary search-btn" type="submit">
                 <i class="fa fa-search"></i>
             </button>

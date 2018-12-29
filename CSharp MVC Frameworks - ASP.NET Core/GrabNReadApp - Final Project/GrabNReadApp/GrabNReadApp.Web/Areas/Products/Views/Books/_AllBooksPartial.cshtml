@@ -1,0 +1,31 @@
+﻿@model System.Collections.Generic.IEnumerable<GrabNReadApp.Web.Areas.Products.Models.Books.BookBaseViewModel>
+
+<div class="row justify-content-center mb-3">
+    <div class="card-deck">
+        @foreach (var item in Model)
+        {
+            <div class="col-auto" style="width: 15rem;">
+                <a class="fill-div" asp-area="Products" asp-controller="Books" asp-action="Details" asp-route-id="@item.Id">
+                    <div class="card">
+                        <img class="card-img-top" src="@item.CoverImage" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">@item.Title</h5>
+                            <h6 class="card-subtitle mb-2 text-muted text-center">@item.Author</h6>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="row justify-content-around">
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <a class="btn btn-sm btn-outline-warning" asp-area="Products" asp-controller="Books" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                    <a class="btn btn-sm btn-outline-danger" asp-area="Products" asp-controller="Books" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                }
+                                <a class="btn btn-sm btn-outline-primary" asp-area="Products" asp-controller="Books" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+</div>

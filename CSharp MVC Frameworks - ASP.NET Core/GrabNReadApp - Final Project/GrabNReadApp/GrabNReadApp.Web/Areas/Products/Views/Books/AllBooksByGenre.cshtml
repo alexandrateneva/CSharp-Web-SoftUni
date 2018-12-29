@@ -3,8 +3,9 @@
 @model AllBooksViewModel
 
 @{
-    ViewData["Title"] = "All";
+    ViewData["Title"] = "AllBooksByGenre";
 }
+
 <div class="row">
     <div class="col-4 offset-4">
         <h1>Books</h1>
@@ -16,7 +17,7 @@
 <partial name="~/Areas/Products/Views/Books/_AllBooksPartial.cshtml" model="Model.Books" />
 
 <div class="row justify-content-around">
-    @Html.PagedListPager(Model.Books, pageNumber => Url.Action("All", "Books", new { pageNumber }), new PagedListRenderOptionsBase()
+    @Html.PagedListPager(Model.Books, pageNumber => Url.Action("AllByGenre", "Books", new { pageNumber, id = Model.GenreId }), new PagedListRenderOptionsBase()
     {
         LiElementClasses = new string[] { "page-item" },
         PageClasses = new string[] { "page-link" },
@@ -29,6 +30,6 @@
 @if (!Model.Books.Any())
 {
     <div class="text-center">
-        <p><em>Sorry, there are no books.</em></p>
+        <p><em>There are no books of this genre.</em></p>
     </div>
 }

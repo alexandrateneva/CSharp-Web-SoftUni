@@ -26,7 +26,7 @@ namespace GrabNReadApp.Data.Services.Products
 
         public IEnumerable<Book> GetAllBooks()
         {
-            var books = this.bookRepository.All().ToList();
+            var books = this.bookRepository.All();
 
             return books;
         }
@@ -62,8 +62,8 @@ namespace GrabNReadApp.Data.Services.Products
         public IEnumerable<Book> GetBooksByTitle(string title)
         {
             var books = this.bookRepository
-                .All().
-                Where(b => b.Title.Trim().ToLower().Contains(title.Trim().ToLower()));
+                .All()
+                .Where(b => b.Title.Trim().ToLower().Contains(title.Trim().ToLower()));
 
             return books;
         }

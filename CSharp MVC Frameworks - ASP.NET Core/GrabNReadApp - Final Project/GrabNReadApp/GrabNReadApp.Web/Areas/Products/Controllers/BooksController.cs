@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using X.PagedList;
 
 namespace GrabNReadApp.Web.Areas.Products.Controllers
 {
@@ -78,36 +79,62 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
         }
 
         // GET: Products/Books/All
-        public IActionResult All(int? id)
+        public IActionResult All(int? pageNumber)
         {
+            var currentPage = pageNumber ?? 1;
             var books = this.bookService.GetAllBooks()
-                .Select(b => mapper.Map<BookBaseViewModel>(b))
-                .ToList();
-            return View(books);
+                .Select(b => mapper.Map<BookBaseViewModel>(b));
+
+            var onePageOfEvents = books.ToPagedList(currentPage, 4);
+
+            var model = new AllBooksViewModel()
+            {
+                Books = onePageOfEvents,
+                CurrentPage = currentPage
+            };
+
+            return View(model);
         }
 
         [Route("Products/Books/Genre/{id:int}")]
-        public IActionResult AllByGenre(int id)
+        public IActionResult AllByGenre(int id, int? pageNumber)
         {
+            var currentPage = pageNumber ?? 1;
             var books = this.bookService.GetAllBooks()
                 .Where(b => b.GenreId == id)
-                .Select(b => mapper.Map<BookBaseViewModel>(b))
-                .ToList();
-            return View("All", books);
+                .Select(b => mapper.Map<BookBaseViewModel>(b));
+
+            var onePageOfEvents = books.ToPagedList(currentPage, 4);
+
+            var model = new AllBooksViewModel()
+            {
+                Books = onePageOfEvents,
+                CurrentPage = currentPage,
+                GenreId = id
+            };
+
+            return View("AllBooksByGenre", model);
         }
 
         // GET: Products/Books/Search
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Search(BookSearchViewModel model)
+        public IActionResult Search(string bookTitle, int? pageNumber)
         {
-            if (ModelState.IsValid)
+            if (!string.IsNullOrEmpty(bookTitle))
             {
-                var books = this.bookService.GetBooksByTitle(model.BookTitle)
-                    .Select(b => mapper.Map<BookBaseViewModel>(b))
-                    .ToList();
+                var currentPage = pageNumber ?? 1;
+                var books = this.bookService.GetBooksByTitle(bookTitle)
+                    .Select(b => mapper.Map<BookBaseViewModel>(b));
 
-                return View("All", books);
+                var onePageOfEvents = books.ToPagedList(currentPage, 4);
+
+                var viewModel = new AllBooksViewModel()
+                {
+                    Books = onePageOfEvents,
+                    CurrentPage = currentPage,
+                    BookTitle = bookTitle
+                };
+
+                return View("AllBooksByTitleSearch", viewModel);
             }
 
             return this.RedirectToAction("All", "Books").WithDanger("Book title is required!", "To search, please enter a book title.");
