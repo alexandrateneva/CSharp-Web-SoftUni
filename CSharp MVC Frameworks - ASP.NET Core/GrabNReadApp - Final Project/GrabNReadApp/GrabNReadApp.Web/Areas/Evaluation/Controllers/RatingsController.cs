@@ -4,6 +4,7 @@ using AutoMapper;
 using GrabNReadApp.Data.Models;
 using GrabNReadApp.Data.Models.Evaluation;
 using GrabNReadApp.Data.Services.Evaluation.Contracts;
+using GrabNReadApp.Web.Constants.Evaluation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,9 +35,11 @@ namespace GrabNReadApp.Web.Areas.Evaluation.Controllers
                 return Json(new { authorize = "Failed" });
             }
 
-            if (voteValue < 1 || voteValue > 5)
+            if (voteValue < RatingsConstants.VoteMinValue || voteValue > RatingsConstants.VoteMaxValue)
             {
-                return Json(new { voteValidation = "Failed" });
+                var message = string.Format(RatingsConstants.VoteValueValidationMessage,
+                    RatingsConstants.VoteMinValue, RatingsConstants.VoteMaxValue);
+                return Json(new { voteValidation = "Failed", voteValidationMsg = message });
             }
 
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;

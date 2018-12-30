@@ -9,7 +9,7 @@
                 location.href = "/Identity/Account/Login";
             }
             else if (response.voteValidation === "Failed") {
-                document.getElementById("ratingValidation").textContent = "Your vote must have value from 1 to 5.";
+                document.getElementById("ratingValidation").textContent = response.voteValidationMsg;
             }
             else {
                 var lastIndex = event.id;
@@ -30,9 +30,6 @@
                     }
                 );
             }
-        },
-        error: function (response) {
-            alert("Аn error occurred while rating a book.");
         }
     });
 }

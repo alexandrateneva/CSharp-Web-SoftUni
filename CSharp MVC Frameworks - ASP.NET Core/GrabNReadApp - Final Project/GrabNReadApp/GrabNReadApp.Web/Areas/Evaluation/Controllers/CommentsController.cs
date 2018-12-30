@@ -1,15 +1,11 @@
-﻿using System.Linq;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using GrabNReadApp.Data.Models;
 using GrabNReadApp.Data.Models.Evaluation;
 using GrabNReadApp.Data.Services.Evaluation.Contracts;
 using GrabNReadApp.Data.Services.Products.Contracts;
-using GrabNReadApp.Web.Areas.Evaluation.Models.Comments;
-using GrabNReadApp.Web.Extensions.Alerts;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+using GrabNReadApp.Web.Constants.Evaluation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -45,12 +41,15 @@ namespace GrabNReadApp.Web.Areas.Evaluation.Controllers
 
             if (await this.bookService.GetBookById(bookId) == null)
             {
-                return Json(new { bookValidation = "Failed" });
+                var message = CommentsConstants.BookNotFoundMessage;
+                return Json(new { bookValidation = "Failed", bookValidationMsg = message });
             }
 
-            if (string.IsNullOrEmpty(content) || content.Length < 5 || content.Length > 500)
+            if (string.IsNullOrEmpty(content) || content.Length < CommentsConstants.ContentMinLength || content.Length > CommentsConstants.ContentMaxLength)
             {
-                return Json(new { contentValidation = "Failed" });
+                var message = string.Format(CommentsConstants.CommentLengthValidationMessage,
+                    CommentsConstants.ContentMinLength, CommentsConstants.ContentMaxLength);
+                return Json(new { contentValidation = "Failed", contentValidationMsg = message });
             }
 
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -79,7 +78,8 @@ namespace GrabNReadApp.Web.Areas.Evaluation.Controllers
 
             if (comment == null)
             {
-                return Json(new { commentValidation = "Failed" });
+                var message = CommentsConstants.CommentNotFoundMessage;
+                return Json(new { commentValidation = "Failed", commentValidationMsg = message });
             }
 
             if (comment.Creator.UserName != User.Identity.Name && User.IsInRole("Admin"))

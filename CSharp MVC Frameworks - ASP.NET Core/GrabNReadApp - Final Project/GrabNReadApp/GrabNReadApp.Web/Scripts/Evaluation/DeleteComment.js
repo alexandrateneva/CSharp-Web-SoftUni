@@ -13,14 +13,11 @@
                 location.href = "/Identity/Account/Login";
             }
             else if (response.commentValidation === "Failed") {
-                document.getElementById("validation").textContent = "There is no comment with this id.";
+                document.getElementById("validation").textContent = response.commentValidationMsg;
             }
             else {
                 currentComment.style.display = 'none';
             }
-        },
-        error: function (response) {
-            alert("Аn error occurred while deleting a comment.");
         }
     });
 }

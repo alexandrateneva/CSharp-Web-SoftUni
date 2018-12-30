@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using GrabNReadApp.Web.Constants.Evaluation;
 
 namespace GrabNReadApp.Web.Areas.Evaluation.Models.Comments
 {
@@ -8,7 +9,7 @@ namespace GrabNReadApp.Web.Areas.Evaluation.Models.Comments
         public int BookId { get; set; }
 
         [Required(AllowEmptyStrings = false)]
-        [StringLength(500, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 5)]
+        [StringLength(CommentsConstants.ContentMaxLength, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = CommentsConstants.ContentMinLength)]
         public string Content { get; set; }
     }
 }

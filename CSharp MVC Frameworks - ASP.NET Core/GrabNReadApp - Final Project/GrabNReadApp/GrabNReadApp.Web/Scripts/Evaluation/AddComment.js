@@ -16,10 +16,10 @@
                 location.href = "/Identity/Account/Login";
             }
             else if (response.bookValidation === "Failed") {
-                document.getElementById("validation").textContent = "There is no book with this id.";
+                document.getElementById("validation").textContent = response.bookValidationMsg;
             }
             else if (response.contentValidation === "Failed") {
-                document.getElementById("validation").textContent = "Comment must contain between 5 and 500 symbols.";
+                document.getElementById("validation").textContent = response.contentValidationMsg;
             }
             else {
                 var comment = '<blockquote class="blockquote">' +
@@ -35,9 +35,6 @@
                 var comments = document.getElementById("newComment");
                 comments.insertBefore(d.firstChild, comments.firstChild);
             }
-        },
-        error: function (response) {
-            alert("Аn error occurred while adding a comment.");
         }
     });
 
