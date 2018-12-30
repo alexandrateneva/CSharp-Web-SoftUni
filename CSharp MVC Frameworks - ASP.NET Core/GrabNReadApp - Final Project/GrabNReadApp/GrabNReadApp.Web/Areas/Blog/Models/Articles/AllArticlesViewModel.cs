@@ -7,5 +7,7 @@ namespace GrabNReadApp.Web.Areas.Blog.Models.Articles
         public IPagedList<ArticleBaseViewModel> Articles { get; set; }
 
         public int CurrentPage { get; set; }
+
+        public string EmptyCollectionMessage { get; set; }
     }
 }

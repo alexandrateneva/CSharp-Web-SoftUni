@@ -9,6 +9,8 @@ namespace GrabNReadApp.Data.Services.Evaluation
 {
     public class RatingsService : IRatingService
     {
+        private const int DefaultRatingValue = 0;
+
         private readonly IRepository<Vote> ratingsRepository;
 
         public RatingsService(IRepository<Vote> ratingsRepository)
@@ -29,7 +31,7 @@ namespace GrabNReadApp.Data.Services.Evaluation
             var vote = this.ratingsRepository.All()
                 .FirstOrDefault(r => r.BookId == bookId && r.CreatorId == userId);
 
-            var voteValue = 0;
+            var voteValue = DefaultRatingValue;
             if (vote != null)
             {
                 voteValue = vote.VoteValue;
@@ -59,7 +61,7 @@ namespace GrabNReadApp.Data.Services.Evaluation
             var votes = this.ratingsRepository.All()
                 .Where(r => r.BookId == bookId);
 
-            var vote = 0.0;
+            var vote = (double)DefaultRatingValue;
             if (votes.Any())
             {
                 vote = votes.Average(x => x.VoteValue);

@@ -1,5 +1,6 @@
 ﻿using System;
 using GrabNReadApp.Data.Models;
+using GrabNReadApp.Web.Constants.Blog;
 
 namespace GrabNReadApp.Web.Areas.Blog.Models.Articles
 {
@@ -18,6 +19,6 @@ namespace GrabNReadApp.Web.Areas.Blog.Models.Articles
 
         public bool IsApprovedByAdmin { get; set; }
 
-        public string ShortContent => this.Content.Substring(0, 50) + "...";
+        public string ShortContent => this.Content.Substring(0, ArticleConstants.ShortContentLength) + ArticleConstants.EndOfShortContentString;
     }
 }

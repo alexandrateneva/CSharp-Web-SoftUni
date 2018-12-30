@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -8,7 +7,7 @@ using GrabNReadApp.Data.Models;
 using GrabNReadApp.Data.Models.Blog;
 using GrabNReadApp.Data.Services.Blog.Contracts;
 using GrabNReadApp.Web.Areas.Blog.Models.Articles;
-using GrabNReadApp.Web.Areas.Store.Models.Orders;
+using GrabNReadApp.Web.Constants.Blog;
 using GrabNReadApp.Web.Extensions.Alerts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -50,7 +49,7 @@ namespace GrabNReadApp.Web.Areas.Blog.Controllers
 
                 var result = await this.articleService.Create(article);
 
-                return this.RedirectToAction("Index", "Home").WithSuccess("Success!", "The article was successfully created.");
+                return this.RedirectToAction("Index", "Home").WithSuccess(ArticleConstants.SuccessMessageTitle, ArticleConstants.SuccessMessageForCreate);
             }
 
             return this.View(model);
@@ -59,7 +58,7 @@ namespace GrabNReadApp.Web.Areas.Blog.Controllers
         // GET: Blog/Articles/All
         public IActionResult All(int? pageNumber)
         {
-            var currentPage = pageNumber ?? 1;
+            var currentPage = pageNumber ?? ArticleConstants.FirstPageNumber;
 
             var articles = this.articleService
                 .GetAllArticles()
@@ -67,19 +66,20 @@ namespace GrabNReadApp.Web.Areas.Blog.Controllers
                 .OrderByDescending(x => x.PublishedOn);
 
             var filteredArticles = articles.Where(a => a.IsApprovedByAdmin == true);
-            
+
             var model = new AllArticlesViewModel()
             {
-                CurrentPage = currentPage
+                CurrentPage = currentPage,
+                EmptyCollectionMessage = ArticleConstants.EmptyCollectionMessage
             };
 
             if (User.IsInRole("Admin"))
             {
-                model.Articles = articles.ToPagedList(currentPage, 6);
+                model.Articles = articles.ToPagedList(currentPage, ArticleConstants.ArticlesPerPage);
                 return this.View(model);
             }
 
-            model.Articles = filteredArticles.ToPagedList(currentPage, 6);
+            model.Articles = filteredArticles.ToPagedList(currentPage, ArticleConstants.ArticlesPerPage);
             return this.View(model);
         }
 
@@ -89,7 +89,7 @@ namespace GrabNReadApp.Web.Areas.Blog.Controllers
             var article = this.articleService.GetArticleById(id);
             if (article == null)
             {
-                var error = new Error() { Message = $"There is no article with id - {id}." };
+                var error = new Error() { Message = string.Format(ArticleConstants.ErrorMessageForNotFound, id) };
                 return this.View("CustomError", error);
             }
 
@@ -104,14 +104,14 @@ namespace GrabNReadApp.Web.Areas.Blog.Controllers
             var article = this.articleService.GetArticleById(id);
             if (article == null)
             {
-                var error = new Error() { Message = $"There is no article with id - {id}." };
+                var error = new Error() { Message = string.Format(ArticleConstants.ErrorMessageForNotFound, id) };
                 return this.View("CustomError", error);
             }
 
             if (User.Identity.Name != article.Author.UserName)
             {
                 return this.RedirectToPage("/Account/Login", new { area = "Identity" })
-                    .WithDanger("You were redirected!", "Please login, you don't have access rights.");
+                    .WithDanger(ArticleConstants.RedirectedMessageTitle, ArticleConstants.NotAccessMessage);
             }
 
             var model = mapper.Map<ArticleEditViewModel>(article);
@@ -127,14 +127,14 @@ namespace GrabNReadApp.Web.Areas.Blog.Controllers
             var article = this.articleService.GetArticleById(model.Id);
             if (article == null)
             {
-                var error = new Error() { Message = $"There is no article with id - {model.Id}." };
+                var error = new Error() { Message = string.Format(ArticleConstants.ErrorMessageForNotFound, model.Id) };
                 return this.View("CustomError", error);
             }
 
             if (User.Identity.Name != article.Author.UserName)
             {
                 return this.RedirectToPage("/Account/Login", new { area = "Identity" })
-                   .WithDanger("You were redirected!", "Please login, you don't have access rights.");
+                   .WithDanger(ArticleConstants.RedirectedMessageTitle, ArticleConstants.NotAccessMessage);
             }
 
             if (ModelState.IsValid)
@@ -145,7 +145,7 @@ namespace GrabNReadApp.Web.Areas.Blog.Controllers
 
                 var result = await this.articleService.Edit(article);
 
-                return RedirectToAction("All", "Articles").WithSuccess("Success!", "The article was successfully edited.");
+                return RedirectToAction("All", "Articles").WithSuccess(ArticleConstants.SuccessMessageTitle, ArticleConstants.SuccessMessageForEdit);
             }
             return this.View(model);
         }
@@ -157,14 +157,14 @@ namespace GrabNReadApp.Web.Areas.Blog.Controllers
             var article = this.articleService.GetAllArticles().FirstOrDefault(g => g.Id == id);
             if (article == null)
             {
-                var error = new Error() { Message = $"There is no article with id - {id}." };
+                var error = new Error() { Message = string.Format(ArticleConstants.ErrorMessageForNotFound, id) };
                 return this.View("CustomError", error);
             }
 
             if (User.Identity.Name != article.Author.UserName && !User.IsInRole("Admin"))
             {
                 return this.RedirectToPage("/Account/Login", new { area = "Identity" })
-                     .WithDanger("You were redirected!", "Please login, you don't have access rights.");
+                     .WithDanger(ArticleConstants.RedirectedMessageTitle, ArticleConstants.NotAccessMessage);
             }
 
             var model = mapper.Map<ArticleDeleteViewModel>(article);
@@ -181,7 +181,7 @@ namespace GrabNReadApp.Web.Areas.Blog.Controllers
             if (User.Identity.Name != article.Author.UserName && !User.IsInRole("Admin"))
             {
                 return this.RedirectToPage("/Account/Login", new { area = "Identity" })
-                     .WithDanger("You were redirected!", "Please login, you don't have access rights.");
+                     .WithDanger(ArticleConstants.RedirectedMessageTitle, ArticleConstants.NotAccessMessage);
             }
 
             var isDeleted = this.articleService.Delete(id);
@@ -190,7 +190,7 @@ namespace GrabNReadApp.Web.Areas.Blog.Controllers
                 var error = new Error() { Message = "Delete failed." };
                 return this.View("CustomError", error);
             }
-            return RedirectToAction("All", "Articles").WithSuccess("Success!", "The article was successfully deleted.");
+            return RedirectToAction("All", "Articles").WithSuccess(ArticleConstants.SuccessMessageTitle, ArticleConstants.SuccessMessageForDelete);
         }
 
         // GET: Blog/Articles/ChangeStatus/5
@@ -200,14 +200,14 @@ namespace GrabNReadApp.Web.Areas.Blog.Controllers
             var article = this.articleService.GetArticleById(id);
             if (article == null)
             {
-                var error = new Error() { Message = $"There is no article with id - {id}." };
+                var error = new Error() { Message = string.Format(ArticleConstants.ErrorMessageForNotFound, id) };
                 return this.View("CustomError", error);
             }
 
             article.IsApprovedByAdmin = !article.IsApprovedByAdmin;
             var result = await this.articleService.Edit(article);
 
-            return RedirectToAction("All", "Articles").WithSuccess("Success!", "You changed the article status successfully.");
+            return RedirectToAction("All", "Articles").WithSuccess(ArticleConstants.SuccessMessageTitle, ArticleConstants.SuccessMessageForChangeStatus);
         }
     }
 }

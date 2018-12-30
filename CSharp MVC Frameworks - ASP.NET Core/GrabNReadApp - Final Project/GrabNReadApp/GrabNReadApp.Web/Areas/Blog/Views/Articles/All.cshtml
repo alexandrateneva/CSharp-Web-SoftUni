@@ -45,7 +45,7 @@
 @if (!Model.Articles.Any())
 {
     <div class="text-center">
-        <p><em>Sorry, there are no articles.</em></p>
+        <p><em>@Model.EmptyCollectionMessage</em></p>
     </div>
 }
 
