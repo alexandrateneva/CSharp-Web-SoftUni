@@ -8,6 +8,9 @@
             if (response.authorize === "Failed") {
                 location.href = "/Identity/Account/Login";
             }
+            else if (response.bookValidation === "Failed") {
+                document.getElementById("ratingValidation").textContent = response.bookValidationMsg;
+            }
             else if (response.voteValidation === "Failed") {
                 document.getElementById("ratingValidation").textContent = response.voteValidationMsg;
             }

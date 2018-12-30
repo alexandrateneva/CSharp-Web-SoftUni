@@ -4,6 +4,7 @@ using AutoMapper;
 using GrabNReadApp.Data.Models;
 using GrabNReadApp.Data.Models.Evaluation;
 using GrabNReadApp.Data.Services.Evaluation.Contracts;
+using GrabNReadApp.Data.Services.Products.Contracts;
 using GrabNReadApp.Web.Constants.Evaluation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,14 +17,17 @@ namespace GrabNReadApp.Web.Areas.Evaluation.Controllers
         private readonly IMapper mapper;
         private readonly SignInManager<GrabNReadAppUser> signInManager;
         private readonly IRatingService ratingsService;
+        private readonly IBookService bookService;
 
         public RatingsController(IMapper mapper,
             SignInManager<GrabNReadAppUser> signInManager,
-            IRatingService ratingsService)
+            IRatingService ratingsService,
+            IBookService bookService)
         {
             this.mapper = mapper;
             this.signInManager = signInManager;
             this.ratingsService = ratingsService;
+            this.bookService = bookService;
         }
 
         // POST: Evaluation/Ratings/Vote
@@ -33,6 +37,12 @@ namespace GrabNReadApp.Web.Areas.Evaluation.Controllers
             if (!signInManager.IsSignedIn(User))
             {
                 return Json(new { authorize = "Failed" });
+            }
+
+            var book =  await this.bookService.GetBookById(bookId);
+            if (book == null)
+            {
+                return Json(new { bookValidation = "Failed", bookValidationMsg = RatingsConstants.BookNotFoundMessage });
             }
 
             if (voteValue < RatingsConstants.VoteMinValue || voteValue > RatingsConstants.VoteMaxValue)

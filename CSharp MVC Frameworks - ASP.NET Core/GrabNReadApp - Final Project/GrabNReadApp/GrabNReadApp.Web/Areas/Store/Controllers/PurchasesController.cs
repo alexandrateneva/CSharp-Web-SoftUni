@@ -7,6 +7,7 @@ using GrabNReadApp.Data.Models.Store;
 using GrabNReadApp.Data.Services.Products.Contracts;
 using GrabNReadApp.Data.Services.Store.Contracts;
 using GrabNReadApp.Web.Areas.Store.Models.Purchases;
+using GrabNReadApp.Web.Constants.Store;
 using GrabNReadApp.Web.Extensions.Alerts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -42,7 +43,7 @@ namespace GrabNReadApp.Web.Areas.Store.Controllers
         {
             if (!signInManager.IsSignedIn(User))
             {
-                return Redirect("/Identity/Account/Login").WithWarning("You were redirected!", "To make order, please first Login!");
+                return Redirect("/Identity/Account/Login").WithWarning(PurchasesConstants.RedirectedMessageTitle, PurchasesConstants.RedirectedMessage);
             }
 
             var book = await this.bookService.GetBookById(id);
@@ -51,7 +52,7 @@ namespace GrabNReadApp.Web.Areas.Store.Controllers
                 BookId = id,
                 Book = book,
                 BookCount = 1,
-                TotalSum = book.Price * 1
+                TotalSum = book.Price * PurchasesConstants.DefaultCount
             };
             return View(model);
         }
@@ -74,7 +75,7 @@ namespace GrabNReadApp.Web.Areas.Store.Controllers
                 var purchase = mapper.Map<Purchase>(model);
                 var result = await this.purchasesService.Create(purchase);
 
-                return RedirectToAction("All", "Books", new { area = "Products" }).WithSuccess("Success!", "Тhe book has been successfully added to your cart.");
+                return RedirectToAction("All", "Books", new { area = "Products" }).WithSuccess(PurchasesConstants.SuccessMessageTitle, PurchasesConstants.SuccessfullyAddedToCartMessage);
             }
 
             return this.View(model);
@@ -89,19 +90,19 @@ namespace GrabNReadApp.Web.Areas.Store.Controllers
 
             if (purchase.CustomerId != userId && !User.IsInRole("Admin"))
             {
-                return Redirect("/Identity/Account/Login").WithDanger("You were redirected.",
-                    "Insufficient access rights to perform the operation.");
+                return Redirect("/Identity/Account/Login").WithDanger(PurchasesConstants.RedirectedMessageTitle,
+                    PurchasesConstants.NotAccessMessage);
             }
 
             var purchaseDelete = this.purchasesService.Delete(id);
             if (!purchaseDelete)
             {
-                var error = new Error() { Message = $"There is no purchase with id - {id}." };
+                var error = new Error() { Message = string.Format(PurchasesConstants.ErrorMessageForNotFound, id) };
                 return this.View("CustomError", error);
             }
 
             var referer = Request.Headers["Referer"].ToString();
-            return Redirect(referer).WithSuccess("Success!", "Тhe purchase has been successfully removed.");
+            return Redirect(referer).WithSuccess(PurchasesConstants.SuccessMessageTitle, PurchasesConstants.SuccessMessageForDelete);
         }
     }
 }

@@ -9,6 +9,7 @@ using GrabNReadApp.Data.Models.Store;
 using GrabNReadApp.Data.Services.Products.Contracts;
 using GrabNReadApp.Data.Services.Store.Contracts;
 using GrabNReadApp.Web.Areas.Store.Models.Rentals;
+using GrabNReadApp.Web.Constants.Store;
 using GrabNReadApp.Web.Extensions.Alerts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -44,7 +45,7 @@ namespace GrabNReadApp.Web.Areas.Store.Controllers
         {
             if (!signInManager.IsSignedIn(User))
             {
-                return Redirect("/Identity/Account/Login").WithWarning("You were redirected!", "To make order, please first Login!");
+                return Redirect("/Identity/Account/Login").WithWarning(RentalsConstants.RedirectedMessageTitle, RentalsConstants.RedirectedMessage);
             }
 
             var book = await this.bookService.GetBookById(id);
@@ -53,8 +54,8 @@ namespace GrabNReadApp.Web.Areas.Store.Controllers
                 BookId = id,
                 Book = book,
                 StartDate = DateTime.UtcNow,
-                EndDate = DateTime.UtcNow.AddDays(1),
-                TotalSum = book.PricePerDay * 1
+                EndDate = DateTime.UtcNow.AddDays(RentalsConstants.DefaultPeriodInDays),
+                TotalSum = book.PricePerDay * RentalsConstants.DefaultCount
             };
             return View(model);
         }
@@ -70,15 +71,15 @@ namespace GrabNReadApp.Web.Areas.Store.Controllers
 
             if (DateTime.Today > model.StartDate)
             {
-                return this.View(model).WithDanger("Error!", "You can not rent a book for a past times.");
+                return this.View(model).WithDanger(RentalsConstants.ErrorMessageTitle, RentalsConstants.PastTimeErrorMessage);
             }
             else if (model.StartDate >= model.EndDate)
             {
-                return this.View(model).WithDanger("Error!", "End date must be greater than the start date.");
+                return this.View(model).WithDanger(RentalsConstants.ErrorMessageTitle, RentalsConstants.StartDateGreaterThanEndDateErrorMessage);
             }
-            else if ((model.EndDate - model.StartDate).Days > 30)
+            else if ((model.EndDate - model.StartDate).Days > RentalsConstants.MaximumPeriodInDays)
             {
-                return this.View(model).WithDanger("Error!", "You can rent the book for a maximum period of 30 days.");
+                return this.View(model).WithDanger(RentalsConstants.ErrorMessageTitle, string.Format(RentalsConstants.MaximumPeriodErrorMessage, RentalsConstants.MaximumPeriodInDays));
             }
 
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -91,7 +92,7 @@ namespace GrabNReadApp.Web.Areas.Store.Controllers
                 var rental = mapper.Map<Rental>(model);
                 var result = await this.rentalsService.Create(rental);
 
-                return RedirectToAction("All", "Books", new { area = "Products" }).WithSuccess("Success!", "Тhe book has been successfully added to your cart.");
+                return RedirectToAction("All", "Books", new { area = "Products" }).WithSuccess(RentalsConstants.SuccessMessageTitle, RentalsConstants.SuccessfullyAddedToCartMessage);
             }
 
             return this.View(model);
@@ -106,19 +107,19 @@ namespace GrabNReadApp.Web.Areas.Store.Controllers
 
             if (rental.CustomerId != userId && !User.IsInRole("Admin"))
             {
-                return Redirect("/Identity/Account/Login").WithDanger("You were redirected.",
-                    "Insufficient access rights to perform the operation.");
+                return Redirect("/Identity/Account/Login").WithDanger(RentalsConstants.RedirectedMessageTitle,
+                    RentalsConstants.NotAccessMessage);
             }
 
             var rentalDelete = this.rentalsService.Delete(id);
             if (!rentalDelete)
             {
-                var error = new Error() { Message = $"There is no rental with id - {id}." };
+                var error = new Error() { Message = string.Format(RentalsConstants.ErrorMessageForNotFound, id) };
                 return this.View("CustomError", error);
             }
 
             var referer = Request.Headers["Referer"].ToString();
-            return Redirect(referer).WithSuccess("Success!", "Тhe rental has been successfully removed.");
+            return Redirect(referer).WithSuccess(RentalsConstants.SuccessMessageTitle, RentalsConstants.SuccessMessageForDelete);
         }
     }
 }

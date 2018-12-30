@@ -6,6 +6,7 @@ using GrabNReadApp.Data.Models;
 using GrabNReadApp.Data.Models.Store;
 using GrabNReadApp.Data.Services.Store.Contracts;
 using GrabNReadApp.Web.Areas.Store.Models.Orders;
+using GrabNReadApp.Web.Constants.Store;
 using GrabNReadApp.Web.Extensions.Alerts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -66,7 +67,7 @@ namespace GrabNReadApp.Web.Areas.Store.Controllers
 
                 await this.ordersService.EmptyCurrentUserOrder(model.Id, order);
 
-                return RedirectToAction("All", "Books", new { area = "Products" }).WithSuccess("Thank you!", "Your order was successful.");
+                return RedirectToAction("All", "Books", new { area = "Products" }).WithSuccess(OrdersConstants.OrderSuccessMessageTitle, OrdersConstants.SuccessMessageForOrder);
             }
 
             return this.View(model);
@@ -76,10 +77,10 @@ namespace GrabNReadApp.Web.Areas.Store.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult All(int? pageNumber)
         {
-            var currentPage = pageNumber ?? 1;
+            var currentPage = pageNumber ?? OrdersConstants.FirstPageNumber;
             var orders = this.ordersService.GetAllFinishedOrders().OrderByDescending(o => o.OrderedOn);
 
-            var onePageOfEvents = orders.ToPagedList(currentPage, 5);
+            var onePageOfEvents = orders.ToPagedList(currentPage, OrdersConstants.OrdersPerPage);
 
             var model = new AllOrdersViewModel()
             {
@@ -95,6 +96,12 @@ namespace GrabNReadApp.Web.Areas.Store.Controllers
         public IActionResult Details(int id)
         {
             var order = this.ordersService.GetOrderByIdWithPurchasesAndRentals(id);
+            if (order == null)
+            {
+                var error = new Error() { Message = string.Format(OrdersConstants.ErrorMessageForNotFound, id) };
+                return this.View("CustomError", error);
+            }
+
             var model = mapper.Map<OrderDetailsViewModel>(order);
             return View(model);
         }
@@ -106,10 +113,10 @@ namespace GrabNReadApp.Web.Areas.Store.Controllers
             var isDeleted = this.ordersService.Delete(id);
             if (!isDeleted)
             {
-                var error = new Error() { Message = "Delete failed." };
+                var error = new Error() { Message = OrdersConstants.ErrorMessageForDelete };
                 return this.View("CustomError", error);
             }
-            return RedirectToAction("All", "Orders").WithSuccess("Success!", "The order was successfully deleted.");
+            return RedirectToAction("All", "Orders").WithSuccess(OrdersConstants.SuccessMessageTitle, OrdersConstants.SuccessMessageForDelete);
         }
     }
 }

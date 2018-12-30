@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using GrabNReadApp.Data.Models;
 using GrabNReadApp.Data.Models.Store;
+using GrabNReadApp.Web.Constants.Store;
 
 namespace GrabNReadApp.Web.Areas.Store.Models.Orders
 {
@@ -24,12 +25,12 @@ namespace GrabNReadApp.Web.Areas.Store.Models.Orders
         public DateTime OrderedOn { get; set; }
 
         [Required]
-        [StringLength(200, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 10)]
+        [StringLength(OrdersConstants.AddressMaxLength, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = OrdersConstants.AddressMinLength)]
         public string Address { get; set; }
 
         [Required]
         [Display(Name = "Recipient Name")]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 5)]
+        [StringLength(OrdersConstants.RecipientNameMaxLength, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = OrdersConstants.RecipientNameMinLength)]
         public string RecipientName { get; set; }
 
         [Required]
@@ -38,7 +39,7 @@ namespace GrabNReadApp.Web.Areas.Store.Models.Orders
 
         [Required]
         [Display(Name = "Delivery Options")]
-        [Range(0.01, 1000.00)]
+        [Range(OrdersConstants.DeliveryMinValue, OrdersConstants.DeliveryMaxValue)]
         public decimal Delivery { get; set; }
 
         public decimal TotalSum { get; set; }

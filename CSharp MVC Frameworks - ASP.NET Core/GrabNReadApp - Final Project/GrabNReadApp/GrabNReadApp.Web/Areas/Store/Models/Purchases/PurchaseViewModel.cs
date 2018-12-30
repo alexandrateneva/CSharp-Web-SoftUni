@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using GrabNReadApp.Data.Models.Products;
+using GrabNReadApp.Web.Constants.Store;
 
 namespace GrabNReadApp.Web.Areas.Store.Models.Purchases
 {
@@ -17,7 +18,7 @@ namespace GrabNReadApp.Web.Areas.Store.Models.Purchases
 
         [Required]
         [Display(Name = "Book Count")]
-        [Range(1, 20, ErrorMessage = "Уou can buy from 1 to 20 pieces of this book.")]
+        [Range(PurchasesConstants.BooksCountMinValue, PurchasesConstants.BooksCountMaxValue, ErrorMessage = PurchasesConstants.ErrorMessageForBookCount)]
         public int BookCount { get; set; }
 
         public decimal TotalSum { get; set; }
