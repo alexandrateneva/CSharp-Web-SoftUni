@@ -8,7 +8,7 @@ namespace GrabNReadApp.Web.Areas.Evaluation.Models.Comments
         public int BookId { get; set; }
 
         [Required(AllowEmptyStrings = false)]
-        [StringLength(200, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 5)]
+        [StringLength(500, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 5)]
         public string Content { get; set; }
     }
 }

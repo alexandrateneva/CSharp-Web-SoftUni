@@ -63,7 +63,8 @@ namespace GrabNReadApp.Web.Areas.Blog.Controllers
 
             var articles = this.articleService
                 .GetAllArticles()
-                .Select(a => mapper.Map<ArticleBaseViewModel>(a));
+                .Select(a => mapper.Map<ArticleBaseViewModel>(a))
+                .OrderByDescending(x => x.PublishedOn);
 
             var filteredArticles = articles.Where(a => a.IsApprovedByAdmin == true);
             

@@ -26,7 +26,7 @@ namespace GrabNReadApp.Data.Services.Products
 
         public IEnumerable<Book> GetAllBooks()
         {
-            var books = this.bookRepository.All();
+            var books = this.bookRepository.All().OrderByDescending(b => b.ReleaseDate);
 
             return books;
         }

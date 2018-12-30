@@ -48,7 +48,7 @@ namespace GrabNReadApp.Web.Areas.Evaluation.Controllers
                 return Json(new { bookValidation = "Failed" });
             }
 
-            if (string.IsNullOrEmpty(content) || content.Length < 5 || content.Length > 200)
+            if (string.IsNullOrEmpty(content) || content.Length < 5 || content.Length > 500)
             {
                 return Json(new { contentValidation = "Failed" });
             }

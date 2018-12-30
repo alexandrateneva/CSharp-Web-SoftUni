@@ -18,7 +18,7 @@
                         </div>
                         @if (User.IsInRole("Admin"))
                         {
-                            <div class="card-body">
+                            <div class="card-body" style="height: 3rem;">
                                 <div class="row justify-content-around">
                                     <a class="btn btn-sm btn-outline-warning" asp-area="Products" asp-controller="Genres" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
                                     <a class="btn btn-sm btn-outline-danger" asp-area="Products" asp-controller="Genres" asp-action="Delete" asp-route-id="@item.Id">Delete</a>

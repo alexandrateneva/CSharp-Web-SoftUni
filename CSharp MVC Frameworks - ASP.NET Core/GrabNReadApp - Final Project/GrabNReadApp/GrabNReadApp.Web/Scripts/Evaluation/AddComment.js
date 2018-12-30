@@ -19,7 +19,7 @@
                 document.getElementById("validation").textContent = "There is no book with this id.";
             }
             else if (response.contentValidation === "Failed") {
-                document.getElementById("validation").textContent = "Comment must contain between 5 and 200 symbols.";
+                document.getElementById("validation").textContent = "Comment must contain between 5 and 500 symbols.";
             }
             else {
                 var comment = '<blockquote class="blockquote">' +
