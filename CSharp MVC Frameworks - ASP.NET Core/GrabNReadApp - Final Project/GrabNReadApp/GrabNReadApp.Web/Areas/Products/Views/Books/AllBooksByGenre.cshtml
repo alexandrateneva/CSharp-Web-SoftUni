@@ -30,6 +30,6 @@
 @if (!Model.Books.Any())
 {
     <div class="text-center">
-        <p><em>There are no books of this genre.</em></p>
+        <p><em>@Model.EmptyCollectionMessage</em></p>
     </div>
 }

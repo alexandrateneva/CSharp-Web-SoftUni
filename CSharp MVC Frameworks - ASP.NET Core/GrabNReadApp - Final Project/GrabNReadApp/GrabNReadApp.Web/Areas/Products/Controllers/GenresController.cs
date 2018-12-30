@@ -8,6 +8,7 @@ using GrabNReadApp.Data.Models;
 using GrabNReadApp.Data.Models.Products;
 using GrabNReadApp.Data.Services.Products.Contracts;
 using GrabNReadApp.Web.Areas.Products.Models.Genres;
+using GrabNReadApp.Web.Constants.Products;
 using GrabNReadApp.Web.Extensions.Alerts;
 using GrabNReadApp.Web.Helper;
 using Microsoft.AspNetCore.Authorization;
@@ -54,7 +55,7 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
                 var genre = mapper.Map<Genre>(model);
                 var result = await this.genreService.Create(genre);
 
-                return RedirectToAction("All", "Genres").WithSuccess("Success!", "The genre was successfully created.");
+                return RedirectToAction("All", "Genres").WithSuccess(GenresConstants.SuccessMessageTitle, GenresConstants.SuccessMessageForCreate);
             }
 
             return this.View(model);
@@ -77,7 +78,7 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
             var genre = this.genreService.GetAllGenres().FirstOrDefault(g => g.Id == id);
             if (genre == null)
             {
-                var error = new Error() { Message = $"There is no genre with id - {id}." };
+                var error = new Error() { Message = string.Format(GenresConstants.ErrorMessageForNotFound, id) };
                 return this.View("CustomError", error);
             }
             var model = mapper.Map<GenreEditViewModel>(genre);
@@ -103,7 +104,7 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
                 var genre = mapper.Map<Genre>(model);
                 var result = await this.genreService.Edit(genre);
 
-                return RedirectToAction("All", "Genres").WithSuccess("Success!", "The book was successfully edited.");
+                return RedirectToAction("All", "Genres").WithSuccess(GenresConstants.SuccessMessageTitle, GenresConstants.SuccessMessageForEdit);
             }
 
             return this.View(model);
@@ -116,7 +117,7 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
             var genre = this.genreService.GetAllGenres().FirstOrDefault(g => g.Id == id);
             if (genre == null)
             {
-                var error = new Error() { Message = $"There is no genre with id - {id}." };
+                var error = new Error() { Message = string.Format(GenresConstants.ErrorMessageForNotFound, id) };
                 return this.View("CustomError", error);
             }
             var model = mapper.Map<GenreDeleteViewModel>(genre);
@@ -132,10 +133,10 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
             var isDeleted = this.genreService.Delete(id);
             if (!isDeleted)
             {
-                var error = new Error() { Message = "Delete failed." };
+                var error = new Error() { Message = GenresConstants.ErrorMessageForDelete};
                 return this.View("CustomError", error);
             }
-            return RedirectToAction("All", "Genres").WithSuccess("Success!", "The book was successfully deleted.");
+            return RedirectToAction("All", "Genres").WithSuccess(GenresConstants.SuccessMessageTitle, GenresConstants.SuccessMessageForDelete);
         }
     }
 }

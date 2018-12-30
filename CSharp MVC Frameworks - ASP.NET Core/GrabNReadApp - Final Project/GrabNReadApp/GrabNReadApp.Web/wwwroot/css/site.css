@@ -161,5 +161,5 @@ a.fill-div {
 }
 
 .table-td-desc {
-    word-break: break-all;
+    white-space: pre-wrap;
 }

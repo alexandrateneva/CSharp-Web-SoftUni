@@ -29,6 +29,6 @@
 @if (!Model.Books.Any())
 {
     <div class="text-center">
-        <p><em>Sorry, there are no books.</em></p>
+        <p><em>@Model.EmptyCollectionMessage</em></p>
     </div>
 }

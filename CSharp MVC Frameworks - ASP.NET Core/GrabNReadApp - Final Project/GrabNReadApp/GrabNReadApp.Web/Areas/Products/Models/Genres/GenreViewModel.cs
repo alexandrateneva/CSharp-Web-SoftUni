@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using GrabNReadApp.Web.Constants.Products;
 using Microsoft.AspNetCore.Http;
 
 namespace GrabNReadApp.Web.Areas.Products.Models.Genres
@@ -6,7 +7,7 @@ namespace GrabNReadApp.Web.Areas.Products.Models.Genres
     public class GenreViewModel
     {
         [Required]
-        [StringLength(50, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 5)]
+        [StringLength(GenresConstants.NameMaxLength, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = GenresConstants.NameMinLength)]
         public string Name { get; set; }
 
         [Required]

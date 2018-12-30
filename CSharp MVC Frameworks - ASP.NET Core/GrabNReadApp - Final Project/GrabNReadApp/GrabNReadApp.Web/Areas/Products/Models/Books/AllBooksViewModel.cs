@@ -11,5 +11,7 @@ namespace GrabNReadApp.Web.Areas.Products.Models.Books
         public int GenreId { get; set; }
 
         public string BookTitle { get; set; }
+
+        public string EmptyCollectionMessage { get; set; }
     }
 }

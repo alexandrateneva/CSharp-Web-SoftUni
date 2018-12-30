@@ -12,6 +12,7 @@ using GrabNReadApp.Data.Services.Evaluation.Contracts;
 using GrabNReadApp.Data.Services.Products.Contracts;
 using GrabNReadApp.Web.Areas.Evaluation.Models.Comments;
 using GrabNReadApp.Web.Areas.Products.Models.Books;
+using GrabNReadApp.Web.Constants.Products;
 using GrabNReadApp.Web.Extensions.Alerts;
 using GrabNReadApp.Web.Helper;
 using Microsoft.AspNetCore.Authorization;
@@ -72,7 +73,7 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
                 var book = mapper.Map<Book>(model);
                 var result = await this.bookService.Create(book);
 
-                return RedirectToAction("All", "Books").WithSuccess("Success!", "The book was successfully created.");
+                return RedirectToAction("All", "Books").WithSuccess(BooksConstants.SuccessMessageTitle, BooksConstants.SuccessMessageForCreate);
             }
 
             return this.View(model);
@@ -81,16 +82,17 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
         // GET: Products/Books/All
         public IActionResult All(int? pageNumber)
         {
-            var currentPage = pageNumber ?? 1;
+            var currentPage = pageNumber ?? BooksConstants.FirstPageNumber;
             var books = this.bookService.GetAllBooks()
                 .Select(b => mapper.Map<BookBaseViewModel>(b));
 
-            var onePageOfEvents = books.ToPagedList(currentPage, 4);
+            var onePageOfEvents = books.ToPagedList(currentPage, BooksConstants.BooksPerPage);
 
             var model = new AllBooksViewModel()
             {
                 Books = onePageOfEvents,
-                CurrentPage = currentPage
+                CurrentPage = currentPage,
+                EmptyCollectionMessage = BooksConstants.EmptyCollectionMessage
             };
 
             return View(model);
@@ -99,18 +101,19 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
         [Route("Products/Books/Genre/{id:int}")]
         public IActionResult AllByGenre(int id, int? pageNumber)
         {
-            var currentPage = pageNumber ?? 1;
+            var currentPage = pageNumber ?? BooksConstants.FirstPageNumber;
             var books = this.bookService.GetAllBooks()
                 .Where(b => b.GenreId == id)
                 .Select(b => mapper.Map<BookBaseViewModel>(b));
 
-            var onePageOfEvents = books.ToPagedList(currentPage, 4);
+            var onePageOfEvents = books.ToPagedList(currentPage, BooksConstants.BooksPerPage);
 
             var model = new AllBooksViewModel()
             {
                 Books = onePageOfEvents,
                 CurrentPage = currentPage,
-                GenreId = id
+                GenreId = id,
+                EmptyCollectionMessage = BooksConstants.NoBooksByGenreMessage
             };
 
             return View("AllBooksByGenre", model);
@@ -121,23 +124,24 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
         {
             if (!string.IsNullOrEmpty(bookTitle))
             {
-                var currentPage = pageNumber ?? 1;
+                var currentPage = pageNumber ?? BooksConstants.FirstPageNumber;
                 var books = this.bookService.GetBooksByTitle(bookTitle)
                     .Select(b => mapper.Map<BookBaseViewModel>(b));
 
-                var onePageOfEvents = books.ToPagedList(currentPage, 4);
+                var onePageOfEvents = books.ToPagedList(currentPage, BooksConstants.BooksPerPage);
 
                 var viewModel = new AllBooksViewModel()
                 {
                     Books = onePageOfEvents,
                     CurrentPage = currentPage,
-                    BookTitle = bookTitle
+                    BookTitle = bookTitle,
+                    EmptyCollectionMessage = BooksConstants.NoBooksByTitleSearchMessage
                 };
 
                 return View("AllBooksByTitleSearch", viewModel);
             }
 
-            return this.RedirectToAction("All", "Books").WithDanger("Book title is required!", "To search, please enter a book title.");
+            return this.RedirectToAction("All", "Books").WithDanger(BooksConstants.ErrorMessageTitleForSearch, BooksConstants.ErrorMessageForSearch);
         }
 
         // GET: Products/Books/Edit/5
@@ -150,7 +154,7 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
             var book = this.bookService.GetAllBooks().FirstOrDefault(g => g.Id == id);
             if (book == null)
             {
-                var error = new Error() { Message = $"There is no book with id - {id}." };
+                var error = new Error() { Message = string.Format(BooksConstants.ErrorMessageForNotFound, id) };
                 return this.View("CustomError", error);
             }
             var model = mapper.Map<BookEditViewModel>(book);
@@ -176,7 +180,7 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
                 var book = mapper.Map<Book>(model);
                 var result = await this.bookService.Edit(book);
 
-                return RedirectToAction("All", "Books").WithSuccess("Success!", "The book was successfully edited."); 
+                return RedirectToAction("All", "Books").WithSuccess(BooksConstants.SuccessMessageTitle, BooksConstants.SuccessMessageForEdit); 
             }
 
             return this.View(model);
@@ -189,7 +193,7 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
             var book = this.bookService.GetAllBooks().FirstOrDefault(g => g.Id == id);
             if (book == null)
             {
-                var error = new Error() { Message = $"There is no book with id - {id}." };
+                var error = new Error() { Message = string.Format(BooksConstants.ErrorMessageForNotFound, id) };
                 return this.View("CustomError", error);
             }
             var model = mapper.Map<BookDeleteViewModel>(book);
@@ -205,10 +209,10 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
             var isDeleted = this.bookService.Delete(id);
             if (!isDeleted)
             {
-                var error = new Error() { Message = "Delete failed." };
+                var error = new Error() { Message = BooksConstants.ErrorMessageForDelete };
                 return this.View("CustomError", error);
             }
-            return RedirectToAction("All", "Books").WithSuccess("Success!", "The book was successfully deleted."); 
+            return RedirectToAction("All", "Books").WithSuccess(BooksConstants.SuccessMessageTitle, BooksConstants.SuccessMessageForDelete); 
         }
 
         // GET: Products/Books/Details/5
@@ -217,7 +221,7 @@ namespace GrabNReadApp.Web.Areas.Products.Controllers
             var book = this.bookService.GetAllBooks().FirstOrDefault(g => g.Id == id);
             if (book == null)
             {
-                var error = new Error() { Message = $"There is no book with id - {id}." };
+                var error = new Error() { Message = string.Format(BooksConstants.ErrorMessageForNotFound, id) };
                 return this.View("CustomError", error);
             }
 

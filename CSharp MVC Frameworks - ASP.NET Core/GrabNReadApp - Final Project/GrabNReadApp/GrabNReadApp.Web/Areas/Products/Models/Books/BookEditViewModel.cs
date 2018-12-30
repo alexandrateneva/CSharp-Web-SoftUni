@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using GrabNReadApp.Data.Models.Enums;
+using GrabNReadApp.Web.Constants.Products;
 using Microsoft.AspNetCore.Http;
 
 namespace GrabNReadApp.Web.Areas.Products.Models.Books
@@ -13,11 +14,11 @@ namespace GrabNReadApp.Web.Areas.Products.Models.Books
         public int Id { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 5)]
+        [StringLength(BooksConstants.TitleMaxLength, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = BooksConstants.TitleMinLength)]
         public string Title { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 5)]
+        [StringLength(BooksConstants.AuthorMaxLength, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = BooksConstants.AuthorMinLength)]
         public string Author { get; set; }
 
         [DataType(DataType.Date)]
@@ -25,16 +26,16 @@ namespace GrabNReadApp.Web.Areas.Products.Models.Books
         public DateTime ReleaseDate { get; set; }
 
         [Required]
-        [Range(0.01, 1000000.00)]
+        [Range(BooksConstants.PriceMinValue, BooksConstants.PriceMaxValue)]
         public decimal Price { get; set; }
 
         [Required]
-        [Range(0.01, 1000000.00)]
+        [Range(BooksConstants.PriceMinValue, BooksConstants.PriceMaxValue)]
         [Display(Name = "Price per Day")]
         public decimal PricePerDay { get; set; }
 
         [Required]
-        [Range(1, Int32.MaxValue)]
+        [Range(BooksConstants.NumberOfPagesMinValue, BooksConstants.NumberOfPagesMaxValue)]
         [Display(Name = "Number of Pages")]
         public int Pages { get; set; }
 
@@ -43,7 +44,7 @@ namespace GrabNReadApp.Web.Areas.Products.Models.Books
         public CoverType CoverType { get; set; }
 
         [Required]
-        [StringLength(1000, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 20)]
+        [StringLength(BooksConstants.DescriptionMaxLength, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = BooksConstants.DescriptionMinLength)]
         public string Description { get; set; }
 
         [DataType(DataType.Upload)]
