@@ -8,9 +8,9 @@ using Xunit;
 
 namespace GrabNReadApp.Tests.Data.Services.Blog
 {
-    public class ArticlesTest
+    public class ArticlesServiceTest
     {
-        public ArticlesTest()
+        public ArticlesServiceTest()
         {
             TestInitializer.Initialize();
         }
@@ -60,7 +60,7 @@ namespace GrabNReadApp.Tests.Data.Services.Blog
             //Act
             var enteredArticle = await articleService.Create(newArticle);
 
-            var articlesCount = articleService.GetAllArticles().ToList().Count;
+            var articlesCount = db.Articles.Count();
 
             //Assert
             Assert.Equal(4, articlesCount);
