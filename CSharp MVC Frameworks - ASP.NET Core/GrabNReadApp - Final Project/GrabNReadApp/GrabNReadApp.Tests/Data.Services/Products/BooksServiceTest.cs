@@ -136,8 +136,7 @@ namespace GrabNReadApp.Tests.Data.Services.Products
 
             //Assert
             Assert.True(isDeletedRealBook);
-            Assert.False(isDeletedNotExistingBook
-);
+            Assert.False(isDeletedNotExistingBook);
             Assert.Equal(3, booksCount);
         }
 
