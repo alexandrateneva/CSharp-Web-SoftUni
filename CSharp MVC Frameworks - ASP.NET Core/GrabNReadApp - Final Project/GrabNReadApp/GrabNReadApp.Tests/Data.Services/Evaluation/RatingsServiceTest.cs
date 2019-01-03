@@ -10,11 +10,6 @@ namespace GrabNReadApp.Tests.Data.Services.Evaluation
 {
     public class RatingsServiceTest
     {
-        public RatingsServiceTest()
-        {
-            TestInitializer.Initialize();
-        }
-
         [Fact]
         public async void CreateMethodHaveToWorkCorrectly()
         {

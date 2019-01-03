@@ -12,11 +12,6 @@ namespace GrabNReadApp.Tests.Data.Services.Store
 {
     public class OrdersServiceTest
     {
-        public OrdersServiceTest()
-        {
-            TestInitializer.Initialize();
-        }
-
         [Fact]
         public void GetOrderByIdWithPurchasesAndRentalsMethodHaveToWorkCorrectly()
         {

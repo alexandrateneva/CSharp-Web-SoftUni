@@ -10,11 +10,6 @@ namespace GrabNReadApp.Tests.Data.Services.Blog
 {
     public class ArticlesServiceTest
     {
-        public ArticlesServiceTest()
-        {
-            TestInitializer.Initialize();
-        }
-
         [Fact]
         public void GetAllArticlesMethodHaveToWorkCorrectly()
         {

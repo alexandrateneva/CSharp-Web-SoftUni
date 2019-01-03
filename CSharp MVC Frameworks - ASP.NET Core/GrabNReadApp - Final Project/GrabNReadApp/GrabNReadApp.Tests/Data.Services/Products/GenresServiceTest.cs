@@ -10,11 +10,6 @@ namespace GrabNReadApp.Tests.Data.Services.Products
 {
     public class GenresServiceTest
     {
-        public GenresServiceTest()
-        {
-            TestInitializer.Initialize();
-        }
-
         [Fact]
         public async void CreateMethodHaveToWorkCorrectly()
         {

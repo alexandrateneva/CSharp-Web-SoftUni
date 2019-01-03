@@ -12,11 +12,6 @@ namespace GrabNReadApp.Tests.Data.Services.Store
 {
     public class PurchasesServiceTest
     {
-        public PurchasesServiceTest()
-        {
-            TestInitializer.Initialize();
-        }
-
         [Fact]
         public async void CreateMethodHaveToWorkCorrectly()
         {
