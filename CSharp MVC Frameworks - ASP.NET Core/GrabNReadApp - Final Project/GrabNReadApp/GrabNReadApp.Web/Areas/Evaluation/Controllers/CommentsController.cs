@@ -32,6 +32,7 @@ namespace GrabNReadApp.Web.Areas.Evaluation.Controllers
 
         // POST: Evaluation/Comments/Create
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(string content, int bookId)
         {
             if (!signInManager.IsSignedIn(User))
@@ -67,6 +68,7 @@ namespace GrabNReadApp.Web.Areas.Evaluation.Controllers
 
         // POST: Evaluation/Comments/Delete
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Delete(int commentId)
         {
             if (!signInManager.IsSignedIn(User))

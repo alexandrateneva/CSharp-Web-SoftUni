@@ -32,6 +32,7 @@ namespace GrabNReadApp.Web.Areas.Evaluation.Controllers
 
         // POST: Evaluation/Ratings/Vote
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Vote(int bookId, int voteValue)
         {
             if (!signInManager.IsSignedIn(User))

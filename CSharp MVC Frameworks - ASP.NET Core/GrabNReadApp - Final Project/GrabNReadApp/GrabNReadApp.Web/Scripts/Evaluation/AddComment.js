@@ -1,6 +1,8 @@
 ﻿function addComment(e) {
     e.preventDefault();
-
+    
+    var token = document.getElementsByName("__RequestVerificationToken")[0].value;
+    
     var content = document.getElementById("content").value;
     var escapedContent = content;
     escapedContent = escapedContent.replace(/&/g, '&amp;');
@@ -15,7 +17,7 @@
     $.ajax({
         type: 'POST',
         url: '/Evaluation/Comments/Create',
-        data: { content, bookId },
+        data: { content, bookId, __RequestVerificationToken: token},
         success: function (response) {
             if (response.authorize === "Failed") {
                 location.href = "/Identity/Account/Login";

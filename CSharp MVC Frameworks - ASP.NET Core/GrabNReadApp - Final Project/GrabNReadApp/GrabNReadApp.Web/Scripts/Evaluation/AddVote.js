@@ -1,9 +1,11 @@
 ﻿function vote(event) {
+    var validationToken = document.getElementsByName("__RequestVerificationToken")[0].value;
     var voteValue = event.id;
+
     $.ajax({
         type: 'POST',
         url: '/Evaluation/Ratings/Vote',
-        data: { bookId, voteValue },
+        data: { bookId, voteValue, __RequestVerificationToken: validationToken },
         success: function (response) {
             if (response.authorize === "Failed") {
                 location.href = "/Identity/Account/Login";
