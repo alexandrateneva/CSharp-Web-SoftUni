@@ -2,6 +2,11 @@
     e.preventDefault();
 
     var content = document.getElementById("content").value;
+    var escapedContent = content;
+    escapedContent = escapedContent.replace(/&/g, '&amp;');
+    escapedContent = escapedContent.replace(/</g, '&lt;');
+    escapedContent = escapedContent.replace(/>/g, '&gt;');
+
     var author = document.getElementById("username").value;
     var bookId = Number(document.getElementById("bookId").value);
 
@@ -23,7 +28,7 @@
             }
             else {
                 var comment = '<blockquote class="blockquote">' +
-                    `<p class="break-text mb-0">${content}` +
+                    `<p class="break-text mb-0">${escapedContent}` +
                     `<button id="${response.commentId}" onclick="deleteComment(event)" class="btn btn-sm btn-danger float-right">Delete</button>` +
                     '</p><footer class="blockquote-footer">by ' +
                     `<cite title="Comment Author">${author}</cite>` +
