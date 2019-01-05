@@ -82,7 +82,7 @@ namespace GrabNReadApp.Web.Areas.Evaluation.Controllers
                 return Json(new { commentValidation = "Failed", commentValidationMsg = message });
             }
 
-            if (comment.Creator.UserName != User.Identity.Name && User.IsInRole("Admin"))
+            if (comment.Creator.UserName != User.Identity.Name && !User.IsInRole("Admin"))
             {
                 return Json(new { authorize = "Failed" });
             }
