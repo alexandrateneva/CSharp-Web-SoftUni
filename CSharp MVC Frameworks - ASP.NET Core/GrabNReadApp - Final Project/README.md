@@ -15,11 +15,11 @@ The goal of the project is to represent an online library and bookstore. The use
 
 ## Start - development server
 
-- by .NET Core CLI - listening on https://localhost:5001 and on http://localhost:5000
+By .NET Core CLI - listening on https://localhost:5001 and on http://localhost:5000
 
 	$ GrabNReadApp.Web > dotnet run
 	
-- by Visual Studio - navigate to https://localhost:44393/
+By Visual Studio - navigate to https://localhost:44393/
 	
 ---
 
