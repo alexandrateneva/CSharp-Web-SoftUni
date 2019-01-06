@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using GrabNReadApp.Data.Models;
 using GrabNReadApp.Data.Models.Store;
 using GrabNReadApp.Data.Services.Store.Contracts;
+using GrabNReadApp.Web.Extensions.Alerts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
@@ -79,6 +80,11 @@ namespace GrabNReadApp.Web.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
+
+            if (_signInManager.IsSignedIn(User))
+            {
+                return RedirectToAction("Index", "Home").WithDanger("Error!", "To login from another account, please logout first!");
+            }
 
             if (ModelState.IsValid)
             {
